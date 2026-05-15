@@ -1,12 +1,18 @@
 # Tarea 4 — Procesamiento concurrente de transacciones con Kafka
 
+
 Proyecto de ejemplo para la Tarea 4: procesamiento concurrente de transacciones bancarias.
 
 Pasos rápidos:
 
 ```bash
+# Levanta Kafka (zookeeper + kafka) y el servicio de ejemplo (construye la imagen)
 docker compose up -d
-mvn clean test
+
+# Ejecutar pruebas y generar reporte JaCoCo
+mvn clean test jacoco:report
+
+# Alternativamente iniciar el servicio sin Docker
 mvn spring-boot:run
 ```
 
