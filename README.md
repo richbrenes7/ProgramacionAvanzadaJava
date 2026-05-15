@@ -37,7 +37,14 @@ ProgramacionAvanzadaJava/
 |       `-- test/
 |           `-- java/com/banco/api/
 |-- tarea-4-concurrencia-kafka/
-|   `-- README.md
+|   |-- Dockerfile
+|   |-- docker-compose.yml
+|   |-- README.md
+|   |-- TODO.md
+|   |-- CUMPLIMIENTO.md
+|   |-- logs/
+|   |-- report-es/
+|   `-- src/
 |-- proyecto-final/
 |   `-- README.md
 `-- tarea3_PAJ/
@@ -95,13 +102,32 @@ tarea3_PAJ/report-es/index.html
 
 Ubicacion: [`tarea-4-concurrencia-kafka/`](tarea-4-concurrencia-kafka/)
 
-Carpeta reservada para el entregable de procesamiento concurrente de transacciones. El README interno define el alcance esperado:
+Microservicio Spring Boot para procesamiento concurrente de transacciones bancarias con Kafka, Docker y CI/CD. Incluye:
 
-- Procesamiento con `ExecutorService`.
-- Manejo asincrono de errores.
-- Validaciones por transaccion.
-- Publicacion de eventos en Kafka o simulacion controlada.
-- Logging con contexto de transaccion y thread.
+- Procesamiento concurrente con `ThreadPoolTaskExecutor` y `CompletableFuture`.
+- Producer y consumer Kafka para transacciones y resultados.
+- Endpoints REST para procesar lotes y publicar transacciones a Kafka.
+- Logging estructurado JSON listo para observabilidad.
+- Dockerfile multi-stage y `docker-compose.yml` con Zookeeper, Kafka y la app.
+- Pipeline GitHub Actions con build, tests, analisis JaCoCo, empaquetado y deploy de imagen Docker a GHCR.
+- Pruebas unitarias e integracion con Embedded Kafka.
+
+Comandos principales:
+
+```bash
+cd tarea-4-concurrencia-kafka
+mvn -B test jacoco:report
+docker build -t t4-concurrencia-kafka .
+docker compose up -d
+```
+
+Evidencia:
+
+```text
+tarea-4-concurrencia-kafka/CUMPLIMIENTO.md
+tarea-4-concurrencia-kafka/logs/
+tarea-4-concurrencia-kafka/report-es/index.html
+```
 
 ### Proyecto final
 

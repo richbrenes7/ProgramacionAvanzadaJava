@@ -18,4 +18,8 @@ public class Transaccion {
     public String getId() { return id; }
     public String getCuenta() { return cuenta; }
     public BigDecimal getMonto() { return monto; }
+
+    public void setId(String id) { this.id = id; }
+    public void setCuenta(String cuenta) { this.cuenta = cuenta; }
+    public void setMonto(BigDecimal monto) { this.monto = monto; }
 }
