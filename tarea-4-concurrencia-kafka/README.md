@@ -1,3 +1,16 @@
+# Tarea 4 — Procesamiento concurrente de transacciones con Kafka
+
+Proyecto de ejemplo para la Tarea 4: procesamiento concurrente de transacciones bancarias.
+
+Pasos rápidos:
+
+```bash
+docker compose up -d
+mvn clean test
+mvn spring-boot:run
+```
+
+El proyecto incluye un `Producer` y un `Consumer` ejemplares, configuración de `ExecutorService` y pruebas unitarias básicas.
 # Tarea 4 — Concurrencia y Kafka
 
 ## Objetivo
