@@ -1,36 +1,165 @@
-# ProgramacionAvanzadaJava
+# Programacion Avanzada en Java
 
-Repositorio central del curso de Programación Avanzada en Java.
+Repositorio central del curso **Programacion Avanzada en Java**.
 
-## Contenido
+Contiene entregables, guias, prompts de trabajo y documentacion tecnica para las tareas del curso. La estructura esta pensada para que cada entrega pueda revisarse de forma independiente, con su propio `README.md`, codigo fuente, pruebas y archivos de apoyo.
 
-- `tarea-3-api-rest/` — API REST bancaria con Spring Boot, JWT, validaciones, pruebas y Swagger.
-- `tarea-4-concurrencia-kafka/` — Procesamiento concurrente de transacciones con `ExecutorService` y Kafka.
-- `proyecto-final/` — Plataforma bancaria Java integrando seguridad, concurrencia, persistencia y despliegue.
-- `docs/` — Buenas prácticas, convenciones y lineamientos comunes.
+## Estructura del repositorio
 
-## Principios del repositorio
+```text
+ProgramacionAvanzadaJava/
+|-- .env.example
+|-- .gitignore
+|-- README.md
+|-- docs/
+|   |-- best-practices.md
+|   `-- roadmap.md
+|-- prompts/
+|   `-- run-tests-and-todos.prompt.md
+|-- tarea-3-api-rest/
+|   |-- pom.xml
+|   |-- README.md
+|   |-- requests/
+|   |   `-- api.http
+|   `-- src/
+|       |-- main/
+|       |   |-- java/com/banco/api/
+|       |   |   |-- config/
+|       |   |   |-- controller/
+|       |   |   |-- dto/
+|       |   |   |-- entity/
+|       |   |   |-- exception/
+|       |   |   |-- repository/
+|       |   |   |-- security/
+|       |   |   `-- service/
+|       |   `-- resources/
+|       |       `-- application.yml
+|       `-- test/
+|           `-- java/com/banco/api/
+|-- tarea-4-concurrencia-kafka/
+|   `-- README.md
+|-- proyecto-final/
+|   `-- README.md
+`-- tarea3_PAJ/
+    |-- RESULTADOS_PRUEBAS.md
+    `-- report-es/
+        `-- index.html
+```
 
-- Configuración por variables de entorno.
-- Separación por módulos o entregables.
-- Documentación mínima por cada entrega.
-- Pruebas y cobertura como parte del flujo normal.
-- Secretos y credenciales fuera del código fuente.
+## Entregables
 
-## Convenciones
+### Tarea 3 - API REST bancaria
 
-- Usa nombres de paquetes en minúsculas.
-- Mantén capas separadas: `controller`, `service`, `repository`, `dto`, `entity`, `security`, `exception`.
-- Documenta endpoints y parámetros en `README.md` o archivos dentro de `docs/`.
-- Evita valores fijos para URLs, claves y tiempos de expiración.
+Ubicacion: [`tarea-3-api-rest/`](tarea-3-api-rest/)
+
+Proyecto Spring Boot para una API bancaria con:
+
+- Autenticacion JWT.
+- CRUD de clientes.
+- Consulta de saldo por cuenta.
+- Consulta de movimientos con filtros de fecha y paginacion.
+- Persistencia con Spring Data JPA y H2.
+- Swagger/OpenAPI.
+- Pruebas unitarias, pruebas de controlador e integracion.
+- Cobertura con JaCoCo.
+
+Comandos principales:
+
+```bash
+cd tarea-3-api-rest
+mvn test
+mvn jacoco:report
+mvn spring-boot:run
+```
+
+Swagger UI:
+
+```text
+http://localhost:8080/swagger-ui.html
+```
+
+Coleccion HTTP:
+
+```text
+tarea-3-api-rest/requests/api.http
+```
+
+Evidencia de pruebas y cobertura:
+
+```text
+tarea3_PAJ/RESULTADOS_PRUEBAS.md
+tarea3_PAJ/report-es/index.html
+```
+
+### Tarea 4 - Concurrencia y Kafka
+
+Ubicacion: [`tarea-4-concurrencia-kafka/`](tarea-4-concurrencia-kafka/)
+
+Carpeta reservada para el entregable de procesamiento concurrente de transacciones. El README interno define el alcance esperado:
+
+- Procesamiento con `ExecutorService`.
+- Manejo asincrono de errores.
+- Validaciones por transaccion.
+- Publicacion de eventos en Kafka o simulacion controlada.
+- Logging con contexto de transaccion y thread.
+
+### Proyecto final
+
+Ubicacion: [`proyecto-final/`](proyecto-final/)
+
+Carpeta reservada para la plataforma bancaria final. El README interno documenta la arquitectura recomendada y los entregables esperados:
+
+- Clientes, cuentas, movimientos y reportes.
+- Seguridad JWT.
+- Persistencia.
+- Concurrencia.
+- Docker y despliegue.
+- Pruebas automatizadas.
+
+## Documentacion comun
+
+- [`docs/best-practices.md`](docs/best-practices.md): convenciones de configuracion, estructura por capas, seguridad, pruebas y observabilidad.
+- [`docs/roadmap.md`](docs/roadmap.md): mapa general de tareas y proyecto final.
+- [`prompts/run-tests-and-todos.prompt.md`](prompts/run-tests-and-todos.prompt.md): prompt operativo para ejecutar pruebas, guardar logs, generar cobertura y reportar estado.
 
 ## Variables de entorno
 
-Consulta [`.env.example`](.env.example) para ver las variables sugeridas.
+El archivo [`.env.example`](.env.example) centraliza variables sugeridas para los entregables:
 
-## Próximos pasos
+- Configuracion comun de aplicacion.
+- Tarea 3: puerto, base de datos H2, JWT y credenciales demo.
+- Tarea 4: Kafka, topicos y configuracion del pool de hilos.
+- Proyecto final: PostgreSQL, JWT y nivel de logs.
 
-1. Completar la documentación de cada tarea.
-2. Agregar la implementación de la tarea 3.
-3. Agregar el módulo concurrente de la tarea 4.
-4. Integrar el proyecto final en una estructura lista para entrega.
+Para trabajar localmente:
+
+```bash
+cp .env.example .env
+```
+
+Luego ajustar los valores segun el entorno. No se deben subir secretos reales al repositorio.
+
+## Requisitos
+
+- Java JDK 17 o superior.
+- Maven 3.9 o superior.
+- Git.
+- Opcional para Tarea 4: Kafka local o Docker.
+
+## Flujo recomendado de trabajo
+
+1. Entrar a la carpeta del entregable.
+2. Leer su `README.md`.
+3. Ejecutar pruebas antes de modificar.
+4. Implementar cambios pequenos y verificables.
+5. Ejecutar `mvn test`.
+6. Generar cobertura con `mvn jacoco:report` cuando aplique.
+7. Guardar resultados relevantes en una carpeta `logs/` o en el archivo de resultados del entregable.
+
+## Notas de mantenimiento
+
+- Cada tarea debe mantenerse autocontenida.
+- Los secretos deben vivir fuera del codigo fuente.
+- Los artefactos generados por Maven (`target/`) no deben versionarse.
+- Los reportes de evidencia pueden guardarse en carpetas especificas cuando sean parte de una entrega.
+- Los endpoints y ejemplos de uso deben documentarse en el README de cada tarea o en `requests/`.
