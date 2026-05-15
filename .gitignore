@@ -1,0 +1,23 @@
+# Java / Maven
+.target/
+*.class
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+.gitignore: Fixes for build artifacts
+# Build artifacts
+target/
+coverage/
