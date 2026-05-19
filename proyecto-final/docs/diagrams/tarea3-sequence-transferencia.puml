@@ -1,0 +1,12 @@
+@startuml
+title Tarea 3 - Secuencia: Transferencia (API REST)
+actor Cliente
+Cliente -> CuentaController: POST /cuentas/transfer
+CuentaController -> CuentaService: transferir(req)
+CuentaService -> CuentaRepository: findById(from)
+CuentaService -> CuentaRepository: findById(to)
+CuentaService -> MovimientoService: registrarMovimiento(...)
+CuentaService -> TransaccionProducer: enviarKafka(transaccion)
+TransaccionProducer -> Kafka: publish
+CuentaService --> Cliente: 200 OK
+@enduml

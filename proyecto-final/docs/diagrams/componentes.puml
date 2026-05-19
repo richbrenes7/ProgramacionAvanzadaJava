@@ -1,0 +1,12 @@
+@startuml
+title Diagrama de Componentes - JavaBank Core
+package "Aplicación" {
+  [Controller] --> [Service]
+  [Service] --> [Repository]
+  [Service] --> [Kafka Producer]
+  [Kafka Consumer] --> [Service]
+  [Security (JWT)] --> [Controller]
+  [Repository] --> (Postgres)
+  [Kafka Producer] --> (Kafka)
+}
+@enduml

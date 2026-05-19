@@ -1,0 +1,17 @@
+@startuml
+title Tarea 2 - Diagrama de Clases (Cuentas)
+package "Cuentas" {
+  class Cuenta {
+    +Long id
+    +String numero
+    +BigDecimal saldo
+    +Cliente propietario
+    +depositar(BigDecimal): void
+    +retirar(BigDecimal): void
+  }
+  class CuentaRepository <<interface>>
+  class CuentaController
+  CuentaController --> CuentaService
+  CuentaService --> CuentaRepository
+}
+@enduml

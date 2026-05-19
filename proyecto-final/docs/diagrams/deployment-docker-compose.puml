@@ -1,0 +1,11 @@
+@startuml
+title Despliegue (docker-compose)
+node "Host" {
+  component "app (Spring Boot)" as App
+  component "postgres" as PG
+  component "kafka" as Kafka
+  component "zookeeper" as ZK
+  App --> PG
+  App --> Kafka
+}
+@enduml

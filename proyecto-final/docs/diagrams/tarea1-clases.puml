@@ -1,0 +1,16 @@
+@startuml
+title Tarea 1 - Diagrama de Clases (Clientes)
+package "Clientes" {
+  class Cliente {
+    +Long id
+    +String nombre
+    +String correo
+    +Date fechaRegistro
+    +getId(): Long
+  }
+  class ClienteRepository <<interface>>
+  class ClienteController
+  ClienteController --> ClienteService
+  ClienteService --> ClienteRepository
+}
+@enduml

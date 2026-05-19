@@ -1,0 +1,12 @@
+@startuml
+title Tarea 4 - Concurrencia: Procesador de Transacciones
+package "Procesador" {
+  class ProcesadorTransaccionesService {
+    -ExecutorService executor
+    +procesarLote(List<Transaccion>)
+  }
+  class Worker <<thread>>
+  ProcesadorTransaccionesService --> Worker : submit
+  Worker -> CuentaService : procesarTransaccion()
+}
+@enduml
