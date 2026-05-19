@@ -1,0 +1,57 @@
+También aparecen tonos secundarios aproximados:
+
+Gris azulado:            #545D68
+Gris medio azulado:      #6C7584
+Gris claro azulado:      #AEB4C1
+Dorado fuerte:           #F5B21E
+Dorado naranja:          #F6A800
+Beige cálido:            #DBCCAF
+Gris cálido:             #C1BCB8
+Paleta recomendada para RBrenes Bank
+
+Como tu marca busca verse minimalista, bancaria, elegante y premium, yo usaría esta paleta:
+
+Primary Black:           #222831
+Secondary Charcoal:      #393E46
+Gold Main:               #FFD369
+Gold Accent:             #F5B21E
+White Base:              #EEEEEE
+Pure White:              #FFFFFF
+Colores complementarios recomendados
+
+Para complementar negro, blanco y dorado, puedes usar tonos sobrios de azul grisáceo. Funcionan bien para banca porque transmiten confianza, estabilidad y tecnología.
+
+Navy Complement:         #1F2937
+Slate Blue Gray:         #475569
+Steel Blue:              #64748B
+Soft Blue Gray:          #CBD5E1
+Warm Sand:               #EADDC8
+Paleta final en hexadecimales
+#222831
+#393E46
+#FFD369
+#F5B21E
+#EEEEEE
+#FFFFFF
+#1F2937
+#475569
+#64748B
+#CBD5E1
+#EADDC8
+Uso recomendado
+Fondo principal:         #FFFFFF o #EEEEEE
+Texto principal:         #222831
+Texto secundario:        #393E46
+Botones principales:     #222831
+Botones premium/acento:  #FFD369
+Hover dorado:            #F5B21E
+Bordes suaves:           #CBD5E1
+Fondos de tarjetas:      #FFFFFF
+Fondos secundarios:      #F8F8F6
+
+Mi recomendación para el logo sería mantenerlo así:
+
+RBrenes:                 #222831
+Bank:                    #393E46
+Detalle/acento opcional: #FFD369
+Fondo:                   #FFFFFF

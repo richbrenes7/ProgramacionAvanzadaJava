@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
+
+app:
+  default:
+    admin: admin
+    admin-pass: password
+  jwt:
+    secret: change_this_secret_to_a_strong_value_with_min_32_chars
+    expiration-ms: 3600000
+  security:
+    permit-all: true
+  kafka:
+    listener-auto-startup: true
+
+logging:
+  level:
+    org.apache.kafka: WARN

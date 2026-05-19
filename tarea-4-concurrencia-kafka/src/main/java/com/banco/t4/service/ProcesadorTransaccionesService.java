@@ -1,14 +1,15 @@
 package com.banco.t4.service;
 
-import com.banco.t4.domain.ResultadoProcesamiento;
-import com.banco.t4.domain.Transaccion;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.banco.t4.domain.ResultadoProcesamiento;
+import com.banco.t4.domain.Transaccion;
 
 @Service
 public class ProcesadorTransaccionesService {

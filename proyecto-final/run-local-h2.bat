@@ -1,0 +1,9 @@
+@echo off
+set "SPRING_DATASOURCE_URL=jdbc:h2:mem:banco_db"
+set "SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver"
+set "SPRING_DATASOURCE_USERNAME=sa"
+set "SPRING_DATASOURCE_PASSWORD="
+set "SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect"
+set "APP_JWT_SECRET=change_this_secret_to_a_strong_value_with_min_32_chars"
+set "APP_KAFKA_LISTENER_AUTO_STARTUP=false"
+mvn spring-boot:run

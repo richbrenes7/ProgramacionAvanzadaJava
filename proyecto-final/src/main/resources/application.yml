@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/banco_db
+    username: banco
+    password: banco123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+app:
+  jwt:
+    secret: change_this_secret_to_a_strong_value_with_min_32_chars
+    expiration-ms: 3600000
+  security:
+    permit-all: false

@@ -1,16 +1,15 @@
 package com.banco.t4;
 
-import com.banco.t4.domain.Transaccion;
-import com.banco.t4.service.ProcesadorTransaccionesService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-
 import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.banco.t4.domain.Transaccion;
+import com.banco.t4.service.ProcesadorTransaccionesService;
 
 @SpringBootTest
 public class ProcesadorTransaccionesServiceTest {

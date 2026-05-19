@@ -1,17 +1,17 @@
 package com.banco.t4;
 
-import com.banco.t4.kafka.TransaccionConsumer;
-import com.banco.t4.kafka.TransaccionProducer;
-import com.banco.t4.domain.Transaccion;
+import java.math.BigDecimal;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.math.BigDecimal;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import com.banco.t4.domain.Transaccion;
+import com.banco.t4.kafka.TransaccionConsumer;
+import com.banco.t4.kafka.TransaccionProducer;
 
 @SpringBootTest
 @EmbeddedKafka(partitions = 1, topics = {"transacciones-entrada","transacciones-resultados"})
