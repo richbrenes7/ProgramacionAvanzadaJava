@@ -1,3 +1,26 @@
+# JavaBank Online — Proyecto Final (es)
+
+Proyecto monolito modular para la entrega final del curso. Incluye API REST para clientes, cuentas, movimientos, transferencias y seguridad JWT.
+
+Documentación y recursos:
+
+```bash
+cd proyecto-final
+docker compose up -d
+mvn -B test
+mvn spring-boot:run
+```
+
+Comandos rápidos:
+
+```bash
+cd proyecto-final
+docker compose up -d
+mvn -B test
+mvn spring-boot:run
+```
+
+Swagger UI: http://localhost:8080/swagger-ui/index.html
 # Proyecto final — Banco Digital Core API
 
 ## Objetivo
