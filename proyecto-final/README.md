@@ -2,6 +2,13 @@
 
 Aplicacion bancaria academica desarrollada con Java, Spring Boot y Maven para el curso Programacion Avanzada en Java. El proyecto integra API REST, seguridad JWT, persistencia, concurrencia, Kafka, Docker, documentacion tecnica, pruebas de integracion y un frontend operativo separado por modulos.
 
+## Autoria
+
+- Autor: Rich Brenes
+- GitHub: [`richbrenes7`](https://github.com/richbrenes7)
+- Proyecto: RBrenes Bank
+- Curso: Programacion Avanzada en Java
+
 ## Estado del proyecto
 
 El proyecto compila y las pruebas de integracion pasan con:

@@ -2,6 +2,13 @@
 
 Repositorio del proyecto final de **Programacion Avanzada en Java**.
 
+## Autoria
+
+- Autor: Rich Brenes
+- GitHub: [`richbrenes7`](https://github.com/richbrenes7)
+- Proyecto: RBrenes Bank
+- Contexto academico: Programacion Avanzada en Java
+
 Este repositorio queda concentrado en un unico entregable: [`proyecto-final/`](proyecto-final/). La decision de dejar solo este proyecto busca que la revision sea directa, que la estructura no mezcle ejercicios previos con el entregable final y que cualquier contributor pueda ubicar rapidamente el codigo, la documentacion, las pruebas y los archivos de ejecucion.
 
 ## Proyecto Final - RBrenes Bank
