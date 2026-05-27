@@ -1,64 +1,239 @@
-# JavaBank Online — Proyecto Final (es)
+# RBrenes Bank - Proyecto final
 
-Proyecto monolito modular para la entrega final del curso. Incluye API REST para clientes, cuentas, movimientos, transferencias y seguridad JWT.
+Aplicacion bancaria academica desarrollada con Java, Spring Boot y Maven para el curso Programacion Avanzada en Java. El proyecto integra API REST, seguridad JWT, persistencia, concurrencia, Kafka, Docker, documentacion tecnica, pruebas de integracion y un frontend operativo separado por modulos.
 
-Documentación y recursos:
+## Estado del proyecto
+
+El proyecto compila y las pruebas de integracion pasan con:
 
 ```bash
-cd proyecto-final
-docker compose up -d
-mvn -B test
+mvn -B verify
+```
+
+Resultado validado:
+
+```text
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 1
+BUILD SUCCESS
+```
+
+La prueba omitida corresponde a Testcontainers cuando Docker no esta disponible en el equipo.
+
+## Modulos funcionales
+
+- Seguridad: login con JWT en `/api/auth/login`.
+- Clientes: crear, listar, consultar y actualizar clientes.
+- Cuentas: crear cuentas, consultar por numero y consultar saldo.
+- Movimientos: registrar depositos/retiros y consultar historial por cuenta.
+- Transacciones: transferencia individual entre cuentas.
+- Lotes concurrentes: procesamiento de varias transferencias con `CompletableFuture` y executor.
+- Kafka: producer/consumer de transacciones, con prueba de integracion usando Embedded Kafka.
+- Reportes: reporte de cartera con total de cuentas, saldo total y moneda base.
+- Frontend: panel web modular para cada operacion bancaria.
+- Observabilidad basica: actuator health.
+- Documentacion: Swagger/OpenAPI y carpeta `docs/`.
+
+## Frontend modular
+
+La interfaz esta en `src/main/resources/static/` y se sirve desde Spring Boot en:
+
+```text
+http://localhost:8080
+```
+
+El panel separa las operaciones en vistas independientes:
+
+- Resumen operativo.
+- Clientes.
+- Cuentas.
+- Consulta de saldo.
+- Depositos.
+- Retiros.
+- Transferencias individuales.
+- Transferencias por lote.
+- Historial de movimientos.
+- Reporte de cartera.
+
+Archivos principales:
+
+```text
+src/main/resources/static/index.html
+src/main/resources/static/app.js
+src/main/resources/static/styles.css
+```
+
+## Ejecucion local sin contenedores
+
+Para correr la app con H2 en memoria, sin PostgreSQL ni Kafka local:
+
+```bat
+run-local-h2.bat
+```
+
+Luego abrir:
+
+```text
+http://localhost:8080
+```
+
+Credenciales demo:
+
+```text
+usuario: user
+password: admin
+```
+
+El script desactiva el listener Kafka local para evitar warnings cuando no hay broker levantado.
+
+## Ejecucion con Docker
+
+Para levantar PostgreSQL, Kafka, Zookeeper y la aplicacion:
+
+```bash
+docker compose up -d --build
+```
+
+Servicios principales:
+
+```text
+App:        http://localhost:8080
+PostgreSQL: localhost:5432
+Kafka:      localhost:9092
+Swagger:    http://localhost:8080/swagger-ui/index.html
+Health:     http://localhost:8080/actuator/health
+```
+
+## Ejecucion manual con PostgreSQL local
+
+Requisitos:
+
+- Java 17 o superior.
+- Maven 3.9 o superior.
+- PostgreSQL con base `banco_db`, usuario `banco`, password `banco123`.
+- Kafka local opcional en `localhost:9092`.
+
+Comando:
+
+```bash
 mvn spring-boot:run
 ```
 
-Comandos rápidos:
+## Endpoints principales
 
-```bash
-cd proyecto-final
-docker compose up -d
-mvn -B test
-mvn spring-boot:run
+Autenticacion:
+
+```text
+POST /api/auth/login
 ```
 
-Swagger UI: http://localhost:8080/swagger-ui/index.html
+Clientes:
 
-# Proyecto final — Banco Digital Core API
+```text
+POST /api/clientes
+GET  /api/clientes
+GET  /api/clientes/{id}
+PUT  /api/clientes/{id}
+```
 
-## Objetivo
+Cuentas:
 
-Construir una plataforma bancaria Java con Spring Boot, seguridad JWT, persistencia, concurrencia, reportes, Docker y pruebas automatizadas.
+```text
+POST /api/cuentas
+GET  /api/cuentas/numero/{numero}
+GET  /api/cuentas/{numero}/saldo
+GET  /api/cuentas/{id}/movimientos
+POST /api/cuentas/transferir?origen=ACC-001&destino=ACC-002&monto=100
+```
 
-## Módulos sugeridos
+Movimientos y transacciones:
 
-- Clientes
-- Cuentas
-- Movimientos
-- Transacciones concurrentes
-- Seguridad
-- Reportes
+```text
+POST /api/movimientos
+GET  /api/movimientos/cuenta/{cuentaId}
+POST /api/transacciones
+POST /api/transacciones/lote
+```
 
-## Variables de entorno
+Reportes:
 
-- `POSTGRES_HOST`
-- `POSTGRES_PORT`
-- `POSTGRES_DB`
-- `POSTGRES_USER`
-- `POSTGRES_PASSWORD`
-- `JWT_SECRET`
-- `JWT_EXPIRATION_MINUTES`
-- `LOG_LEVEL`
+```text
+GET /api/reportes/cartera
+GET /actuator/health
+```
 
-## Arquitectura recomendada
+## Estructura
 
-- Separar el monolito por dominios o crear servicios modulares.
-- Mantener configuraciones por perfil.
-- Usar OpenAPI para documentar endpoints.
-- Definir pruebas unitarias e integración desde el inicio.
+```text
+proyecto-final/
+|-- Dockerfile
+|-- docker-compose.yml
+|-- pom.xml
+|-- run-local-h2.bat
+|-- docs/
+|   |-- architecture.md
+|   |-- endpoints.md
+|   |-- diagrams/
+|   |-- evidencias/
+|   `-- swagger.md
+|-- src/
+|   |-- main/
+|   |   |-- java/com/banco/core/
+|   |   |   |-- cliente/
+|   |   |   |-- controller/
+|   |   |   |-- cuenta/
+|   |   |   |-- kafka/
+|   |   |   |-- movimiento/
+|   |   |   |-- security/
+|   |   |   |-- service/
+|   |   |   `-- transaccion/
+|   |   `-- resources/
+|   |       |-- application.yml
+|   |       `-- static/
+|   `-- test/
+|       |-- java/com/banco/core/
+|       `-- resources/application.yml
+```
 
-## Entregables
+## Pruebas
 
-- `README.md`
-- `docker-compose.yml`
-- `.env.example`
-- `docs/`
-- Código fuente con pruebas
+Ejecutar todo:
+
+```bash
+mvn -B verify
+```
+
+Ejecutar solo pruebas unitarias configuradas por Surefire:
+
+```bash
+mvn -B test
+```
+
+Las pruebas usan H2 para integracion local y Embedded Kafka para validar mensajeria sin depender de un broker externo.
+
+## Variables y configuracion
+
+Variables utiles:
+
+```text
+SPRING_DATASOURCE_URL
+SPRING_DATASOURCE_USERNAME
+SPRING_DATASOURCE_PASSWORD
+SPRING_KAFKA_BOOTSTRAP_SERVERS
+APP_JWT_SECRET
+APP_JWT_EXPIRATION_MS
+APP_KAFKA_LISTENER_AUTO_STARTUP
+```
+
+En pruebas se activa `app.security.permit-all=true` para concentrar los escenarios en comportamiento funcional.
+
+## Documentacion adicional
+
+- `docs/architecture.md`: vision de arquitectura.
+- `docs/endpoints.md`: resumen de endpoints.
+- `docs/swagger.md`: notas de Swagger/OpenAPI.
+- `docs/evidencias.md`: evidencia y comandos de validacion.
+- `docs/diagrams/`: diagramas PlantUML.
+
+## Notas de entrega
+
+Este proyecto cubre una plataforma bancaria monolitica modular con API REST, seguridad, persistencia, concurrencia, Kafka, Docker, pruebas, documentacion y frontend operativo por transaccion. Para una entrega formal, ejecutar `mvn -B verify`, abrir Swagger y guardar capturas del frontend modular si se requieren evidencias visuales.

@@ -3,248 +3,259 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RBrenes Bank</title>
+  <title>RBrenes Bank | Operaciones</title>
   <link rel="icon" type="image/png" href="/assets/RB_logo_sin_fondo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
-      <div class="brand">
+      <a class="brand" href="#dashboard" data-module-link="dashboard">
         <img src="/assets/RBrenes_Bank_sin_fondo.png" alt="RBrenes Bank">
-      </div>
-      <div class="segment-switch" aria-label="Segmentos">
-        <button class="segment active" type="button">Personas</button>
-        <button class="segment" type="button">Empresas</button>
-      </div>
-      <nav class="nav-list" aria-label="Secciones">
-        <a href="#dashboard" class="nav-item active">Dashboard</a>
-        <a href="#clientes" class="nav-item">Clientes</a>
-        <a href="#cuentas" class="nav-item">Cuentas</a>
-        <a href="#operaciones" class="nav-item">Operaciones</a>
-        <a href="#movimientos" class="nav-item">Movimientos</a>
-      </nav>
-      <div class="session-box">
+      </a>
+
+      <div class="session-card">
         <span id="sessionLabel">Sesion no iniciada</span>
         <button id="logoutButton" class="ghost-button" type="button" hidden>Cerrar sesion</button>
       </div>
+
+      <nav class="nav-list" aria-label="Modulos operativos">
+        <a href="#dashboard" class="nav-item active" data-module-link="dashboard">Resumen</a>
+        <a href="#clientes" class="nav-item" data-module-link="clientes">Clientes</a>
+        <a href="#cuentas" class="nav-item" data-module-link="cuentas">Cuentas</a>
+        <a href="#saldo" class="nav-item" data-module-link="saldo">Saldos</a>
+        <a href="#deposito" class="nav-item" data-module-link="deposito">Depositos</a>
+        <a href="#retiro" class="nav-item" data-module-link="retiro">Retiros</a>
+        <a href="#transferencia" class="nav-item" data-module-link="transferencia">Transferencias</a>
+        <a href="#lote" class="nav-item" data-module-link="lote">Lotes</a>
+        <a href="#movimientos" class="nav-item" data-module-link="movimientos">Movimientos</a>
+        <a href="#reportes" class="nav-item" data-module-link="reportes">Reportes</a>
+      </nav>
     </aside>
 
     <main class="workspace">
       <header class="topbar">
         <div>
-          <p class="eyebrow">JavaBank Online</p>
-          <h1>Panel operativo</h1>
+          <p class="eyebrow">Proyecto final</p>
+          <h1>Panel de transacciones bancarias</h1>
         </div>
         <div class="top-actions">
-          <a class="utility-link" href="#ayuda">Centro de ayuda</a>
-          <a class="swagger-link" href="/swagger-ui/index.html" target="_blank" rel="noreferrer">Swagger</a>
+          <a class="utility-link" href="/swagger-ui/index.html" target="_blank" rel="noreferrer">Swagger</a>
+          <a class="utility-link" href="/actuator/health" target="_blank" rel="noreferrer">Health</a>
         </div>
       </header>
-
-      <section class="channel-strip" aria-label="Canales disponibles">
-        <a href="#operaciones">
-          <span>Transacciones</span>
-          <strong>Transferir y mover dinero</strong>
-        </a>
-        <a href="#cuentas">
-          <span>Productos</span>
-          <strong>Cuentas y saldos</strong>
-        </a>
-        <a href="#movimientos">
-          <span>Consultas</span>
-          <strong>Historial financiero</strong>
-        </a>
-        <a href="/swagger-ui/index.html" target="_blank" rel="noreferrer">
-          <span>API</span>
-          <strong>Documentacion Swagger</strong>
-        </a>
-      </section>
 
       <section id="loginPanel" class="login-band">
         <div>
           <h2>Acceso administrativo</h2>
-          <p>Usa el usuario de prueba para operar la API desde esta interfaz.</p>
+          <p>Autentica la sesion para operar clientes, cuentas y transacciones.</p>
         </div>
         <form id="loginForm" class="login-form">
-          <label>
-            Usuario
-            <input id="username" name="username" value="user" autocomplete="username" required>
-          </label>
-          <label>
-            Contrasena
-            <input id="password" name="password" type="password" value="admin" autocomplete="current-password" required>
-          </label>
+          <label>Usuario<input id="username" name="username" value="user" autocomplete="username" required></label>
+          <label>Contrasena<input id="password" name="password" type="password" value="admin" autocomplete="current-password" required></label>
           <button class="primary-button" type="submit">Ingresar</button>
         </form>
       </section>
 
-      <section id="dashboard" class="metrics-grid">
-        <article class="metric">
-          <span>Clientes</span>
-          <strong id="clientesCount">0</strong>
-        </article>
-        <article class="metric">
-          <span>Cuentas en sesion</span>
-          <strong id="cuentasCount">0</strong>
-        </article>
-        <article class="metric">
-          <span>Balance visible</span>
-          <strong id="balanceTotal">GTQ 0.00</strong>
-        </article>
-        <article class="metric">
-          <span>Ultima operacion</span>
-          <strong id="lastOperation">Sin actividad</strong>
-        </article>
-      </section>
-
-      <section id="clientes" class="section-grid">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Nuevo cliente</h2>
-          </div>
-          <form id="clienteForm" class="stack-form">
-            <label>Nombre<input name="nombre" placeholder="Ana Morales" required></label>
-            <label>Documento<input name="documento" placeholder="DPI-1001" required></label>
-            <label>Email<input name="email" type="email" placeholder="ana@correo.com"></label>
-            <label>Telefono<input name="telefono" placeholder="5555-0101"></label>
-            <label>Estado<input name="estado" value="ACTIVO"></label>
-            <button class="primary-button" type="submit">Crear cliente</button>
-          </form>
+      <section id="dashboard" class="module-view active" data-module="dashboard">
+        <div class="metrics-grid">
+          <article class="metric"><span>Clientes cargados</span><strong id="clientesCount">0</strong></article>
+          <article class="metric"><span>Cuentas visibles</span><strong id="cuentasCount">0</strong></article>
+          <article class="metric"><span>Balance visible</span><strong id="balanceTotal">GTQ 0.00</strong></article>
+          <article class="metric"><span>Ultima operacion</span><strong id="lastOperation">Sin actividad</strong></article>
         </div>
 
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Clientes registrados</h2>
-            <button id="refreshClientes" class="secondary-button" type="button">Actualizar</button>
-          </div>
-          <div id="clientesList" class="data-list empty-state">Inicia sesion para consultar clientes.</div>
+        <div class="module-grid quick-grid">
+          <button type="button" class="module-card" data-module-link="deposito">
+            <span>Deposito</span>
+            <strong>Abonar fondos a una cuenta</strong>
+          </button>
+          <button type="button" class="module-card" data-module-link="retiro">
+            <span>Retiro</span>
+            <strong>Debitar fondos disponibles</strong>
+          </button>
+          <button type="button" class="module-card" data-module-link="transferencia">
+            <span>Transferencia</span>
+            <strong>Mover dinero entre cuentas</strong>
+          </button>
+          <button type="button" class="module-card" data-module-link="lote">
+            <span>Lote concurrente</span>
+            <strong>Procesar varias transferencias</strong>
+          </button>
         </div>
       </section>
 
-      <section id="cuentas" class="section-grid">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Nueva cuenta</h2>
-          </div>
-          <form id="cuentaForm" class="stack-form">
+      <section id="clientes" class="module-view" data-module="clientes">
+        <div class="module-heading">
+          <h2>Clientes</h2>
+          <button class="secondary-button" type="button" data-module-link="dashboard">Menu principal</button>
+        </div>
+        <div class="module-grid two-col">
+          <article class="panel">
+            <div class="panel-header"><h2>Nuevo cliente</h2></div>
+            <form id="clienteForm" class="stack-form">
+              <label>Nombre<input name="nombre" placeholder="Ana Morales" required></label>
+              <label>Documento<input name="documento" placeholder="DPI-1001" required></label>
+              <label>Email<input name="email" type="email" placeholder="ana@correo.com"></label>
+              <label>Telefono<input name="telefono" placeholder="5555-0101"></label>
+              <label>Estado<input name="estado" value="ACTIVO"></label>
+              <button class="primary-button" type="submit">Crear cliente</button>
+            </form>
+          </article>
+          <article class="panel">
+            <div class="panel-header">
+              <h2>Clientes registrados</h2>
+              <button id="refreshClientes" class="secondary-button" type="button">Actualizar</button>
+            </div>
+            <div id="clientesList" class="data-list empty-state">Inicia sesion para consultar clientes.</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="cuentas" class="module-view" data-module="cuentas">
+        <div class="module-heading">
+          <h2>Cuentas</h2>
+          <button class="secondary-button" type="button" data-module-link="dashboard">Menu principal</button>
+        </div>
+        <div class="module-grid two-col">
+          <article class="panel">
+            <div class="panel-header"><h2>Abrir cuenta</h2></div>
+            <form id="cuentaForm" class="stack-form">
+              <label>Numero de cuenta<input name="numeroCuenta" placeholder="ACC-001" required></label>
+              <label>Cliente ID<input name="clienteId" type="number" min="1" value="1" required></label>
+              <label>Tipo
+                <select name="tipoCuenta">
+                  <option>AHORROS</option>
+                  <option>MONETARIA</option>
+                  <option>CREDITO</option>
+                </select>
+              </label>
+              <label>Moneda<input name="moneda" value="GTQ" required></label>
+              <label>Saldo inicial<input name="saldo" type="number" min="0" step="0.01" value="1000" required></label>
+              <label>Estado<input name="estado" value="ACTIVO"></label>
+              <button class="primary-button" type="submit">Crear cuenta</button>
+            </form>
+          </article>
+          <article class="panel">
+            <div class="panel-header"><h2>Cuentas cargadas</h2></div>
+            <form id="buscarCuentaForm" class="inline-form">
+              <input name="numeroCuenta" placeholder="ACC-001" required>
+              <button class="secondary-button" type="submit">Buscar</button>
+            </form>
+            <div id="cuentasList" class="data-list empty-state">Las cuentas creadas o buscadas aparecen aqui.</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="saldo" class="module-view" data-module="saldo">
+        <div class="module-heading">
+          <h2>Saldos</h2>
+          <button class="secondary-button" type="button" data-module-link="dashboard">Menu principal</button>
+        </div>
+        <article class="panel narrow-panel">
+          <div class="panel-header"><h2>Consultar saldo</h2></div>
+          <form id="saldoForm" class="stack-form">
             <label>Numero de cuenta<input name="numeroCuenta" placeholder="ACC-001" required></label>
-            <label>Cliente ID<input name="clienteId" type="number" min="1" value="1" required></label>
-            <label>Tipo
-              <select name="tipoCuenta">
-                <option>AHORROS</option>
-                <option>MONETARIA</option>
-                <option>CREDITO</option>
-              </select>
-            </label>
-            <label>Moneda<input name="moneda" value="GTQ" required></label>
-            <label>Saldo inicial<input name="saldo" type="number" min="0" step="0.01" value="1000" required></label>
-            <label>Estado<input name="estado" value="ACTIVO"></label>
-            <button class="primary-button" type="submit">Crear cuenta</button>
+            <button class="primary-button" type="submit">Consultar saldo</button>
           </form>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Consultar cuenta</h2>
-          </div>
-          <form id="buscarCuentaForm" class="inline-form">
-            <input name="numeroCuenta" placeholder="ACC-001" required>
-            <button class="secondary-button" type="submit">Buscar</button>
-          </form>
-          <div id="cuentasList" class="data-list empty-state">Las cuentas creadas o buscadas aparecen aqui.</div>
-        </div>
+          <div id="saldoResult" class="result-box">Sin consulta activa.</div>
+        </article>
       </section>
 
-      <section id="operaciones" class="section-grid">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Deposito o retiro</h2>
-          </div>
-          <form id="movimientoForm" class="stack-form">
-            <label>Cuenta ID<input name="cuentaId" type="number" min="1" required></label>
-            <label>Tipo
-              <select name="tipoMovimiento">
-                <option>DEPOSITO</option>
-                <option>RETIRO</option>
-              </select>
-            </label>
-            <label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label>
-            <button class="primary-button" type="submit">Registrar movimiento</button>
-          </form>
+      <section id="deposito" class="module-view" data-module="deposito">
+        <div class="module-heading">
+          <h2>Depositos</h2>
+          <button class="secondary-button" type="button" data-module-link="dashboard">Menu principal</button>
         </div>
+        <article class="panel transaction-panel">
+          <div class="panel-header"><h2>Deposito</h2><span class="status-pill success">Credito</span></div>
+          <form id="depositoForm" class="stack-form">
+            <label>Cuenta ID<input name="cuentaId" type="number" min="1" required></label>
+            <label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label>
+            <button class="primary-button" type="submit">Registrar deposito</button>
+          </form>
+        </article>
+      </section>
 
-        <div class="panel accent-panel">
-          <div class="panel-header">
-            <h2>Transferencia</h2>
-          </div>
+      <section id="retiro" class="module-view" data-module="retiro">
+        <div class="module-heading">
+          <h2>Retiros</h2>
+          <button class="secondary-button" type="button" data-module-link="dashboard">Menu principal</button>
+        </div>
+        <article class="panel transaction-panel">
+          <div class="panel-header"><h2>Retiro</h2><span class="status-pill danger">Debito</span></div>
+          <form id="retiroForm" class="stack-form">
+            <label>Cuenta ID<input name="cuentaId" type="number" min="1" required></label>
+            <label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label>
+            <button class="primary-button" type="submit">Registrar retiro</button>
+          </form>
+        </article>
+      </section>
+
+      <section id="transferencia" class="module-view" data-module="transferencia">
+        <div class="module-heading">
+          <h2>Transferencias</h2>
+          <button class="secondary-button" type="button" data-module-link="dashboard">Menu principal</button>
+        </div>
+        <article class="panel transaction-panel">
+          <div class="panel-header"><h2>Transferencia individual</h2><span class="status-pill">REST</span></div>
           <form id="transferForm" class="stack-form">
             <label>Cuenta origen<input name="origen" placeholder="ACC-001" required></label>
             <label>Cuenta destino<input name="destino" placeholder="ACC-002" required></label>
             <label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label>
             <button class="gold-button" type="submit">Transferir</button>
           </form>
-        </div>
-      </section>
-
-      <section id="movimientos" class="panel full-panel">
-        <div class="panel-header">
-          <h2>Historial de movimientos</h2>
-          <form id="movimientosForm" class="inline-form compact">
-            <input name="cuentaId" type="number" min="1" placeholder="Cuenta ID" required>
-            <button class="secondary-button" type="submit">Ver</button>
-          </form>
-        </div>
-        <div id="movimientosList" class="data-list empty-state">Selecciona una cuenta para revisar su historial.</div>
-      </section>
-
-      <section id="ayuda" class="support-grid">
-        <article>
-          <h2>Resolvemos tus dudas</h2>
-          <p>Consulta saldos, revisa movimientos y valida transferencias desde el panel o desde Swagger.</p>
         </article>
-        <a href="#clientes">Crear cliente</a>
-        <a href="#cuentas">Abrir cuenta</a>
-        <a href="#operaciones">Realizar transferencia</a>
-        <a href="#movimientos">Consultar historial</a>
       </section>
 
-      <footer class="site-footer">
-        <div class="footer-brand">
-          <img src="/assets/RB_logo_sin_fondo.png" alt="RB">
-          <div>
-            <strong>RBrenes Bank</strong>
-            <span>Plataforma academica de banca digital</span>
-          </div>
+      <section id="lote" class="module-view" data-module="lote">
+        <div class="module-heading">
+          <h2>Lotes concurrentes</h2>
+          <button class="secondary-button" type="button" data-module-link="dashboard">Menu principal</button>
         </div>
-        <div class="footer-columns">
-          <div>
-            <h3>Te puede interesar</h3>
-            <a href="#cuentas">Cuentas</a>
-            <a href="#operaciones">Pagos y transferencias</a>
-            <a href="/swagger-ui/index.html" target="_blank" rel="noreferrer">Documentacion API</a>
-          </div>
-          <div>
-            <h3>Legales</h3>
-            <a href="#dashboard">Seguridad JWT</a>
-            <a href="#movimientos">Trazabilidad de movimientos</a>
-            <a href="#ayuda">Buenas practicas API REST</a>
-          </div>
-          <div>
-            <h3>Contactanos</h3>
-            <span>Guatemala, Guatemala</span>
-            <span>Linea de atencion: 1800-RB-BANK</span>
-            <span>soporte@rbrenesbank.test</span>
-          </div>
+        <article class="panel">
+          <div class="panel-header"><h2>Transferencias por lote</h2><span class="status-pill">Concurrente</span></div>
+          <form id="loteForm" class="stack-form">
+            <label>Origen base<input name="origen" placeholder="ACC-001" required></label>
+            <label>Destino base<input name="destino" placeholder="ACC-002" required></label>
+            <label>Monto por transaccion<input name="monto" type="number" min="0.01" step="0.01" value="50" required></label>
+            <label>Cantidad<input name="cantidad" type="number" min="1" max="20" value="3" required></label>
+            <button class="gold-button" type="submit">Procesar lote</button>
+          </form>
+          <div id="loteResult" class="result-box">El lote genera varias transferencias iguales para probar concurrencia.</div>
+        </article>
+      </section>
+
+      <section id="movimientos" class="module-view" data-module="movimientos">
+        <div class="module-heading">
+          <h2>Movimientos</h2>
+          <button class="secondary-button" type="button" data-module-link="dashboard">Menu principal</button>
         </div>
-        <div class="footer-bottom">
-          <span>RBrenes Bank S.A. Proyecto academico</span>
-          <span>Copyright 2026 RBrenes Bank</span>
+        <article class="panel full-panel">
+          <div class="panel-header">
+            <h2>Historial de movimientos</h2>
+            <form id="movimientosForm" class="inline-form compact">
+              <input name="cuentaId" type="number" min="1" placeholder="Cuenta ID" required>
+              <button class="secondary-button" type="submit">Ver</button>
+            </form>
+          </div>
+          <div id="movimientosList" class="data-list empty-state">Selecciona una cuenta para revisar su historial.</div>
+        </article>
+      </section>
+
+      <section id="reportes" class="module-view" data-module="reportes">
+        <div class="module-heading">
+          <h2>Reportes</h2>
+          <button class="secondary-button" type="button" data-module-link="dashboard">Menu principal</button>
         </div>
-      </footer>
+        <article class="panel narrow-panel">
+          <div class="panel-header">
+            <h2>Reporte de cartera</h2>
+            <button id="reporteCarteraButton" class="secondary-button" type="button">Generar</button>
+          </div>
+          <div id="reporteResult" class="result-box">Sin reporte generado.</div>
+        </article>
+      </section>
 
       <div id="toast" class="toast" role="status" aria-live="polite"></div>
     </main>
