@@ -1,5 +1,5 @@
 @startuml
-title Tarea 4 - Concurrencia: Procesador de Transacciones
+title Concurrencia: procesador de transacciones
 package "Procesador" {
   class ProcesadorTransaccionesService {
     -ExecutorService executor

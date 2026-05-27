@@ -1,5 +1,5 @@
 @startuml
-title Tarea 3 - Secuencia: Transferencia (API REST)
+title Secuencia de transferencia (API REST)
 actor Cliente
 Cliente -> CuentaController: POST /cuentas/transfer
 CuentaController -> CuentaService: transferir(req)
