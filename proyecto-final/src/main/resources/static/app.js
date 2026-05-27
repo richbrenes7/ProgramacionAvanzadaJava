@@ -20,6 +20,7 @@ const els = {
   refreshClientes: document.querySelector("#refreshClientes"),
   reporteCarteraButton: document.querySelector("#reporteCarteraButton"),
   logoutButton: document.querySelector("#logoutButton"),
+  sessionCard: document.querySelector("#sessionCard"),
   sessionLabel: document.querySelector("#sessionLabel"),
   clientesList: document.querySelector("#clientesList"),
   cuentasList: document.querySelector("#cuentasList"),
@@ -107,8 +108,9 @@ function showModule(moduleName) {
 function renderSession() {
   const logged = Boolean(state.token);
   els.loginPanel.hidden = logged;
+  els.sessionCard.hidden = !logged;
   els.logoutButton.hidden = !logged;
-  els.sessionLabel.textContent = logged ? "Sesion activa" : "Sesion no iniciada";
+  els.sessionLabel.textContent = "Sesion activa";
 }
 
 function renderDashboard() {
