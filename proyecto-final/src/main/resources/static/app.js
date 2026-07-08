@@ -5,7 +5,8 @@ const state = {
   user: localStorage.getItem("rb_user") || "",
   exchangeRate: localStorage.getItem("rb_exchange_rate") || DEFAULT_EXCHANGE,
   clientes: [],
-  cuentas: JSON.parse(localStorage.getItem("rb_cuentas") || "[]"),
+  cuentas: [],
+  selectedProduct: "",
   lastOperation: localStorage.getItem("rb_last_operation") || "Sin actividad"
 };
 
@@ -44,6 +45,14 @@ const els = {
   workspaceTitle: document.querySelector("#workspaceTitle"),
   clientesList: document.querySelector("#clientesList"),
   cuentasList: document.querySelector("#cuentasList"),
+  productSelector: document.querySelector("#productSelector"),
+  selectedProductSummary: document.querySelector("#selectedProductSummary"),
+  saldoProducto: document.querySelector("#saldoProducto"),
+  depositoProducto: document.querySelector("#depositoProducto"),
+  retiroProducto: document.querySelector("#retiroProducto"),
+  transferProducto: document.querySelector("#transferProducto"),
+  loteProducto: document.querySelector("#loteProducto"),
+  movimientosProducto: document.querySelector("#movimientosProducto"),
   saldoResult: document.querySelector("#saldoResult"),
   loteResult: document.querySelector("#loteResult"),
   movimientosList: document.querySelector("#movimientosList"),
@@ -94,13 +103,41 @@ function setLastOperation(text) {
   renderDashboard();
 }
 
+function accountStorageKey() {
+  return `rb_cuentas_${state.user || "anon"}`;
+}
+
+function selectedProductStorageKey() {
+  return `rb_selected_product_${state.user || "anon"}`;
+}
+
+function loadUserPortfolio() {
+  if (!state.user) {
+    state.cuentas = [];
+    state.selectedProduct = "";
+    return;
+  }
+  state.cuentas = JSON.parse(localStorage.getItem(accountStorageKey()) || "[]");
+  state.selectedProduct = localStorage.getItem(selectedProductStorageKey()) || "";
+  if (state.cuentas.length && !state.cuentas.some(cuenta => cuenta.numeroCuenta === state.selectedProduct)) {
+    state.selectedProduct = state.cuentas[0].numeroCuenta;
+    localStorage.setItem(selectedProductStorageKey(), state.selectedProduct);
+  }
+}
+
+function selectedCuenta() {
+  return state.cuentas.find(cuenta => cuenta.numeroCuenta === state.selectedProduct) || state.cuentas[0] || null;
+}
+
 function saveCuentas() {
   const unique = new Map();
   state.cuentas.forEach(cuenta => {
     if (cuenta && cuenta.numeroCuenta) unique.set(cuenta.numeroCuenta, cuenta);
   });
   state.cuentas = Array.from(unique.values());
-  localStorage.setItem("rb_cuentas", JSON.stringify(state.cuentas));
+  if (state.user) localStorage.setItem(accountStorageKey(), JSON.stringify(state.cuentas));
+  if (!state.selectedProduct && state.cuentas[0]) state.selectedProduct = state.cuentas[0].numeroCuenta;
+  if (state.user && state.selectedProduct) localStorage.setItem(selectedProductStorageKey(), state.selectedProduct);
 }
 
 async function api(path, options = {}) {
@@ -172,11 +209,44 @@ function routeFromHash() {
   routePublic(route || "inicio");
 }
 
+function renderProductSelectors() {
+  const options = state.cuentas.map(cuenta => {
+    const label = `${cuenta.tipoCuenta || "CUENTA"} ${cuenta.numeroCuenta} - ${money(cuenta.saldo)}`;
+    return { numero: cuenta.numeroCuenta, id: cuenta.id, label };
+  });
+  const emptyOption = `<option value="">Sin productos asociados</option>`;
+  const numeroOptions = options.length ? options.map(opt => `<option value="${opt.numero}">${opt.label}</option>`).join("") : emptyOption;
+  const idOptions = options.length ? options.map(opt => `<option value="${opt.id}">${opt.label}</option>`).join("") : emptyOption;
+
+  [els.productSelector, els.saldoProducto, els.transferProducto, els.loteProducto].forEach(select => {
+    if (!select) return;
+    select.innerHTML = numeroOptions;
+    select.value = state.selectedProduct || "";
+  });
+  [els.depositoProducto, els.retiroProducto, els.movimientosProducto].forEach(select => {
+    if (!select) return;
+    select.innerHTML = idOptions;
+    const cuenta = selectedCuenta();
+    select.value = cuenta && cuenta.id ? String(cuenta.id) : "";
+  });
+
+  const cuenta = selectedCuenta();
+  if (!els.selectedProductSummary) return;
+  if (!cuenta) {
+    els.selectedProductSummary.textContent = "Asocia o crea una cuenta para operar con ella.";
+    return;
+  }
+  els.selectedProductSummary.innerHTML = `
+    <span>${cuenta.tipoCuenta || "Producto bancario"}</span><strong>${cuenta.numeroCuenta}</strong>
+    <span>Saldo disponible</span><strong>${money(cuenta.saldo)}</strong>
+  `;
+}
 function renderDashboard() {
   els.clientesCount.textContent = state.clientes.length;
   els.cuentasCount.textContent = state.cuentas.length;
   els.balanceTotal.textContent = money(state.cuentas.reduce((sum, cuenta) => sum + Number(cuenta.saldo || 0), 0));
   els.lastOperation.textContent = state.lastOperation;
+  renderProductSelectors();
   updateContextBar();
 }
 
@@ -213,7 +283,7 @@ function renderClientes() {
 function renderCuentas() {
   if (!state.cuentas.length) {
     els.cuentasList.className = "data-list empty-state";
-    els.cuentasList.textContent = "Las cuentas creadas o buscadas aparecen aqui.";
+    els.cuentasList.textContent = "Los productos asociados a este usuario aparecen aqui.";
     renderDashboard();
     return;
   }
@@ -262,6 +332,7 @@ async function refreshClientes() {
 async function buscarCuenta(numeroCuenta) {
   const cuenta = await api(`/api/cuentas/numero/${encodeURIComponent(numeroCuenta)}`);
   state.cuentas.push(cuenta);
+  state.selectedProduct = cuenta.numeroCuenta;
   saveCuentas();
   renderCuentas();
   return cuenta;
@@ -308,6 +379,7 @@ els.loginForm.addEventListener("submit", async event => {
     });
     state.token = response.token;
     state.user = response.username || data.username;
+    loadUserPortfolio();
     localStorage.setItem("rb_token", state.token);
     localStorage.setItem("rb_user", state.user);
     localStorage.setItem("rb_exchange_rate", state.exchangeRate);
@@ -323,9 +395,12 @@ els.logoutButton.addEventListener("click", () => {
   state.token = "";
   state.user = "";
   state.clientes = [];
+  state.cuentas = [];
+  state.selectedProduct = "";
   localStorage.removeItem("rb_token");
   localStorage.removeItem("rb_user");
   renderClientes();
+  renderCuentas();
   routePublic("inicio");
   showToast("Sesion cerrada.");
 });
@@ -366,6 +441,7 @@ els.cuentaForm.addEventListener("submit", async event => {
   try {
     const cuenta = await api("/api/cuentas", { method: "POST", body: JSON.stringify(data) });
     state.cuentas.push(cuenta);
+    state.selectedProduct = cuenta.numeroCuenta;
     saveCuentas();
     renderCuentas();
     setLastOperation(`Cuenta ${cuenta.numeroCuenta}`);
@@ -486,6 +562,14 @@ els.reporteCarteraButton.addEventListener("click", async () => {
   }
 });
 
+if (els.productSelector) {
+  els.productSelector.addEventListener("change", event => {
+    state.selectedProduct = event.currentTarget.value;
+    if (state.user && state.selectedProduct) localStorage.setItem(selectedProductStorageKey(), state.selectedProduct);
+    renderProductSelectors();
+  });
+}
+
 document.querySelectorAll("[data-public-link]").forEach(link => {
   link.addEventListener("click", event => {
     event.preventDefault();
@@ -503,6 +587,7 @@ document.querySelectorAll("[data-module-link]").forEach(link => {
 window.addEventListener("hashchange", routeFromHash);
 window.setInterval(updateContextBar, 60000);
 
+loadUserPortfolio();
 renderClientes();
 renderCuentas();
 renderDashboard();

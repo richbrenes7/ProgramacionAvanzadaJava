@@ -340,3 +340,20 @@ input:focus, select:focus { border-color: var(--gold-strong); box-shadow: 0 0 0 
   .topbar h1 { font-size: 28px; }
   .hero-copy h1 { font-size: 40px; }
 }
+
+.product-selector-row {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.55fr) minmax(280px, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.product-summary {
+  margin-top: 0;
+}
+
+@media (max-width: 760px) {
+  .product-selector-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -118,10 +118,18 @@
       <section id="dashboard" class="module-view active" data-module="dashboard" data-title="Panel principal">
         <div class="metrics-grid">
           <article class="metric"><span>Clientes cargados</span><strong id="clientesCount">0</strong></article>
-          <article class="metric"><span>Cuentas visibles</span><strong id="cuentasCount">0</strong></article>
-          <article class="metric"><span>Balance visible</span><strong id="balanceTotal">GTQ 0.00</strong></article>
+          <article class="metric"><span>Mis productos</span><strong id="cuentasCount">0</strong></article>
+          <article class="metric"><span>Saldo total usuario</span><strong id="balanceTotal">GTQ 0.00</strong></article>
           <article class="metric"><span>Ultima operacion</span><strong id="lastOperation">Sin actividad</strong></article>
         </div>
+
+        <article class="panel product-panel">
+          <div class="panel-header"><h2>Producto seleccionado</h2><span class="status-pill">Usuario</span></div>
+          <div class="product-selector-row">
+            <label>Producto bancario<select id="productSelector"></select></label>
+            <div id="selectedProductSummary" class="result-box product-summary">Asocia o crea una cuenta para operar con ella.</div>
+          </div>
+        </article>
 
         <div class="section-heading compact-heading">
           <p class="eyebrow">Modulos</p>
@@ -152,38 +160,38 @@
         <div class="module-heading"><h2>Cuentas</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
         <div class="module-grid two-col">
           <article class="panel"><div class="panel-header"><h2>Abrir cuenta</h2></div><form id="cuentaForm" class="stack-form"><label>Numero de cuenta<input name="numeroCuenta" placeholder="ACC-001" required></label><label>Cliente ID<input name="clienteId" type="number" min="1" value="1" required></label><label>Tipo<select name="tipoCuenta"><option>AHORROS</option><option>MONETARIA</option><option>CREDITO</option></select></label><label>Moneda<input name="moneda" value="GTQ" required></label><label>Saldo inicial<input name="saldo" type="number" min="0" step="0.01" value="1000" required></label><label>Estado<input name="estado" value="ACTIVO"></label><button class="primary-button" type="submit">Crear cuenta</button></form></article>
-          <article class="panel"><div class="panel-header"><h2>Cuentas cargadas</h2></div><form id="buscarCuentaForm" class="inline-form"><input name="numeroCuenta" placeholder="ACC-001" required><button class="secondary-button" type="submit">Buscar</button></form><div id="cuentasList" class="data-list empty-state">Las cuentas creadas o buscadas aparecen aqui.</div></article>
+          <article class="panel"><div class="panel-header"><h2>Mis productos bancarios</h2></div><form id="buscarCuentaForm" class="inline-form"><input name="numeroCuenta" placeholder="Numero de cuenta para asociar" required><button class="secondary-button" type="submit">Asociar</button></form><div id="cuentasList" class="data-list empty-state">Los productos asociados a este usuario aparecen aqui.</div></article>
         </div>
       </section>
 
       <section id="saldo" class="module-view" data-module="saldo" data-title="Saldos">
         <div class="module-heading"><h2>Saldos</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
-        <article class="panel narrow-panel"><div class="panel-header"><h2>Consultar saldo</h2></div><form id="saldoForm" class="stack-form"><label>Numero de cuenta<input name="numeroCuenta" placeholder="ACC-001" required></label><button class="primary-button" type="submit">Consultar saldo</button></form><div id="saldoResult" class="result-box">Sin consulta activa.</div></article>
+        <article class="panel narrow-panel"><div class="panel-header"><h2>Consultar saldo</h2></div><form id="saldoForm" class="stack-form"><label>Producto bancario<select id="saldoProducto" name="numeroCuenta" required></select></label><button class="primary-button" type="submit">Consultar saldo</button></form><div id="saldoResult" class="result-box">Sin consulta activa.</div></article>
       </section>
 
       <section id="deposito" class="module-view" data-module="deposito" data-title="Depositos">
         <div class="module-heading"><h2>Depositos</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
-        <article class="panel transaction-panel"><div class="panel-header"><h2>Deposito</h2><span class="status-pill success">Credito</span></div><form id="depositoForm" class="stack-form"><label>Cuenta ID<input name="cuentaId" type="number" min="1" required></label><label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label><button class="primary-button" type="submit">Registrar deposito</button></form></article>
+        <article class="panel transaction-panel"><div class="panel-header"><h2>Deposito</h2><span class="status-pill success">Credito</span></div><form id="depositoForm" class="stack-form"><label>Producto bancario<select id="depositoProducto" name="cuentaId" required></select></label><label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label><button class="primary-button" type="submit">Registrar deposito</button></form></article>
       </section>
 
       <section id="retiro" class="module-view" data-module="retiro" data-title="Retiros">
         <div class="module-heading"><h2>Retiros</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
-        <article class="panel transaction-panel"><div class="panel-header"><h2>Retiro</h2><span class="status-pill danger">Debito</span></div><form id="retiroForm" class="stack-form"><label>Cuenta ID<input name="cuentaId" type="number" min="1" required></label><label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label><button class="primary-button" type="submit">Registrar retiro</button></form></article>
+        <article class="panel transaction-panel"><div class="panel-header"><h2>Retiro</h2><span class="status-pill danger">Debito</span></div><form id="retiroForm" class="stack-form"><label>Producto bancario<select id="retiroProducto" name="cuentaId" required></select></label><label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label><button class="primary-button" type="submit">Registrar retiro</button></form></article>
       </section>
 
       <section id="transferencia" class="module-view" data-module="transferencia" data-title="Transferencias">
         <div class="module-heading"><h2>Transferencias</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
-        <article class="panel transaction-panel"><div class="panel-header"><h2>Transferencia individual</h2><span class="status-pill">REST</span></div><form id="transferForm" class="stack-form"><label>Cuenta origen<input name="origen" placeholder="ACC-001" required></label><label>Cuenta destino<input name="destino" placeholder="ACC-002" required></label><label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label><button class="gold-button" type="submit">Transferir</button></form></article>
+        <article class="panel transaction-panel"><div class="panel-header"><h2>Transferencia individual</h2><span class="status-pill">REST</span></div><form id="transferForm" class="stack-form"><label>Producto origen<select id="transferProducto" name="origen" required></select></label><label>Cuenta destino<input name="destino" placeholder="ACC-002" required></label><label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label><button class="gold-button" type="submit">Transferir</button></form></article>
       </section>
 
       <section id="lote" class="module-view" data-module="lote" data-title="Lotes concurrentes">
         <div class="module-heading"><h2>Lotes concurrentes</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
-        <article class="panel"><div class="panel-header"><h2>Transferencias por lote</h2><span class="status-pill">Concurrente</span></div><form id="loteForm" class="stack-form"><label>Origen base<input name="origen" placeholder="ACC-001" required></label><label>Destino base<input name="destino" placeholder="ACC-002" required></label><label>Monto por transaccion<input name="monto" type="number" min="0.01" step="0.01" value="50" required></label><label>Cantidad<input name="cantidad" type="number" min="1" max="20" value="3" required></label><button class="gold-button" type="submit">Procesar lote</button></form><div id="loteResult" class="result-box">El lote genera varias transferencias iguales para probar concurrencia.</div></article>
+        <article class="panel"><div class="panel-header"><h2>Transferencias por lote</h2><span class="status-pill">Concurrente</span></div><form id="loteForm" class="stack-form"><label>Producto origen<select id="loteProducto" name="origen" required></select></label><label>Destino base<input name="destino" placeholder="ACC-002" required></label><label>Monto por transaccion<input name="monto" type="number" min="0.01" step="0.01" value="50" required></label><label>Cantidad<input name="cantidad" type="number" min="1" max="20" value="3" required></label><button class="gold-button" type="submit">Procesar lote</button></form><div id="loteResult" class="result-box">El lote genera varias transferencias iguales para probar concurrencia.</div></article>
       </section>
 
       <section id="movimientos" class="module-view" data-module="movimientos" data-title="Movimientos">
         <div class="module-heading"><h2>Movimientos</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
-        <article class="panel full-panel"><div class="panel-header"><h2>Historial de movimientos</h2><form id="movimientosForm" class="inline-form compact"><input name="cuentaId" type="number" min="1" placeholder="Cuenta ID" required><button class="secondary-button" type="submit">Ver</button></form></div><div id="movimientosList" class="data-list empty-state">Selecciona una cuenta para revisar su historial.</div></article>
+        <article class="panel full-panel"><div class="panel-header"><h2>Historial de movimientos</h2><form id="movimientosForm" class="inline-form compact"><select id="movimientosProducto" name="cuentaId" required></select><button class="secondary-button" type="submit">Ver</button></form></div><div id="movimientosList" class="data-list empty-state">Selecciona una cuenta para revisar su historial.</div></article>
       </section>
 
       <section id="reportes" class="module-view" data-module="reportes" data-title="Reportes">

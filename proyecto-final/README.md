@@ -51,7 +51,7 @@ http://localhost:8080
 El flujo visual queda separado en tres niveles:
 
 - Pagina principal informativa del banco, publica y sin autenticacion.
-- Pestaña **Banca en linea**, que abre el frente de inicio de sesion.
+- PestaÃ±a **Banca en linea**, que abre el frente de inicio de sesion.
 - Panel privado despues del login, con pagina principal y acceso a cada modulo bancario.
 
 Despues de iniciar sesion, los modulos se abren como frentes independientes dentro de la banca interna:
@@ -72,6 +72,8 @@ La barra superior de la banca interna conserva en todos los modulos:
 - Nombre del usuario autenticado.
 - Tipo de cambio visible.
 - Fecha del sistema.
+
+El portafolio visible en la banca en linea se maneja como **mis productos bancarios** del usuario autenticado. Las cuentas creadas o asociadas se guardan por usuario en el navegador y cada operacion selecciona primero el producto bancario origen. El backend academico mantiene cuentas por `clienteId`; para seguridad multiusuario estricta en produccion se debe persistir la relacion usuario-cliente-cuenta y filtrar los endpoints desde el JWT.
 
 Archivos principales:
 
