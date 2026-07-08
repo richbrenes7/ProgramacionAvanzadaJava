@@ -45,6 +45,7 @@ const els = {
   workspaceTitle: document.querySelector("#workspaceTitle"),
   clientesList: document.querySelector("#clientesList"),
   cuentasList: document.querySelector("#cuentasList"),
+  dashboardProductsList: document.querySelector("#dashboardProductsList"),
   productSelector: document.querySelector("#productSelector"),
   selectedProductSummary: document.querySelector("#selectedProductSummary"),
   saldoProducto: document.querySelector("#saldoProducto"),
@@ -209,6 +210,35 @@ function routeFromHash() {
   routePublic(route || "inicio");
 }
 
+function productCard(cuenta) {
+  const selected = cuenta.numeroCuenta === state.selectedProduct;
+  return `
+    <button type="button" class="product-card ${selected ? "selected" : ""}" data-product-number="${cuenta.numeroCuenta}">
+      <span>${cuenta.tipoCuenta || "Producto bancario"}</span>
+      <strong>${cuenta.numeroCuenta}</strong>
+      <em>${money(cuenta.saldo)}</em>
+      <small>${cuenta.estado || "SIN ESTADO"} Â· Cliente ${cuenta.clienteId || "-"}</small>
+    </button>
+  `;
+}
+
+function renderDashboardProducts() {
+  if (!els.dashboardProductsList) return;
+  if (!state.cuentas.length) {
+    els.dashboardProductsList.className = "products-list empty-state";
+    els.dashboardProductsList.textContent = "Asocia o crea una cuenta para ver tus productos.";
+    return;
+  }
+  els.dashboardProductsList.className = "products-list";
+  els.dashboardProductsList.innerHTML = state.cuentas.map(productCard).join("");
+  els.dashboardProductsList.querySelectorAll("[data-product-number]").forEach(button => {
+    button.addEventListener("click", () => {
+      state.selectedProduct = button.dataset.productNumber;
+      if (state.user) localStorage.setItem(selectedProductStorageKey(), state.selectedProduct);
+      renderDashboard();
+    });
+  });
+}
 function renderProductSelectors() {
   const options = state.cuentas.map(cuenta => {
     const label = `${cuenta.tipoCuenta || "CUENTA"} ${cuenta.numeroCuenta} - ${money(cuenta.saldo)}`;
@@ -247,6 +277,7 @@ function renderDashboard() {
   els.balanceTotal.textContent = money(state.cuentas.reduce((sum, cuenta) => sum + Number(cuenta.saldo || 0), 0));
   els.lastOperation.textContent = state.lastOperation;
   renderProductSelectors();
+  renderDashboardProducts();
   updateContextBar();
 }
 
