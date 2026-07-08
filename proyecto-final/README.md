@@ -40,7 +40,7 @@ La prueba omitida corresponde a Testcontainers cuando Docker no esta disponible 
 - Observabilidad basica: actuator health.
 - Documentacion: Swagger/OpenAPI y carpeta `docs/`.
 
-## Frontend modular
+## Frontend publico y banca en linea
 
 La interfaz esta en `src/main/resources/static/` y se sirve desde Spring Boot en:
 
@@ -48,18 +48,30 @@ La interfaz esta en `src/main/resources/static/` y se sirve desde Spring Boot en
 http://localhost:8080
 ```
 
-El panel separa las operaciones en vistas independientes:
+El flujo visual queda separado en tres niveles:
 
-- Resumen operativo.
+- Pagina principal informativa del banco, publica y sin autenticacion.
+- Pestaña **Banca en linea**, que abre el frente de inicio de sesion.
+- Panel privado despues del login, con pagina principal y acceso a cada modulo bancario.
+
+Despues de iniciar sesion, los modulos se abren como frentes independientes dentro de la banca interna:
+
+- Principal.
 - Clientes.
 - Cuentas.
-- Consulta de saldo.
+- Saldos.
 - Depositos.
 - Retiros.
 - Transferencias individuales.
 - Transferencias por lote.
 - Historial de movimientos.
 - Reporte de cartera.
+
+La barra superior de la banca interna conserva en todos los modulos:
+
+- Nombre del usuario autenticado.
+- Tipo de cambio visible.
+- Fecha del sistema.
 
 Archivos principales:
 

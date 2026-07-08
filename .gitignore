@@ -21,3 +21,4 @@ Thumbs.db
 # Build artifacts
 target/
 coverage/
+proyecto-final/logs-local-h2.txt

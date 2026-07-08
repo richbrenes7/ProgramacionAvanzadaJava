@@ -1,12 +1,30 @@
+const DEFAULT_EXCHANGE = "USD 1 = GTQ 7.80";
+
 const state = {
   token: localStorage.getItem("rb_token") || "",
+  user: localStorage.getItem("rb_user") || "",
+  exchangeRate: localStorage.getItem("rb_exchange_rate") || DEFAULT_EXCHANGE,
   clientes: [],
   cuentas: JSON.parse(localStorage.getItem("rb_cuentas") || "[]"),
   lastOperation: localStorage.getItem("rb_last_operation") || "Sin actividad"
 };
 
+const moduleTitles = {
+  dashboard: "Panel principal",
+  clientes: "Clientes",
+  cuentas: "Cuentas",
+  saldo: "Saldos",
+  deposito: "Depositos",
+  retiro: "Retiros",
+  transferencia: "Transferencias",
+  lote: "Lotes concurrentes",
+  movimientos: "Movimientos",
+  reportes: "Reportes"
+};
+
 const els = {
-  loginPanel: document.querySelector("#loginPanel"),
+  publicShell: document.querySelector("[data-public-shell]"),
+  bankShell: document.querySelector("[data-bank-shell]"),
   loginForm: document.querySelector("#loginForm"),
   clienteForm: document.querySelector("#clienteForm"),
   cuentaForm: document.querySelector("#cuentaForm"),
@@ -20,8 +38,10 @@ const els = {
   refreshClientes: document.querySelector("#refreshClientes"),
   reporteCarteraButton: document.querySelector("#reporteCarteraButton"),
   logoutButton: document.querySelector("#logoutButton"),
-  sessionCard: document.querySelector("#sessionCard"),
-  sessionLabel: document.querySelector("#sessionLabel"),
+  contextUser: document.querySelector("#contextUser"),
+  contextExchange: document.querySelector("#contextExchange"),
+  contextDate: document.querySelector("#contextDate"),
+  workspaceTitle: document.querySelector("#workspaceTitle"),
   clientesList: document.querySelector("#clientesList"),
   cuentasList: document.querySelector("#cuentasList"),
   saldoResult: document.querySelector("#saldoResult"),
@@ -42,6 +62,21 @@ function formData(form) {
 function money(value) {
   const amount = Number(value || 0);
   return `GTQ ${amount.toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function systemDate() {
+  return new Date().toLocaleDateString("es-GT", {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "2-digit"
+  });
+}
+
+function updateContextBar() {
+  els.contextUser.textContent = state.user || "Usuario";
+  els.contextExchange.textContent = state.exchangeRate;
+  els.contextDate.textContent = systemDate();
 }
 
 function showToast(message, type = "ok") {
@@ -87,10 +122,33 @@ async function api(path, options = {}) {
 
 function requireSession() {
   if (!state.token) {
-    showToast("Primero inicia sesion.", "error");
+    showToast("Primero inicia sesion en Banca en linea.", "error");
+    routePublic("login");
     return false;
   }
   return true;
+}
+
+function routePublic(viewName = "inicio") {
+  els.publicShell.hidden = false;
+  els.bankShell.hidden = true;
+  const target = ["inicio", "servicios", "seguridad", "login"].includes(viewName) ? viewName : "inicio";
+  document.querySelectorAll("[data-public-view]").forEach(section => {
+    section.classList.toggle("active", section.dataset.publicView === target);
+  });
+  document.querySelectorAll("[data-public-link]").forEach(link => {
+    link.classList.toggle("active", link.dataset.publicLink === target);
+  });
+  if (window.location.hash !== `#${target}`) history.replaceState(null, "", `#${target}`);
+}
+
+function routeBank(moduleName = "dashboard") {
+  if (!requireSession()) return;
+  const target = moduleTitles[moduleName] ? moduleName : "dashboard";
+  els.publicShell.hidden = true;
+  els.bankShell.hidden = false;
+  updateContextBar();
+  showModule(target);
 }
 
 function showModule(moduleName) {
@@ -100,17 +158,18 @@ function showModule(moduleName) {
   document.querySelectorAll("[data-module-link]").forEach(link => {
     link.classList.toggle("active", link.dataset.moduleLink === moduleName);
   });
-  if (window.location.hash !== `#${moduleName}`) {
-    history.replaceState(null, "", `#${moduleName}`);
-  }
+  els.workspaceTitle.textContent = moduleTitles[moduleName] || "Panel principal";
+  const hash = moduleName === "dashboard" ? "#banca" : `#${moduleName}`;
+  if (window.location.hash !== hash) history.replaceState(null, "", hash);
 }
 
-function renderSession() {
-  const logged = Boolean(state.token);
-  els.loginPanel.hidden = logged;
-  els.sessionCard.hidden = !logged;
-  els.logoutButton.hidden = !logged;
-  els.sessionLabel.textContent = "Sesion activa";
+function routeFromHash() {
+  const route = (window.location.hash || "#inicio").slice(1);
+  if (route === "banca" || moduleTitles[route]) {
+    routeBank(route === "banca" ? "dashboard" : route);
+    return;
+  }
+  routePublic(route || "inicio");
 }
 
 function renderDashboard() {
@@ -118,6 +177,7 @@ function renderDashboard() {
   els.cuentasCount.textContent = state.cuentas.length;
   els.balanceTotal.textContent = money(state.cuentas.reduce((sum, cuenta) => sum + Number(cuenta.saldo || 0), 0));
   els.lastOperation.textContent = state.lastOperation;
+  updateContextBar();
 }
 
 function record(title, meta, extra = "") {
@@ -247,10 +307,13 @@ els.loginForm.addEventListener("submit", async event => {
       body: JSON.stringify(data)
     });
     state.token = response.token;
+    state.user = response.username || data.username;
     localStorage.setItem("rb_token", state.token);
-    renderSession();
+    localStorage.setItem("rb_user", state.user);
+    localStorage.setItem("rb_exchange_rate", state.exchangeRate);
     showToast("Sesion iniciada.");
     await refreshClientes();
+    routeBank("dashboard");
   } catch (error) {
     showToast("No se pudo iniciar sesion. Revisa usuario y contrasena.", "error");
   }
@@ -258,10 +321,12 @@ els.loginForm.addEventListener("submit", async event => {
 
 els.logoutButton.addEventListener("click", () => {
   state.token = "";
-  localStorage.removeItem("rb_token");
+  state.user = "";
   state.clientes = [];
-  renderSession();
+  localStorage.removeItem("rb_token");
+  localStorage.removeItem("rb_user");
   renderClientes();
+  routePublic("inicio");
   showToast("Sesion cerrada.");
 });
 
@@ -421,27 +486,34 @@ els.reporteCarteraButton.addEventListener("click", async () => {
   }
 });
 
-document.querySelectorAll("[data-module-link]").forEach(link => {
+document.querySelectorAll("[data-public-link]").forEach(link => {
   link.addEventListener("click", event => {
     event.preventDefault();
-    showModule(link.dataset.moduleLink);
+    routePublic(link.dataset.publicLink);
   });
 });
 
-window.addEventListener("hashchange", () => {
-  showModule((window.location.hash || "#dashboard").slice(1));
+document.querySelectorAll("[data-module-link]").forEach(link => {
+  link.addEventListener("click", event => {
+    event.preventDefault();
+    routeBank(link.dataset.moduleLink);
+  });
 });
 
-renderSession();
+window.addEventListener("hashchange", routeFromHash);
+window.setInterval(updateContextBar, 60000);
+
 renderClientes();
 renderCuentas();
 renderDashboard();
-showModule((window.location.hash || "#dashboard").slice(1));
+routeFromHash();
 
 if (state.token) {
   refreshClientes().catch(() => {
     state.token = "";
+    state.user = "";
     localStorage.removeItem("rb_token");
-    renderSession();
+    localStorage.removeItem("rb_user");
+    routePublic("login");
   });
 }
