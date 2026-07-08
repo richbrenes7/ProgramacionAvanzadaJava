@@ -1,33 +1,15 @@
 # Programacion Avanzada en Java
 
-Repositorio del proyecto final de **Programacion Avanzada en Java**.
+Repositorio academico del curso **Programacion Avanzada en Java**.
 
 ## Autoria
 
 - Autor: Rich Brenes
 - GitHub: [`richbrenes7`](https://github.com/richbrenes7)
-- Proyecto: RBrenes Bank
+- Proyecto final: RBrenes Bank
 - Contexto academico: Programacion Avanzada en Java
 
-Este repositorio queda concentrado en un unico entregable: [`proyecto-final/`](proyecto-final/). La decision de dejar solo este proyecto busca que la revision sea directa, que la estructura no mezcle ejercicios previos con el entregable final y que cualquier contributor pueda ubicar rapidamente el codigo, la documentacion, las pruebas y los archivos de ejecucion.
-
-## Proyecto Final - RBrenes Bank
-
-**RBrenes Bank** es una plataforma bancaria desarrollada con Spring Boot y un frontend estatico modular. Integra autenticacion JWT, operaciones bancarias, persistencia JPA, mensajeria Kafka, procesamiento concurrente y pruebas de integracion.
-
-Funciones principales:
-
-- Inicio y cierre de sesion con JWT.
-- API REST para clientes, cuentas, movimientos, transacciones y reportes.
-- Frontend por modulos: menu principal, clientes, cuentas, saldo, depositos, retiros, transferencias, lotes, movimientos y reportes.
-- Restriccion de operaciones de registro/modificacion a usuarios autenticados.
-- Persistencia con Spring Data JPA.
-- Ejecucion local con H2 para pruebas rapidas sin contenedores.
-- Ejecucion con PostgreSQL y Kafka mediante Docker Compose.
-- Procesamiento concurrente de lotes de transacciones.
-- Actuator health para monitoreo.
-- Swagger/OpenAPI para inspeccion y prueba de endpoints.
-- Pruebas automatizadas con Maven.
+El repositorio contiene entregables independientes para revision: Tarea 3, Tarea 4 y Proyecto Final. Cada carpeta mantiene su propio `README.md`, codigo fuente, pruebas y evidencias.
 
 ## Estructura
 
@@ -37,7 +19,25 @@ ProgramacionAvanzadaJava/
 |-- .gitignore
 |-- .github/
 |   `-- workflows/
+|       |-- ci-tarea4.yml
 |       `-- proyecto-final-ci-cd.yml
+|-- tarea-3-api-rest/
+|   |-- README.md
+|   |-- pom.xml
+|   |-- requests/
+|   `-- src/
+|-- tarea-4-concurrencia-kafka/
+|   |-- README.md
+|   |-- TODO.md
+|   |-- CUMPLIMIENTO.md
+|   |-- Dockerfile
+|   |-- docker-compose.yml
+|   |-- logs/
+|   |-- report-es/
+|   `-- src/
+|-- tarea3_PAJ/
+|   |-- RESULTADOS_PRUEBAS.md
+|   `-- report-es/
 `-- proyecto-final/
     |-- README.md
     |-- pom.xml
@@ -48,25 +48,93 @@ ProgramacionAvanzadaJava/
     `-- src/
 ```
 
-## Requisitos
+## Tarea 3 - API REST bancaria
 
-- Java JDK 17 o superior.
-- Maven 3.9 o superior.
-- Git.
-- Docker Desktop opcional para ejecutar PostgreSQL, Kafka o pruebas con Testcontainers.
+Ubicacion: [`tarea-3-api-rest/`](tarea-3-api-rest/)
 
-## Ejecucion Local Para Testeos
+API REST bancaria con Spring Boot. Incluye:
 
-Para validar la aplicacion rapidamente en un entorno local sin contenedores:
+- Autenticacion JWT.
+- CRUD de clientes.
+- Consulta de saldo por cuenta.
+- Consulta de movimientos con filtros y paginacion.
+- Manejo centralizado de errores.
+- Swagger/OpenAPI.
+- Pruebas automatizadas y reporte JaCoCo.
+
+Comandos principales:
+
+```bash
+cd tarea-3-api-rest
+mvn test
+mvn spring-boot:run
+```
+
+Evidencia adicional:
+
+```text
+tarea3_PAJ/RESULTADOS_PRUEBAS.md
+tarea3_PAJ/report-es/index.html
+```
+
+## Tarea 4 - Concurrencia y Kafka
+
+Ubicacion: [`tarea-4-concurrencia-kafka/`](tarea-4-concurrencia-kafka/)
+
+Microservicio Spring Boot para procesamiento concurrente de transacciones bancarias con Kafka, Docker y CI/CD. Incluye:
+
+- Procesamiento concurrente con `ThreadPoolTaskExecutor` y `CompletableFuture`.
+- Producer y consumer Kafka.
+- Endpoints REST para procesar lotes y publicar transacciones a Kafka.
+- Logging estructurado JSON.
+- Dockerfile multi-stage.
+- `docker-compose.yml` con Zookeeper, Kafka y la app.
+- Pipeline GitHub Actions con build, tests, analisis JaCoCo, empaquetado y deploy de imagen a GHCR.
+- Pruebas unitarias e integracion con Embedded Kafka.
+
+Comandos principales:
+
+```bash
+cd tarea-4-concurrencia-kafka
+mvn -B test jacoco:report
+docker build -t t4-concurrencia-kafka .
+docker compose up -d
+```
+
+Evidencia:
+
+```text
+tarea-4-concurrencia-kafka/CUMPLIMIENTO.md
+tarea-4-concurrencia-kafka/logs/
+tarea-4-concurrencia-kafka/report-es/index.html
+```
+
+## Proyecto Final - RBrenes Bank
+
+Ubicacion: [`proyecto-final/`](proyecto-final/)
+
+Plataforma bancaria desarrollada con Spring Boot y frontend estatico modular. Integra autenticacion JWT, operaciones bancarias, persistencia JPA, mensajeria Kafka, procesamiento concurrente y pruebas automatizadas.
+
+Funciones principales:
+
+- Inicio y cierre de sesion con JWT.
+- API REST para clientes, cuentas, movimientos, transacciones y reportes.
+- Frontend por modulos: menu principal, clientes, cuentas, saldo, depositos, retiros, transferencias, lotes, movimientos y reportes.
+- Persistencia con Spring Data JPA.
+- Ejecucion local con H2.
+- Ejecucion con PostgreSQL y Kafka mediante Docker Compose.
+- Actuator health.
+- Swagger/OpenAPI.
+
+Comandos principales:
 
 ```bash
 cd proyecto-final
 run-local-h2.bat
+mvn -B verify
 ```
 
-Este modo usa H2 en memoria y permite probar el frontend, la autenticacion, los endpoints principales y los flujos bancarios sin levantar PostgreSQL ni Kafka manualmente.
-
-URLs principales:
+URLs locales del proyecto final:
 
 ```text
 Frontend: http://localhost:8080
@@ -81,77 +149,24 @@ usuario: user
 password: admin
 ```
 
-## Pruebas Automatizadas
+## CI/CD
 
-Comando recomendado antes de entregar o subir cambios:
+Workflows disponibles:
 
-```bash
-cd proyecto-final
-mvn -B verify
-```
+- [`.github/workflows/ci-tarea4.yml`](.github/workflows/ci-tarea4.yml): build, tests, analisis JaCoCo, empaquetado y publicacion de imagen Docker para Tarea 4.
+- [`.github/workflows/proyecto-final-ci-cd.yml`](.github/workflows/proyecto-final-ci-cd.yml): build/test del proyecto final, reportes, imagen Docker y deploy opcional a AWS o Azure.
 
-Estado validado:
+## Requisitos
 
-```text
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 1
-BUILD SUCCESS
-```
-
-La prueba omitida depende de Docker/Testcontainers cuando Docker no esta disponible. Por eso la ejecucion local con H2 es util para pruebas funcionales rapidas y `mvn verify` queda como validacion automatizada del proyecto.
-
-## Ejecucion Con Contenedores
-
-Para levantar la aplicacion con servicios externos:
-
-```bash
-cd proyecto-final
-docker compose up -d --build
-```
-
-Este modo usa la configuracion de Docker Compose del proyecto final para ejecutar la aplicacion junto con los servicios necesarios de infraestructura.
-
-## Workflow CI/CD
-
-El repositorio incluye el workflow [`proyecto-final-ci-cd.yml`](.github/workflows/proyecto-final-ci-cd.yml), ejecutado por GitHub Actions en `push` y `pull_request` hacia `main` o `master`.
-
-Flujo principal:
-
-1. **Build and Test**: descarga el codigo, configura JDK 17 con Temurin, cachea dependencias Maven y ejecuta `mvn -B verify` dentro de `proyecto-final`.
-2. **Upload test reports**: publica reportes de Surefire y Failsafe como artifacts para revisar resultados desde GitHub Actions.
-3. **Build Docker Image**: construye la imagen Docker del proyecto final usando el `Dockerfile` incluido.
-4. **Optional Deploy to AWS**: si la variable del repositorio `CLOUD_TARGET` vale `aws`, el workflow autentica con AWS, construye la imagen y la publica en Amazon ECR.
-5. **Optional Deploy to Azure**: si `CLOUD_TARGET` vale `azure`, el workflow autentica con Azure y despliega el `.jar` en Azure Web App.
-
-La asociacion con nube queda preparada de forma controlada por variables y secretos. No se suben credenciales al repositorio; GitHub Actions toma los valores desde la configuracion segura del repo.
-
-Variables y secretos esperados para AWS:
-
-```text
-vars.CLOUD_TARGET=aws
-vars.AWS_REGION
-vars.AWS_ECR_REPOSITORY
-secrets.AWS_ROLE_TO_ASSUME
-```
-
-Variables y secretos esperados para Azure:
-
-```text
-vars.CLOUD_TARGET=azure
-vars.AZURE_WEBAPP_NAME
-secrets.AZURE_CREDENTIALS
-```
-
-Si `CLOUD_TARGET` no esta configurado, el workflow se limita a compilar, probar y construir la imagen Docker.
-
-## Documentacion
-
-- [`proyecto-final/README.md`](proyecto-final/README.md): guia completa del proyecto final.
-- [`proyecto-final/docs/`](proyecto-final/docs/): arquitectura, endpoints, Swagger, evidencias, branding y diagramas.
+- Java JDK 17 o superior.
+- Maven 3.9 o superior.
+- Git.
+- Docker Desktop para Tarea 4, Kafka, PostgreSQL o pruebas con contenedores.
 
 ## Mantenimiento
 
-- Mantener el proyecto final como unico entregable visible del repositorio.
-- Ejecutar `mvn -B verify` antes de hacer push.
-- Usar `run-local-h2.bat` para pruebas funcionales rapidas.
+- Cada entregable debe mantenerse autocontenido.
+- Ejecutar las pruebas dentro de la carpeta del entregable antes de hacer push.
 - No subir secretos reales al repositorio.
 - No versionar artefactos generados por Maven (`target/`).
+- Guardar evidencias relevantes en `logs/`, `report-es/` o archivos de resultados del entregable.

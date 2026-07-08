@@ -1,0 +1,260 @@
+app-1  | 	reconnect.backoff.ms = 50
+app-1  | 	request.timeout.ms = 30000
+app-1  | 	retry.backoff.ms = 100
+app-1  | 	sasl.client.callback.handler.class = null
+app-1  | 	sasl.jaas.config = null
+app-1  | 	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+app-1  | 	sasl.kerberos.min.time.before.relogin = 60000
+app-1  | 	sasl.kerberos.service.name = null
+app-1  | 	sasl.kerberos.ticket.renew.jitter = 0.05
+app-1  | 	sasl.kerberos.ticket.renew.window.factor = 0.8
+app-1  | 	sasl.login.callback.handler.class = null
+app-1  | 	sasl.login.class = null
+app-1  | 	sasl.login.connect.timeout.ms = null
+app-1  | 	sasl.login.read.timeout.ms = null
+app-1  | 	sasl.login.refresh.buffer.seconds = 300
+app-1  | 	sasl.login.refresh.min.period.seconds = 60
+app-1  | 	sasl.login.refresh.window.factor = 0.8
+app-1  | 	sasl.login.refresh.window.jitter = 0.05
+app-1  | 	sasl.login.retry.backoff.max.ms = 10000
+app-1  | 	sasl.login.retry.backoff.ms = 100
+app-1  | 	sasl.mechanism = GSSAPI
+app-1  | 	sasl.oauthbearer.clock.skew.seconds = 30
+app-1  | 	sasl.oauthbearer.expected.audience = null
+app-1  | 	sasl.oauthbearer.expected.issuer = null
+app-1  | 	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+app-1  | 	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+app-1  | 	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+app-1  | 	sasl.oauthbearer.jwks.endpoint.url = null
+app-1  | 	sasl.oauthbearer.scope.claim.name = scope
+app-1  | 	sasl.oauthbearer.sub.claim.name = sub
+app-1  | 	sasl.oauthbearer.token.endpoint.url = null
+app-1  | 	security.protocol = PLAINTEXT
+app-1  | 	security.providers = null
+app-1  | 	send.buffer.bytes = 131072
+app-1  | 	session.timeout.ms = 45000
+app-1  | 	socket.connection.setup.timeout.max.ms = 30000
+app-1  | 	socket.connection.setup.timeout.ms = 10000
+app-1  | 	ssl.cipher.suites = null
+app-1  | 	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+app-1  | 	ssl.endpoint.identification.algorithm = https
+app-1  | 	ssl.engine.factory.class = null
+app-1  | 	ssl.key.password = null
+app-1  | 	ssl.keymanager.algorithm = SunX509
+app-1  | 	ssl.keystore.certificate.chain = null
+app-1  | 	ssl.keystore.key = null
+app-1  | 	ssl.keystore.location = null
+app-1  | 	ssl.keystore.password = null
+app-1  | 	ssl.keystore.type = JKS
+app-1  | 	ssl.protocol = TLSv1.3
+app-1  | 	ssl.provider = null
+app-1  | 	ssl.secure.random.implementation = null
+app-1  | 	ssl.trustmanager.algorithm = PKIX
+app-1  | 	ssl.truststore.certificates = null
+app-1  | 	ssl.truststore.location = null
+app-1  | 	ssl.truststore.password = null
+app-1  | 	ssl.truststore.type = JKS
+app-1  | 	value.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+app-1  |
+app-1  | {"@timestamp":"2026-05-15T07:30:42.440792213Z","@version":"1","message":"ConsumerConfig values: \n\tallow.auto.create.topics = true\n\tauto.commit.interval.ms = 5000\n\tauto.include.jmx.reporter = true\n\tauto.offset.reset = earliest\n\tbootstrap.servers = [kafka:9092]\n\tcheck.crcs = true\n\tclient.dns.lookup = use_all_dns_ips\n\tclient.id = consumer-t4-group-1\n\tclient.rack = \n\tconnections.max.idle.ms = 540000\n\tdefault.api.timeout.ms = 60000\n\tenable.auto.commit = false\n\texclude.internal.topics = true\n\tfetch.max.bytes = 52428800\n\tfetch.max.wait.ms = 500\n\tfetch.min.bytes = 1\n\tgroup.id = t4-group\n\tgroup.instance.id = null\n\theartbeat.interval.ms = 3000\n\tinterceptor.classes = []\n\tinternal.leave.group.on.close = true\n\tinternal.throw.on.fetch.stable.offset.unsupported = false\n\tisolation.level = read_uncommitted\n\tkey.deserializer = class org.apache.kafka.common.serialization.StringDeserializer\n\tmax.partition.fetch.bytes = 1048576\n\tmax.poll.interval.ms = 300000\n\tmax.poll.records = 500\n\tmetadata.max.age.ms = 300000\n\tmetric.reporters = []\n\tmetrics.num.samples = 2\n\tmetrics.recording.level = INFO\n\tmetrics.sample.window.ms = 30000\n\tpartition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]\n\treceive.buffer.bytes = 65536\n\treconnect.backoff.max.ms = 1000\n\treconnect.backoff.ms = 50\n\trequest.timeout.ms = 30000\n\tretry.backoff.ms = 100\n\tsasl.client.callback.handler.class = null\n\tsasl.jaas.config = null\n\tsasl.kerberos.kinit.cmd = /usr/bin/kinit\n\tsasl.kerberos.min.time.before.relogin = 60000\n\tsasl.kerberos.service.name = null\n\tsasl.kerberos.ticket.renew.jitter = 0.05\n\tsasl.kerberos.ticket.renew.window.factor = 0.8\n\tsasl.login.callback.handler.class = null\n\tsasl.login.class = null\n\tsasl.login.connect.timeout.ms = null\n\tsasl.login.read.timeout.ms = null\n\tsasl.login.refresh.buffer.seconds = 300\n\tsasl.login.refresh.min.period.seconds = 60\n\tsasl.login.refresh.window.factor = 0.8\n\tsasl.login.refresh.window.jitter = 0.05\n\tsasl.login.retry.backoff.max.ms = 10000\n\tsasl.login.retry.backoff.ms = 100\n\tsasl.mechanism = GSSAPI\n\tsasl.oauthbearer.clock.skew.seconds = 30\n\tsasl.oauthbearer.expected.audience = null\n\tsasl.oauthbearer.expected.issuer = null\n\tsasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000\n\tsasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000\n\tsasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100\n\tsasl.oauthbearer.jwks.endpoint.url = null\n\tsasl.oauthbearer.scope.claim.name = scope\n\tsasl.oauthbearer.sub.claim.name = sub\n\tsasl.oauthbearer.token.endpoint.url = null\n\tsecurity.protocol = PLAINTEXT\n\tsecurity.providers = null\n\tsend.buffer.bytes = 131072\n\tsession.timeout.ms = 45000\n\tsocket.connection.setup.timeout.max.ms = 30000\n\tsocket.connection.setup.timeout.ms = 10000\n\tssl.cipher.suites = null\n\tssl.enabled.protocols = [TLSv1.2, TLSv1.3]\n\tssl.endpoint.identification.algorithm = https\n\tssl.engine.factory.class = null\n\tssl.key.password = null\n\tssl.keymanager.algorithm = SunX509\n\tssl.keystore.certificate.chain = null\n\tssl.keystore.key = null\n\tssl.keystore.location = null\n\tssl.keystore.password = null\n\tssl.keystore.type = JKS\n\tssl.protocol = TLSv1.3\n\tssl.provider = null\n\tssl.secure.random.implementation = null\n\tssl.trustmanager.algorithm = PKIX\n\tssl.truststore.certificates = null\n\tssl.truststore.location = null\n\tssl.truststore.password = null\n\tssl.truststore.type = JKS\n\tvalue.deserializer = class org.apache.kafka.common.serialization.StringDeserializer\n","logger_name":"org.apache.kafka.clients.consumer.ConsumerConfig","thread_name":"main","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:42.982Z  INFO 1 --- [t4-concurrencia-kafka] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.6.1
+app-1  | {"@timestamp":"2026-05-15T07:30:42.982984032Z","@version":"1","message":"Kafka version: 3.6.1","logger_name":"org.apache.kafka.common.utils.AppInfoParser","thread_name":"main","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:42.987Z  INFO 1 --- [t4-concurrencia-kafka] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 5e3c2b738d253ff5
+app-1  | {"@timestamp":"2026-05-15T07:30:42.987975268Z","@version":"1","message":"Kafka commitId: 5e3c2b738d253ff5","logger_name":"org.apache.kafka.common.utils.AppInfoParser","thread_name":"main","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:42.989Z  INFO 1 --- [t4-concurrencia-kafka] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1778830242979
+app-1  | {"@timestamp":"2026-05-15T07:30:42.989268355Z","@version":"1","message":"Kafka startTimeMs: 1778830242979","logger_name":"org.apache.kafka.common.utils.AppInfoParser","thread_name":"main","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:43.041Z  INFO 1 --- [t4-concurrencia-kafka] [           main] fkaConsumerFactory$ExtendedKafkaConsumer : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Subscribed to topic(s): transacciones-entrada
+app-1  | {"@timestamp":"2026-05-15T07:30:43.041994907Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Subscribed to topic(s): transacciones-entrada","logger_name":"org.springframework.kafka.core.DefaultKafkaConsumerFactory$ExtendedKafkaConsumer","thread_name":"main","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:43.128Z  INFO 1 --- [t4-concurrencia-kafka] [           main] com.banco.t4.TransaccionesApplication    : Started TransaccionesApplication in 7.985 seconds (process running for 9.797)
+app-1  | {"@timestamp":"2026-05-15T07:30:43.128809354Z","@version":"1","message":"Started TransaccionesApplication in 7.985 seconds (process running for 9.797)","logger_name":"com.banco.t4.TransaccionesApplication","thread_name":"main","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:43.700Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.
+app-1  | {"@timestamp":"2026-05-15T07:30:43.700141836Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:43.705Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.
+app-1  | {"@timestamp":"2026-05-15T07:30:43.705500697Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:43.707Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected
+app-1  | {"@timestamp":"2026-05-15T07:30:43.707133907Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:43.801Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.
+app-1  | {"@timestamp":"2026-05-15T07:30:43.801587768Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:43.802Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.
+app-1  | {"@timestamp":"2026-05-15T07:30:43.80265244Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:43.803Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected
+app-1  | {"@timestamp":"2026-05-15T07:30:43.8035392Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:43.902Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.
+app-1  | {"@timestamp":"2026-05-15T07:30:43.902498965Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:43.903Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.
+app-1  | {"@timestamp":"2026-05-15T07:30:43.903418627Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:43.903Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected
+app-1  | {"@timestamp":"2026-05-15T07:30:43.903949263Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:44.104Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.
+app-1  | {"@timestamp":"2026-05-15T07:30:44.104553674Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:44.105Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.
+app-1  | {"@timestamp":"2026-05-15T07:30:44.105212819Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:44.105Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected
+app-1  | {"@timestamp":"2026-05-15T07:30:44.105691851Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:44.457Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.
+app-1  | {"@timestamp":"2026-05-15T07:30:44.457140723Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:44.458Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.
+app-1  | {"@timestamp":"2026-05-15T07:30:44.458003281Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:44.458Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected
+app-1  | {"@timestamp":"2026-05-15T07:30:44.458474612Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:45.314Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.
+app-1  | {"@timestamp":"2026-05-15T07:30:45.314144645Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:45.314Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.
+app-1  | {"@timestamp":"2026-05-15T07:30:45.314844092Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:45.315Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected
+app-1  | {"@timestamp":"2026-05-15T07:30:45.315285022Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:46.171Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.
+app-1  | {"@timestamp":"2026-05-15T07:30:46.171406485Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Node -1 disconnected.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:46.172Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.
+app-1  | {"@timestamp":"2026-05-15T07:30:46.172151336Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Connection to node -1 (kafka/172.18.0.3:9092) could not be established. Broker may not be available.","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:46.172Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected
+app-1  | {"@timestamp":"2026-05-15T07:30:46.172769677Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Bootstrap broker kafka:9092 (id: -1 rack: null) disconnected","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:47.330Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Error while fetching metadata with correlation id 2 : {transacciones-entrada=LEADER_NOT_AVAILABLE}
+app-1  | {"@timestamp":"2026-05-15T07:30:47.330345523Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Error while fetching metadata with correlation id 2 : {transacciones-entrada=LEADER_NOT_AVAILABLE}","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:47.333Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Cluster ID: tSSknSfeS62PHMiH9XM4yA
+app-1  | {"@timestamp":"2026-05-15T07:30:47.333237385Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Cluster ID: tSSknSfeS62PHMiH9XM4yA","logger_name":"org.apache.kafka.clients.Metadata","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:47.428Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Error while fetching metadata with correlation id 5 : {transacciones-entrada=LEADER_NOT_AVAILABLE}
+app-1  | {"@timestamp":"2026-05-15T07:30:47.428972174Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Error while fetching metadata with correlation id 5 : {transacciones-entrada=LEADER_NOT_AVAILABLE}","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:47.568Z  WARN 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Error while fetching metadata with correlation id 7 : {transacciones-entrada=LEADER_NOT_AVAILABLE}
+app-1  | {"@timestamp":"2026-05-15T07:30:47.568261918Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Error while fetching metadata with correlation id 7 : {transacciones-entrada=LEADER_NOT_AVAILABLE}","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:30:48.716Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Discovered group coordinator kafka:9092 (id: 2147483646 rack: null)
+app-1  | {"@timestamp":"2026-05-15T07:30:48.716777851Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Discovered group coordinator kafka:9092 (id: 2147483646 rack: null)","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:48.720Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] (Re-)joining group
+app-1  | {"@timestamp":"2026-05-15T07:30:48.720327496Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] (Re-)joining group","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:48.755Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Request joining group due to: need to re-join with the given member-id: consumer-t4-group-1-a2213a57-0888-44bf-bfdb-2c10806dc153
+app-1  | {"@timestamp":"2026-05-15T07:30:48.755825041Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Request joining group due to: need to re-join with the given member-id: consumer-t4-group-1-a2213a57-0888-44bf-bfdb-2c10806dc153","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:48.757Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Request joining group due to: rebalance failed due to 'The group member needs to have a valid member id before actually entering a consumer group.' (MemberIdRequiredException)
+app-1  | {"@timestamp":"2026-05-15T07:30:48.757119403Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Request joining group due to: rebalance failed due to 'The group member needs to have a valid member id before actually entering a consumer group.' (MemberIdRequiredException)","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:48.757Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] (Re-)joining group
+app-1  | {"@timestamp":"2026-05-15T07:30:48.757608965Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] (Re-)joining group","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:51.789Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Successfully joined group with generation Generation{generationId=1, memberId='consumer-t4-group-1-a2213a57-0888-44bf-bfdb-2c10806dc153', protocol='range'}
+app-1  | {"@timestamp":"2026-05-15T07:30:51.789637377Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Successfully joined group with generation Generation{generationId=1, memberId='consumer-t4-group-1-a2213a57-0888-44bf-bfdb-2c10806dc153', protocol='range'}","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:51.799Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Finished assignment for group at generation 1: {consumer-t4-group-1-a2213a57-0888-44bf-bfdb-2c10806dc153=Assignment(partitions=[transacciones-entrada-0])}
+app-1  | {"@timestamp":"2026-05-15T07:30:51.799782148Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Finished assignment for group at generation 1: {consumer-t4-group-1-a2213a57-0888-44bf-bfdb-2c10806dc153=Assignment(partitions=[transacciones-entrada-0])}","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:51.835Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Successfully synced group in generation Generation{generationId=1, memberId='consumer-t4-group-1-a2213a57-0888-44bf-bfdb-2c10806dc153', protocol='range'}
+app-1  | {"@timestamp":"2026-05-15T07:30:51.835841964Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Successfully synced group in generation Generation{generationId=1, memberId='consumer-t4-group-1-a2213a57-0888-44bf-bfdb-2c10806dc153', protocol='range'}","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:51.836Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Notifying assignor about the new Assignment(partitions=[transacciones-entrada-0])
+app-1  | {"@timestamp":"2026-05-15T07:30:51.83661446Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Notifying assignor about the new Assignment(partitions=[transacciones-entrada-0])","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:51.838Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Adding newly assigned partitions: transacciones-entrada-0
+app-1  | {"@timestamp":"2026-05-15T07:30:51.838437089Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Adding newly assigned partitions: transacciones-entrada-0","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:51.850Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Found no committed offset for partition transacciones-entrada-0
+app-1  | {"@timestamp":"2026-05-15T07:30:51.850844743Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Found no committed offset for partition transacciones-entrada-0","logger_name":"org.apache.kafka.clients.consumer.internals.ConsumerCoordinator","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:51.861Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-t4-group-1, groupId=t4-group] Resetting offset for partition transacciones-entrada-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[kafka:9092 (id: 1 rack: null)], epoch=0}}.
+app-1  | {"@timestamp":"2026-05-15T07:30:51.861735206Z","@version":"1","message":"[Consumer clientId=consumer-t4-group-1, groupId=t4-group] Resetting offset for partition transacciones-entrada-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[kafka:9092 (id: 1 rack: null)], epoch=0}}.","logger_name":"org.apache.kafka.clients.consumer.internals.SubscriptionState","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:30:51.862Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : t4-group: partitions assigned: [transacciones-entrada-0]
+app-1  | {"@timestamp":"2026-05-15T07:30:51.862808541Z","@version":"1","message":"t4-group: partitions assigned: [transacciones-entrada-0]","logger_name":"org.springframework.kafka.listener.KafkaMessageListenerContainer","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:32:21.633Z  INFO 1 --- [t4-concurrencia-kafka] [nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+app-1  | {"@timestamp":"2026-05-15T07:32:21.633519983Z","@version":"1","message":"Initializing Spring DispatcherServlet 'dispatcherServlet'","logger_name":"org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]","thread_name":"http-nio-8082-exec-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:32:21.634Z  INFO 1 --- [t4-concurrencia-kafka] [nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+app-1  | {"@timestamp":"2026-05-15T07:32:21.634114665Z","@version":"1","message":"Initializing Servlet 'dispatcherServlet'","logger_name":"org.springframework.web.servlet.DispatcherServlet","thread_name":"http-nio-8082-exec-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:32:21.636Z  INFO 1 --- [t4-concurrencia-kafka] [nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+app-1  | {"@timestamp":"2026-05-15T07:32:21.636623936Z","@version":"1","message":"Completed initialization in 2 ms","logger_name":"org.springframework.web.servlet.DispatcherServlet","thread_name":"http-nio-8082-exec-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:33:12.089Z  INFO 1 --- [t4-concurrencia-kafka] [nio-8082-exec-2] o.a.k.clients.producer.ProducerConfig    : Idempotence will be disabled because retries is set to 0.
+app-1  | {"@timestamp":"2026-05-15T07:33:12.089630687Z","@version":"1","message":"Idempotence will be disabled because retries is set to 0.","logger_name":"org.apache.kafka.clients.producer.ProducerConfig","thread_name":"http-nio-8082-exec-2","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:33:12.090Z  INFO 1 --- [t4-concurrencia-kafka] [nio-8082-exec-2] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values:
+app-1  | 	acks = -1
+app-1  | 	auto.include.jmx.reporter = true
+app-1  | 	batch.size = 16384
+app-1  | 	bootstrap.servers = [kafka:9092]
+app-1  | 	buffer.memory = 33554432
+app-1  | 	client.dns.lookup = use_all_dns_ips
+app-1  | 	client.id = producer-1
+app-1  | 	compression.type = none
+app-1  | 	connections.max.idle.ms = 540000
+app-1  | 	delivery.timeout.ms = 120000
+app-1  | 	enable.idempotence = false
+app-1  | 	interceptor.classes = []
+app-1  | 	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+app-1  | 	linger.ms = 0
+app-1  | 	max.block.ms = 60000
+app-1  | 	max.in.flight.requests.per.connection = 5
+app-1  | 	max.request.size = 1048576
+app-1  | 	metadata.max.age.ms = 300000
+app-1  | 	metadata.max.idle.ms = 300000
+app-1  | 	metric.reporters = []
+app-1  | 	metrics.num.samples = 2
+app-1  | 	metrics.recording.level = INFO
+app-1  | 	metrics.sample.window.ms = 30000
+app-1  | 	partitioner.adaptive.partitioning.enable = true
+app-1  | 	partitioner.availability.timeout.ms = 0
+app-1  | 	partitioner.class = null
+app-1  | 	partitioner.ignore.keys = false
+app-1  | 	receive.buffer.bytes = 32768
+app-1  | 	reconnect.backoff.max.ms = 1000
+app-1  | 	reconnect.backoff.ms = 50
+app-1  | 	request.timeout.ms = 30000
+app-1  | 	retries = 0
+app-1  | 	retry.backoff.ms = 100
+app-1  | 	sasl.client.callback.handler.class = null
+app-1  | 	sasl.jaas.config = null
+app-1  | 	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+app-1  | 	sasl.kerberos.min.time.before.relogin = 60000
+app-1  | 	sasl.kerberos.service.name = null
+app-1  | 	sasl.kerberos.ticket.renew.jitter = 0.05
+app-1  | 	sasl.kerberos.ticket.renew.window.factor = 0.8
+app-1  | 	sasl.login.callback.handler.class = null
+app-1  | 	sasl.login.class = null
+app-1  | 	sasl.login.connect.timeout.ms = null
+app-1  | 	sasl.login.read.timeout.ms = null
+app-1  | 	sasl.login.refresh.buffer.seconds = 300
+app-1  | 	sasl.login.refresh.min.period.seconds = 60
+app-1  | 	sasl.login.refresh.window.factor = 0.8
+app-1  | 	sasl.login.refresh.window.jitter = 0.05
+app-1  | 	sasl.login.retry.backoff.max.ms = 10000
+app-1  | 	sasl.login.retry.backoff.ms = 100
+app-1  | 	sasl.mechanism = GSSAPI
+app-1  | 	sasl.oauthbearer.clock.skew.seconds = 30
+app-1  | 	sasl.oauthbearer.expected.audience = null
+app-1  | 	sasl.oauthbearer.expected.issuer = null
+app-1  | 	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+app-1  | 	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+app-1  | 	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+app-1  | 	sasl.oauthbearer.jwks.endpoint.url = null
+app-1  | 	sasl.oauthbearer.scope.claim.name = scope
+app-1  | 	sasl.oauthbearer.sub.claim.name = sub
+app-1  | 	sasl.oauthbearer.token.endpoint.url = null
+app-1  | 	security.protocol = PLAINTEXT
+app-1  | 	security.providers = null
+app-1  | 	send.buffer.bytes = 131072
+app-1  | 	socket.connection.setup.timeout.max.ms = 30000
+app-1  | 	socket.connection.setup.timeout.ms = 10000
+app-1  | 	ssl.cipher.suites = null
+app-1  | 	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+app-1  | 	ssl.endpoint.identification.algorithm = https
+app-1  | 	ssl.engine.factory.class = null
+app-1  | 	ssl.key.password = null
+app-1  | 	ssl.keymanager.algorithm = SunX509
+app-1  | 	ssl.keystore.certificate.chain = null
+app-1  | 	ssl.keystore.key = null
+app-1  | 	ssl.keystore.location = null
+app-1  | 	ssl.keystore.password = null
+app-1  | 	ssl.keystore.type = JKS
+app-1  | 	ssl.protocol = TLSv1.3
+app-1  | 	ssl.provider = null
+app-1  | 	ssl.secure.random.implementation = null
+app-1  | 	ssl.trustmanager.algorithm = PKIX
+app-1  | 	ssl.truststore.certificates = null
+app-1  | 	ssl.truststore.location = null
+app-1  | 	ssl.truststore.password = null
+app-1  | 	ssl.truststore.type = JKS
+app-1  | 	transaction.timeout.ms = 60000
+app-1  | 	transactional.id = null
+app-1  | 	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+app-1  |
+app-1  | {"@timestamp":"2026-05-15T07:33:12.090875517Z","@version":"1","message":"ProducerConfig values: \n\tacks = -1\n\tauto.include.jmx.reporter = true\n\tbatch.size = 16384\n\tbootstrap.servers = [kafka:9092]\n\tbuffer.memory = 33554432\n\tclient.dns.lookup = use_all_dns_ips\n\tclient.id = producer-1\n\tcompression.type = none\n\tconnections.max.idle.ms = 540000\n\tdelivery.timeout.ms = 120000\n\tenable.idempotence = false\n\tinterceptor.classes = []\n\tkey.serializer = class org.apache.kafka.common.serialization.StringSerializer\n\tlinger.ms = 0\n\tmax.block.ms = 60000\n\tmax.in.flight.requests.per.connection = 5\n\tmax.request.size = 1048576\n\tmetadata.max.age.ms = 300000\n\tmetadata.max.idle.ms = 300000\n\tmetric.reporters = []\n\tmetrics.num.samples = 2\n\tmetrics.recording.level = INFO\n\tmetrics.sample.window.ms = 30000\n\tpartitioner.adaptive.partitioning.enable = true\n\tpartitioner.availability.timeout.ms = 0\n\tpartitioner.class = null\n\tpartitioner.ignore.keys = false\n\treceive.buffer.bytes = 32768\n\treconnect.backoff.max.ms = 1000\n\treconnect.backoff.ms = 50\n\trequest.timeout.ms = 30000\n\tretries = 0\n\tretry.backoff.ms = 100\n\tsasl.client.callback.handler.class = null\n\tsasl.jaas.config = null\n\tsasl.kerberos.kinit.cmd = /usr/bin/kinit\n\tsasl.kerberos.min.time.before.relogin = 60000\n\tsasl.kerberos.service.name = null\n\tsasl.kerberos.ticket.renew.jitter = 0.05\n\tsasl.kerberos.ticket.renew.window.factor = 0.8\n\tsasl.login.callback.handler.class = null\n\tsasl.login.class = null\n\tsasl.login.connect.timeout.ms = null\n\tsasl.login.read.timeout.ms = null\n\tsasl.login.refresh.buffer.seconds = 300\n\tsasl.login.refresh.min.period.seconds = 60\n\tsasl.login.refresh.window.factor = 0.8\n\tsasl.login.refresh.window.jitter = 0.05\n\tsasl.login.retry.backoff.max.ms = 10000\n\tsasl.login.retry.backoff.ms = 100\n\tsasl.mechanism = GSSAPI\n\tsasl.oauthbearer.clock.skew.seconds = 30\n\tsasl.oauthbearer.expected.audience = null\n\tsasl.oauthbearer.expected.issuer = null\n\tsasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000\n\tsasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000\n\tsasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100\n\tsasl.oauthbearer.jwks.endpoint.url = null\n\tsasl.oauthbearer.scope.claim.name = scope\n\tsasl.oauthbearer.sub.claim.name = sub\n\tsasl.oauthbearer.token.endpoint.url = null\n\tsecurity.protocol = PLAINTEXT\n\tsecurity.providers = null\n\tsend.buffer.bytes = 131072\n\tsocket.connection.setup.timeout.max.ms = 30000\n\tsocket.connection.setup.timeout.ms = 10000\n\tssl.cipher.suites = null\n\tssl.enabled.protocols = [TLSv1.2, TLSv1.3]\n\tssl.endpoint.identification.algorithm = https\n\tssl.engine.factory.class = null\n\tssl.key.password = null\n\tssl.keymanager.algorithm = SunX509\n\tssl.keystore.certificate.chain = null\n\tssl.keystore.key = null\n\tssl.keystore.location = null\n\tssl.keystore.password = null\n\tssl.keystore.type = JKS\n\tssl.protocol = TLSv1.3\n\tssl.provider = null\n\tssl.secure.random.implementation = null\n\tssl.trustmanager.algorithm = PKIX\n\tssl.truststore.certificates = null\n\tssl.truststore.location = null\n\tssl.truststore.password = null\n\tssl.truststore.type = JKS\n\ttransaction.timeout.ms = 60000\n\ttransactional.id = null\n\tvalue.serializer = class org.apache.kafka.common.serialization.StringSerializer\n","logger_name":"org.apache.kafka.clients.producer.ProducerConfig","thread_name":"http-nio-8082-exec-2","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:33:12.126Z  INFO 1 --- [t4-concurrencia-kafka] [nio-8082-exec-2] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.6.1
+app-1  | {"@timestamp":"2026-05-15T07:33:12.1261107Z","@version":"1","message":"Kafka version: 3.6.1","logger_name":"org.apache.kafka.common.utils.AppInfoParser","thread_name":"http-nio-8082-exec-2","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:33:12.127Z  INFO 1 --- [t4-concurrencia-kafka] [nio-8082-exec-2] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: 5e3c2b738d253ff5
+app-1  | {"@timestamp":"2026-05-15T07:33:12.127461241Z","@version":"1","message":"Kafka commitId: 5e3c2b738d253ff5","logger_name":"org.apache.kafka.common.utils.AppInfoParser","thread_name":"http-nio-8082-exec-2","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:33:12.129Z  INFO 1 --- [t4-concurrencia-kafka] [nio-8082-exec-2] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1778830392126
+app-1  | {"@timestamp":"2026-05-15T07:33:12.129837689Z","@version":"1","message":"Kafka startTimeMs: 1778830392126","logger_name":"org.apache.kafka.common.utils.AppInfoParser","thread_name":"http-nio-8082-exec-2","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:33:12.136Z  INFO 1 --- [t4-concurrencia-kafka] [ad | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: tSSknSfeS62PHMiH9XM4yA
+app-1  | {"@timestamp":"2026-05-15T07:33:12.136785115Z","@version":"1","message":"[Producer clientId=producer-1] Cluster ID: tSSknSfeS62PHMiH9XM4yA","logger_name":"org.apache.kafka.clients.Metadata","thread_name":"kafka-producer-network-thread | producer-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:33:12.233Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] com.banco.t4.kafka.TransaccionConsumer   : TRANSACCION_RECIBIDA transaccionId=tx-ci-cd-001
+app-1  | {"@timestamp":"2026-05-15T07:33:12.233219194Z","@version":"1","message":"TRANSACCION_RECIBIDA transaccionId=tx-ci-cd-001","logger_name":"com.banco.t4.kafka.TransaccionConsumer","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:33:12.276Z  WARN 1 --- [t4-concurrencia-kafka] [ad | producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=producer-1] Error while fetching metadata with correlation id 5 : {transacciones-resultados=LEADER_NOT_AVAILABLE}
+app-1  | {"@timestamp":"2026-05-15T07:33:12.276187085Z","@version":"1","message":"[Producer clientId=producer-1] Error while fetching metadata with correlation id 5 : {transacciones-resultados=LEADER_NOT_AVAILABLE}","logger_name":"org.apache.kafka.clients.NetworkClient","thread_name":"kafka-producer-network-thread | producer-1","level":"WARN","level_value":30000}
+app-1  | 2026-05-15T07:33:12.379Z  INFO 1 --- [t4-concurrencia-kafka] [ad | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Resetting the last seen epoch of partition transacciones-entrada-0 to 0 since the associated topicId changed from null to MKR-_SIzSqSWgh2EWD54Bg
+app-1  | {"@timestamp":"2026-05-15T07:33:12.379460279Z","@version":"1","message":"[Producer clientId=producer-1] Resetting the last seen epoch of partition transacciones-entrada-0 to 0 since the associated topicId changed from null to MKR-_SIzSqSWgh2EWD54Bg","logger_name":"org.apache.kafka.clients.Metadata","thread_name":"kafka-producer-network-thread | producer-1","level":"INFO","level_value":20000}
+app-1  | 2026-05-15T07:33:12.381Z  INFO 1 --- [t4-concurrencia-kafka] [ntainer#0-0-C-1] com.banco.t4.kafka.TransaccionConsumer   : TRANSACCION_PROCESADA transaccionId=tx-ci-cd-001 success=true
+app-1  | {"@timestamp":"2026-05-15T07:33:12.381027443Z","@version":"1","message":"TRANSACCION_PROCESADA transaccionId=tx-ci-cd-001 success=true","logger_name":"com.banco.t4.kafka.TransaccionConsumer","thread_name":"org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1","level":"INFO","level_value":20000}
