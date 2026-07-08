@@ -1,0 +1,28 @@
+@startsalt
+title Maquetacion - RBrenes Bank Frontend
+{
+  {+ RBrenes Bank | Inicio | Servicios | Seguridad | [Banca en linea] }
+  {# Banco digital para operaciones claras, rapidas y seguras. }
+  { Entrar a banca en linea | Ver API }
+  --
+  {+ Login Banca en linea }
+  { Usuario | "user" }
+  { Contrasena | "admin" }
+  { [Ingresar] }
+  --
+  {+
+    { Principal | Clientes | Cuentas | Asignaciones | Saldos | Depositos | Retiros | Transferencias | Lotes | Movimientos | Reportes }
+    {
+      Usuario: user | Tipo de cambio: USD 1 = GTQ 7.80 | Fecha: sistema | [Cerrar sesion]
+    }
+    {
+      Mis productos bancarios | Producto seleccionado | Ultima operacion
+    }
+    {
+      Modulo Asignaciones |
+      Numero cuenta: ACC-001 | Cliente ID: 1 | [Asignar cuenta]
+      Cliente ID: 1 | [Consultar] | Lista de cuentas del cliente
+    }
+  }
+}
+@endsalt

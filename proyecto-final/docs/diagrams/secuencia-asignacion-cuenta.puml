@@ -1,0 +1,35 @@
+@startuml
+title Secuencia - Asignar Cuenta a Cliente
+skinparam shadowing false
+autonumber
+actor "Administrador" as Admin
+participant "Frontend\nModulo Asignaciones" as Front
+participant "CuentaController" as Controller
+participant "CuentaService" as Service
+database "CuentaRepository" as Repo
+database "BD" as DB
+
+Admin -> Front : Ingresa numero de cuenta y clienteId
+Front -> Controller : POST /api/cuentas/numero/{numero}/cliente/{clienteId}
+Controller -> Service : asignarCuentaACliente(numero, clienteId)
+Service -> Repo : findByNumeroCuenta(numero)
+Repo -> DB : SELECT cuenta por numero
+DB --> Repo : Cuenta
+Repo --> Service : Optional<Cuenta>
+Service -> Service : setClienteId(clienteId)
+Service -> Repo : save(cuenta)
+Repo -> DB : UPDATE cuentas SET cliente_id
+DB --> Repo : Cuenta actualizada
+Repo --> Service : Cuenta
+Service --> Controller : Cuenta
+Controller --> Front : 200 OK + Cuenta
+Front -> Controller : GET /api/cuentas/cliente/{clienteId}
+Controller -> Service : obtenerPorCliente(clienteId)
+Service -> Repo : findByClienteId(clienteId)
+Repo -> DB : SELECT cuentas por cliente
+DB --> Repo : Lista de cuentas
+Repo --> Service : List<Cuenta>
+Service --> Controller : List<Cuenta>
+Controller --> Front : 200 OK + cuentas
+Front --> Admin : Muestra cuentas asignadas
+@enduml

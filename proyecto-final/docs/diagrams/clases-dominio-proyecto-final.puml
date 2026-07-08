@@ -1,0 +1,58 @@
+@startuml
+title Diagrama de Clases - Dominio RBrenes Bank
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+class Cliente {
+  - Long id
+  - String nombre
+  - String documento
+  - String email
+  - String telefono
+  - String estado
+  - LocalDateTime fechaCreacion
+}
+
+class Cuenta {
+  - Long id
+  - String numeroCuenta
+  - String tipoCuenta
+  - String moneda
+  - BigDecimal saldo
+  - String estado
+  - Long clienteId
+  - LocalDateTime fechaApertura
+}
+
+class Movimiento {
+  - Long id
+  - Long cuentaId
+  - String tipoMovimiento
+  - BigDecimal monto
+  - BigDecimal saldoAnterior
+  - BigDecimal saldoNuevo
+  - String referencia
+  - LocalDateTime fechaMovimiento
+}
+
+class Transaccion {
+  - String origen
+  - String destino
+  - BigDecimal monto
+}
+
+class LoginRequest {
+  - String username
+  - String password
+}
+
+class LoginResponse {
+  - String token
+  - String username
+}
+
+Cliente "1" o-- "0..*" Cuenta : clienteId
+Cuenta "1" o-- "0..*" Movimiento : cuentaId
+Transaccion ..> Cuenta : debita/acredita
+LoginRequest ..> LoginResponse : autentica
+@enduml

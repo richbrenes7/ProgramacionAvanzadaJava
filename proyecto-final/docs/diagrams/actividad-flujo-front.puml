@@ -1,0 +1,32 @@
+@startuml
+title Actividad - Flujo Frontend RBrenes Bank
+skinparam shadowing false
+start
+:Mostrar pagina publica;
+if (Usuario elige Banca en linea?) then (si)
+  :Mostrar login;
+  :Enviar credenciales a /api/auth/login;
+  if (Token valido?) then (si)
+    :Guardar token, usuario, tipo de cambio y fecha visible;
+    :Mostrar dashboard principal;
+    :Listar productos bancarios del usuario;
+    if (Selecciona modulo?) then (Cuentas)
+      :Crear o asociar cuenta al usuario del navegador;
+    elseif (Asignaciones)
+      :Vincular cuenta existente a clienteId;
+      :Consultar cuentas por cliente;
+    elseif (Transacciones)
+      :Seleccionar producto origen;
+      :Depositar, retirar, transferir o procesar lote;
+    else (Reportes)
+      :Consultar movimientos o reporte de cartera;
+    endif
+    :Mantener usuario, tipo de cambio y fecha en barra superior;
+  else (no)
+    :Mostrar error de autenticacion;
+  endif
+else (no)
+  :Navegar servicios y seguridad;
+endif
+stop
+@enduml

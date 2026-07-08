@@ -1,0 +1,51 @@
+@startuml
+title Casos de Uso - RBrenes Bank Proyecto Final
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Visitante" as Visitante
+actor "Usuario banca" as Usuario
+actor "Administrador" as Admin
+
+rectangle "RBrenes Bank" {
+  usecase "Ver pagina informativa" as UC_Publica
+  usecase "Iniciar sesion" as UC_Login
+  usecase "Consultar dashboard" as UC_Dashboard
+  usecase "Gestionar clientes" as UC_Clientes
+  usecase "Crear cuenta" as UC_CrearCuenta
+  usecase "Asociar producto a sesion" as UC_AsociarProducto
+  usecase "Asignar cuenta a cliente" as UC_AsignarCuenta
+  usecase "Consultar cuentas por cliente" as UC_CuentasCliente
+  usecase "Consultar saldo" as UC_Saldo
+  usecase "Registrar deposito" as UC_Deposito
+  usecase "Registrar retiro" as UC_Retiro
+  usecase "Transferir fondos" as UC_Transferir
+  usecase "Procesar lote concurrente" as UC_Lote
+  usecase "Consultar movimientos" as UC_Movimientos
+  usecase "Generar reporte cartera" as UC_Reporte
+}
+
+Visitante --> UC_Publica
+Visitante --> UC_Login
+Usuario --> UC_Dashboard
+Usuario --> UC_AsociarProducto
+Usuario --> UC_Saldo
+Usuario --> UC_Deposito
+Usuario --> UC_Retiro
+Usuario --> UC_Transferir
+Usuario --> UC_Lote
+Usuario --> UC_Movimientos
+Usuario --> UC_Reporte
+Admin --> UC_Clientes
+Admin --> UC_CrearCuenta
+Admin --> UC_AsignarCuenta
+Admin --> UC_CuentasCliente
+
+UC_Login ..> UC_Dashboard : <<include>>
+UC_Deposito ..> UC_AsociarProducto : <<include>>
+UC_Retiro ..> UC_AsociarProducto : <<include>>
+UC_Transferir ..> UC_AsociarProducto : <<include>>
+UC_Lote ..> UC_AsociarProducto : <<include>>
+UC_AsignarCuenta ..> UC_CuentasCliente : <<extend>>
+@enduml

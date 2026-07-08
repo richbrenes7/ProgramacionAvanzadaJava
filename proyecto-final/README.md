@@ -255,7 +255,8 @@ En pruebas se activa `app.security.permit-all=true` para concentrar los escenari
 - `docs/endpoints.md`: resumen de endpoints.
 - `docs/swagger.md`: notas de Swagger/OpenAPI.
 - `docs/evidencias.md`: evidencia y comandos de validacion.
-- `docs/diagrams/`: diagramas PlantUML.
+- `docs/images/diagrams/`: imagenes PNG generadas de los UML y la maquetacion.
+- `docs/diagrams/`: diagramas PlantUML y maquetacion editable `.drawio`.
 
 ## Notas de entrega
 
