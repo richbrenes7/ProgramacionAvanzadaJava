@@ -1,0 +1,33 @@
+@startuml
+title Casos de Uso - Tarea 3 API REST Bancaria
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Cliente API" as ClienteApi
+actor "Administrador" as Admin
+
+rectangle "API REST Bancaria" {
+  usecase "Autenticarse con JWT" as UC_Login
+  usecase "Crear cliente" as UC_CrearCliente
+  usecase "Listar clientes" as UC_ListarClientes
+  usecase "Consultar cliente" as UC_ConsultarCliente
+  usecase "Actualizar cliente" as UC_ActualizarCliente
+  usecase "Consultar saldo" as UC_Saldo
+  usecase "Consultar movimientos\ncon filtros y paginacion" as UC_Movimientos
+  usecase "Ver Swagger/OpenAPI" as UC_Swagger
+}
+
+ClienteApi --> UC_Login
+ClienteApi --> UC_Saldo
+ClienteApi --> UC_Movimientos
+ClienteApi --> UC_Swagger
+Admin --> UC_CrearCliente
+Admin --> UC_ListarClientes
+Admin --> UC_ConsultarCliente
+Admin --> UC_ActualizarCliente
+Admin --> UC_Swagger
+UC_Saldo ..> UC_Login : <<include>>
+UC_Movimientos ..> UC_Login : <<include>>
+UC_CrearCliente ..> UC_Login : <<include>>
+@enduml

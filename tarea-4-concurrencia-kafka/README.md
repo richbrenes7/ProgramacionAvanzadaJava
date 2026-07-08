@@ -47,6 +47,32 @@ tarea-4-concurrencia-kafka/
         `-- java/com/banco/t4/
 ```
 
+
+## Documentacion visual
+
+Fuentes editables:
+
+```text
+docs/diagrams/casos-uso-tarea4.puml
+docs/diagrams/clases-tarea4.puml
+docs/diagrams/secuencia-kafka-tarea4.puml
+docs/diagrams/actividad-concurrencia-tarea4.puml
+docs/diagrams/deployment-docker-ci-tarea4.puml
+docs/diagrams/maquetacion-ci-tarea4.puml
+docs/diagrams/maquetacion-kafka-cicd-tarea4.drawio
+```
+
+Imagenes generadas:
+
+```text
+docs/images/diagrams/casos-uso-tarea4.png
+docs/images/diagrams/clases-tarea4.png
+docs/images/diagrams/secuencia-kafka-tarea4.png
+docs/images/diagrams/actividad-concurrencia-tarea4.png
+docs/images/diagrams/deployment-docker-ci-tarea4.png
+docs/images/diagrams/maquetacion-ci-tarea4.png
+```
+
 ## Ejecucion rapida
 
 ```bash
@@ -149,7 +175,7 @@ El pipeline ejecuta:
 5. Upload de artefactos.
 6. Build y push de imagen Docker a GitHub Container Registry en eventos `push`.
 
-En GitHub, la evidencia del pipeline se revisa en la pestaña **Actions** del repositorio, workflow `ci-tarea4.yml`. En cada ejecucion se generan artefactos de JaCoCo/JAR y, en eventos `push`, se publica la imagen en GitHub Container Registry.
+En GitHub, la evidencia del pipeline se revisa en la pestana **Actions** del repositorio, workflow `ci-tarea4.yml`. En cada ejecucion se generan artefactos de JaCoCo/JAR y, en eventos `push`, se publica la imagen en GitHub Container Registry.
 
 Para mostrarlo localmente antes del push, se puede ejecutar el mismo flujo base:
 

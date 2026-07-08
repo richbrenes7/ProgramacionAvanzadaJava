@@ -1,0 +1,13 @@
+@startsalt
+title Maquetacion - Evidencia Tarea 4
+{
+  {+ Tarea 4 - Concurrencia Kafka }
+  { REST | POST procesar-lote | POST publicar }
+  { Kafka | transacciones-entrada -> consumer -> transacciones-resultados }
+  { Executor | pool concurrente | CompletableFuture | resultados parciales }
+  --
+  { Docker | app + kafka + zookeeper | health UP }
+  { CI/CD | build -> test -> jacoco -> docker build -> deploy GHCR }
+  { Evidencias | logs/ | report-es/index.html | Actions }
+}
+@endsalt

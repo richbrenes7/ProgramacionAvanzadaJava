@@ -1,0 +1,22 @@
+@startuml
+title Deployment - Docker y CI/CD Tarea 4
+skinparam shadowing false
+node "GitHub Actions" {
+  component "mvn test" as Test
+  component "jacoco:report" as Jacoco
+  component "docker build" as Build
+  artifact "Imagen GHCR" as GHCR
+}
+node "Docker Compose" {
+  node "app" {
+    component "Spring Boot T4" as App
+  }
+  node "kafka" as Kafka
+  node "zookeeper" as Zookeeper
+}
+Test --> Jacoco
+Jacoco --> Build
+Build --> GHCR
+App --> Kafka
+Kafka --> Zookeeper
+@enduml

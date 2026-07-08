@@ -1,0 +1,20 @@
+<mxfile host="app.diagrams.net" modified="2026-07-08T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="tarea4-kafka-cicd" name="Tarea 4 Kafka CI-CD">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="rest" value="Cliente REST&lt;br&gt;&lt;br&gt;POST procesar-lote&lt;br&gt;POST publicar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#1d4ed8;arcSize=6;" vertex="1" parent="1"><mxGeometry x="60" y="120" width="230" height="150" as="geometry"/></mxCell>
+        <mxCell id="app" value="Spring Boot App&lt;br&gt;&lt;br&gt;TransaccionController&lt;br&gt;ProcesadorTransaccionesService&lt;br&gt;ThreadPoolTaskExecutor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#15803d;arcSize=6;" vertex="1" parent="1"><mxGeometry x="420" y="90" width="310" height="210" as="geometry"/></mxCell>
+        <mxCell id="kafka" value="Kafka&lt;br&gt;&lt;br&gt;transacciones-entrada&lt;br&gt;transacciones-resultados" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fefce8;strokeColor=#a16207;arcSize=6;" vertex="1" parent="1"><mxGeometry x="870" y="110" width="280" height="170" as="geometry"/></mxCell>
+        <mxCell id="docker" value="Docker Compose&lt;br&gt;&lt;br&gt;app&lt;br&gt;kafka&lt;br&gt;zookeeper" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#c2410c;arcSize=6;" vertex="1" parent="1"><mxGeometry x="260" y="520" width="260" height="170" as="geometry"/></mxCell>
+        <mxCell id="cicd" value="GitHub Actions CI/CD&lt;br&gt;&lt;br&gt;build -> test -> jacoco&lt;br&gt;docker build&lt;br&gt;push GHCR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#7e22ce;arcSize=6;" vertex="1" parent="1"><mxGeometry x="690" y="500" width="330" height="200" as="geometry"/></mxCell>
+        <mxCell id="logs" value="Evidencias&lt;br&gt;&lt;br&gt;logs/&lt;br&gt;report-es/index.html&lt;br&gt;Actions artifacts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#475569;arcSize=6;" vertex="1" parent="1"><mxGeometry x="1090" y="520" width="240" height="160" as="geometry"/></mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="rest" target="app" style="endArrow=block;html=1;strokeColor=#1d4ed8;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="app" target="kafka" style="endArrow=block;html=1;strokeColor=#a16207;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="kafka" target="app" style="endArrow=block;html=1;strokeColor=#a16207;dashed=1;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="docker" target="app" style="endArrow=block;html=1;strokeColor=#c2410c;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="cicd" target="docker" style="endArrow=block;html=1;strokeColor=#7e22ce;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="cicd" target="logs" style="endArrow=block;html=1;strokeColor=#475569;"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

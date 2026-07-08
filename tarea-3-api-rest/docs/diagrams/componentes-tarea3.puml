@@ -1,0 +1,21 @@
+@startuml
+title Componentes - Tarea 3 API REST Bancaria
+skinparam shadowing false
+
+database "Base de datos" as DB
+
+package "Spring Boot API" {
+  [AuthController] --> [AuthService]
+  [ClienteController] --> [ClienteService]
+  [CuentaController] --> [CuentaService]
+  [JwtFilter] --> [SecurityConfig]
+  [GlobalExceptionHandler] --> [ProblemDetail]
+  [ClienteService] --> [ClienteRepository]
+  [CuentaService] --> [CuentaRepository]
+  [CuentaService] --> [MovimientoRepository]
+}
+[Swagger UI] --> [OpenAPI]
+[ClienteRepository] --> DB
+[CuentaRepository] --> DB
+[MovimientoRepository] --> DB
+@enduml

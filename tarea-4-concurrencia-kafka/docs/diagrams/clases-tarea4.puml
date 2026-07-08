@@ -1,0 +1,34 @@
+@startuml
+title Diagrama de Clases - Tarea 4 Concurrencia y Kafka
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+class Transaccion {
+  - String id
+  - String cuenta
+  - BigDecimal monto
+}
+class ResultadoProcesamiento {
+  - String transaccionId
+  - boolean success
+  - String mensaje
+  - LocalDateTime fechaProcesamiento
+}
+class TransaccionController
+class ProcesadorTransaccionesService
+class TransaccionProducer
+class TransaccionConsumer
+class ExecutorConfig
+class ThreadPoolTaskExecutor
+class KafkaTemplate
+
+TransaccionController --> ProcesadorTransaccionesService : procesar lote
+TransaccionController --> TransaccionProducer : publicar
+TransaccionConsumer --> ProcesadorTransaccionesService : procesar mensaje
+TransaccionConsumer --> TransaccionProducer : publicar resultado
+ProcesadorTransaccionesService --> ThreadPoolTaskExecutor
+ExecutorConfig --> ThreadPoolTaskExecutor
+TransaccionProducer --> KafkaTemplate
+ProcesadorTransaccionesService ..> Transaccion
+ProcesadorTransaccionesService ..> ResultadoProcesamiento
+@enduml

@@ -1,0 +1,14 @@
+@startsalt
+title Maquetacion - Uso de API Tarea 3
+{
+  {+ Swagger UI / API REST Bancaria }
+  { Auth | POST /api/auth/login | [Try it out] }
+  { Clientes | GET /api/clientes | POST /api/clientes | PUT /api/clientes/{id} }
+  { Cuentas | GET /api/cuentas/{numero}/saldo }
+  { Movimientos | GET /api/cuentas/{numero}/movimientos?desde&hasta&page&size }
+  --
+  { Token JWT visible en respuesta de login }
+  { Authorize: Bearer token }
+  { Respuestas JSON con DTOs y errores ProblemDetail }
+}
+@endsalt

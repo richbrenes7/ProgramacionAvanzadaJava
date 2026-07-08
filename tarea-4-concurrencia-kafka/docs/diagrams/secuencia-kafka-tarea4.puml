@@ -1,0 +1,22 @@
+@startuml
+title Secuencia - Flujo Kafka Tarea 4
+skinparam shadowing false
+autonumber
+actor "Cliente REST" as User
+participant "TransaccionController" as Controller
+participant "TransaccionProducer" as Producer
+queue "Kafka\ntransacciones-entrada" as Entrada
+participant "TransaccionConsumer" as Consumer
+participant "ProcesadorTransaccionesService" as Service
+queue "Kafka\ntransacciones-resultados" as Salida
+
+User -> Controller : POST /api/transacciones/publicar
+Controller -> Producer : publicar(transaccion)
+Producer -> Entrada : send(topic entrada, transaccion)
+Controller --> User : 202/200 aceptada
+Entrada -> Consumer : mensaje recibido
+Consumer -> Service : procesar(transaccion)
+Service -> Service : validar monto y cuenta
+Service --> Consumer : ResultadoProcesamiento
+Consumer -> Salida : publicar resultado
+@enduml

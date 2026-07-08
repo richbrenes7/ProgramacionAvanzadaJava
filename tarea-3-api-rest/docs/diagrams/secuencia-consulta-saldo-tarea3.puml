@@ -1,0 +1,26 @@
+@startuml
+title Secuencia - Login y Consulta de Saldo Tarea 3
+skinparam shadowing false
+autonumber
+actor "Cliente API" as User
+participant "AuthController" as AuthController
+participant "AuthService" as AuthService
+participant "JwtUtil" as JwtUtil
+participant "CuentaController" as CuentaController
+participant "CuentaService" as CuentaService
+database "CuentaRepository" as Repo
+
+User -> AuthController : POST /api/auth/login
+AuthController -> AuthService : autenticar(AuthRequest)
+AuthService -> JwtUtil : generarToken(username)
+JwtUtil --> AuthService : token JWT
+AuthService --> AuthController : AuthResponse
+AuthController --> User : 200 OK + token
+
+User -> CuentaController : GET /api/cuentas/{numero}/saldo\nAuthorization: Bearer token
+CuentaController -> CuentaService : consultarSaldo(numero)
+CuentaService -> Repo : findByNumeroCuenta(numero)
+Repo --> CuentaService : Cuenta
+CuentaService --> CuentaController : SaldoDTO
+CuentaController --> User : 200 OK + saldo
+@enduml

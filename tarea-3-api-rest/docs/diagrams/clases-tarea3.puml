@@ -1,0 +1,53 @@
+@startuml
+title Diagrama de Clases - Tarea 3 API REST
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+class Cliente {
+  - Long id
+  - String nombre
+  - String documento
+  - String email
+  - String telefono
+}
+class Cuenta {
+  - Long id
+  - String numeroCuenta
+  - BigDecimal saldo
+  - String moneda
+  - Cliente cliente
+}
+class Movimiento {
+  - Long id
+  - String tipo
+  - BigDecimal monto
+  - LocalDateTime fecha
+  - Cuenta cuenta
+}
+class ClienteDTO
+class CreateClienteRequest
+class SaldoDTO
+class MovimientoDTO
+class AuthRequest
+class AuthResponse
+class ClienteController
+class CuentaController
+class AuthController
+class ClienteService
+class CuentaService
+class AuthService
+class JwtUtil
+
+Cliente "1" o-- "0..*" Cuenta
+Cuenta "1" o-- "0..*" Movimiento
+ClienteController --> ClienteService
+CuentaController --> CuentaService
+AuthController --> AuthService
+AuthService --> JwtUtil
+ClienteService ..> ClienteDTO
+ClienteService ..> CreateClienteRequest
+CuentaService ..> SaldoDTO
+CuentaService ..> MovimientoDTO
+AuthService ..> AuthRequest
+AuthService ..> AuthResponse
+@enduml

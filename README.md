@@ -60,6 +60,7 @@ API REST bancaria con Spring Boot. Incluye:
 - Consulta de movimientos con filtros y paginacion.
 - Manejo centralizado de errores.
 - Swagger/OpenAPI.
+- Diagramas UML, PNG y maquetacion Draw.io en `docs/`.
 - Pruebas automatizadas y reporte JaCoCo.
 
 Comandos principales:
@@ -91,6 +92,7 @@ Microservicio Spring Boot para procesamiento concurrente de transacciones bancar
 - `docker-compose.yml` con Zookeeper, Kafka y la app.
 - Pipeline GitHub Actions con build, tests, analisis JaCoCo, empaquetado y deploy de imagen a GHCR.
 - Pruebas unitarias e integracion con Embedded Kafka.
+- Diagramas UML, PNG y maquetacion Draw.io en `docs/`.
 
 Comandos principales:
 
@@ -125,6 +127,7 @@ Funciones principales:
 - Ejecucion con PostgreSQL y Kafka mediante Docker Compose.
 - Actuator health.
 - Swagger/OpenAPI.
+- Diagramas UML, PNG y maquetacion Draw.io en `docs/`.
 
 Comandos principales:
 

@@ -1,0 +1,32 @@
+@startuml
+title Casos de Uso - Tarea 4 Concurrencia y Kafka
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Cliente REST" as Cliente
+actor "Pipeline CI/CD" as Pipeline
+actor "Operador Docker" as Operador
+
+rectangle "Microservicio Tarea 4" {
+  usecase "Procesar lote concurrente" as UC_Lote
+  usecase "Publicar transaccion a Kafka" as UC_Publicar
+  usecase "Consumir transaccion Kafka" as UC_Consumir
+  usecase "Publicar resultado" as UC_Resultado
+  usecase "Generar logs JSON" as UC_Logs
+  usecase "Ejecutar pruebas y cobertura" as UC_Test
+  usecase "Construir imagen Docker" as UC_Docker
+  usecase "Publicar imagen GHCR" as UC_GHCR
+}
+
+Cliente --> UC_Lote
+Cliente --> UC_Publicar
+UC_Publicar ..> UC_Consumir : <<include>>
+UC_Consumir ..> UC_Resultado : <<include>>
+UC_Lote ..> UC_Logs : <<include>>
+UC_Consumir ..> UC_Logs : <<include>>
+Pipeline --> UC_Test
+Pipeline --> UC_Docker
+Pipeline --> UC_GHCR
+Operador --> UC_Docker
+@enduml

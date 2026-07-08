@@ -1,0 +1,26 @@
+@startuml
+title Actividad - Procesamiento Concurrente Tarea 4
+skinparam shadowing false
+start
+:Recibir lista de transacciones;
+:Crear CompletableFuture por transaccion;
+fork
+  :Validar transaccion 1;
+  :Procesar en executor;
+fork again
+  :Validar transaccion 2;
+  :Procesar en executor;
+fork again
+  :Validar transaccion N;
+  :Procesar en executor;
+end fork
+:Recolectar resultados individuales;
+if (Hubo errores?) then (si)
+  :Marcar transacciones fallidas sin detener lote;
+else (no)
+  :Marcar transacciones exitosas;
+endif
+:Emitir logs JSON estructurados;
+:Responder lista de resultados;
+stop
+@enduml
