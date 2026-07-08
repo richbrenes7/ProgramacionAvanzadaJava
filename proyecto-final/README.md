@@ -30,13 +30,13 @@ La prueba omitida corresponde a Testcontainers cuando Docker no esta disponible 
 
 - Seguridad: login con JWT en `/api/auth/login`.
 - Clientes: crear, listar, consultar y actualizar clientes.
-- Cuentas: crear cuentas, consultar por numero y consultar saldo.
+- Cuentas: crear cuentas, consultar por numero, consultar saldo y asignar cuentas a clientes.
 - Movimientos: registrar depositos/retiros y consultar historial por cuenta.
 - Transacciones: transferencia individual entre cuentas.
 - Lotes concurrentes: procesamiento de varias transferencias con `CompletableFuture` y executor.
 - Kafka: producer/consumer de transacciones, con prueba de integracion usando Embedded Kafka.
 - Reportes: reporte de cartera con total de cuentas, saldo total y moneda base.
-- Frontend: panel web modular para cada operacion bancaria.
+- Frontend: panel web modular para cada operacion bancaria, incluyendo asignacion de cuentas a clientes.
 - Observabilidad basica: actuator health.
 - Documentacion: Swagger/OpenAPI y carpeta `docs/`.
 
@@ -51,7 +51,7 @@ http://localhost:8080
 El flujo visual queda separado en tres niveles:
 
 - Pagina principal informativa del banco, publica y sin autenticacion.
-- PestaÃ±a **Banca en linea**, que abre el frente de inicio de sesion.
+- Pestana **Banca en linea**, que abre el frente de inicio de sesion.
 - Panel privado despues del login, con pagina principal y acceso a cada modulo bancario.
 
 Despues de iniciar sesion, los modulos se abren como frentes independientes dentro de la banca interna:
@@ -73,7 +73,7 @@ La barra superior de la banca interna conserva en todos los modulos:
 - Tipo de cambio visible.
 - Fecha del sistema.
 
-El portafolio visible en la banca en linea se maneja como **mis productos bancarios** del usuario autenticado. Las cuentas creadas o asociadas se guardan por usuario en el navegador y cada operacion selecciona primero el producto bancario origen. El backend academico mantiene cuentas por `clienteId`; para seguridad multiusuario estricta en produccion se debe persistir la relacion usuario-cliente-cuenta y filtrar los endpoints desde el JWT.
+El portafolio visible en la banca en linea se maneja como **mis productos bancarios** del usuario autenticado. Las cuentas creadas o asociadas se guardan por usuario en el navegador y cada operacion selecciona primero el producto bancario origen. Para administrar la relacion formal del backend, el modulo **Asignaciones** permite vincular una cuenta existente a un `clienteId` y consultar las cuentas asignadas a ese cliente. El backend academico mantiene cuentas por `clienteId`; para seguridad multiusuario estricta en produccion se debe persistir la relacion usuario-cliente-cuenta y filtrar los endpoints desde el JWT.
 
 Archivos principales:
 
@@ -161,6 +161,8 @@ Cuentas:
 ```text
 POST /api/cuentas
 GET  /api/cuentas/numero/{numero}
+GET  /api/cuentas/cliente/{clienteId}
+POST /api/cuentas/numero/{numero}/cliente/{clienteId}
 GET  /api/cuentas/{numero}/saldo
 GET  /api/cuentas/{id}/movimientos
 POST /api/cuentas/transferir?origen=ACC-001&destino=ACC-002&monto=100

@@ -119,7 +119,7 @@ Funciones principales:
 
 - Inicio y cierre de sesion con JWT.
 - API REST para clientes, cuentas, movimientos, transacciones y reportes.
-- Frontend por modulos: menu principal, clientes, cuentas, saldo, depositos, retiros, transferencias, lotes, movimientos y reportes.
+- Frontend por modulos: menu principal, clientes, cuentas, asignaciones, saldo, depositos, retiros, transferencias, lotes, movimientos y reportes.
 - Persistencia con Spring Data JPA.
 - Ejecucion local con H2.
 - Ejecucion con PostgreSQL y Kafka mediante Docker Compose.

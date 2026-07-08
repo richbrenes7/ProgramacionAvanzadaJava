@@ -41,6 +41,16 @@ public class CuentaService {
         return cuentaRepository.findByNumeroCuenta(numero).orElse(null);
     }
 
+    public List<Cuenta> obtenerPorCliente(Long clienteId) {
+        return cuentaRepository.findByClienteId(clienteId);
+    }
+
+    public Cuenta asignarCuentaACliente(String numeroCuenta, Long clienteId) {
+        Cuenta cuenta = cuentaRepository.findByNumeroCuenta(numeroCuenta).orElseThrow();
+        cuenta.setClienteId(clienteId);
+        return cuentaRepository.save(cuenta);
+    }
+
     public List<Movimiento> movimientos(Long cuentaId) {
         return movimientoRepository.findByCuentaIdOrderByFechaMovimientoDesc(cuentaId);
     }

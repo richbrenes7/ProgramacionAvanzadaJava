@@ -92,6 +92,7 @@
         <a href="#clientes" class="nav-item" data-module-link="clientes">Clientes</a>
         <a href="#cuentas" class="nav-item" data-module-link="cuentas">Cuentas</a>
         <a href="#saldo" class="nav-item" data-module-link="saldo">Saldos</a>
+        <a href="#asignaciones" class="nav-item" data-module-link="asignaciones">Asignaciones</a>
         <a href="#deposito" class="nav-item" data-module-link="deposito">Depositos</a>
         <a href="#retiro" class="nav-item" data-module-link="retiro">Retiros</a>
         <a href="#transferencia" class="nav-item" data-module-link="transferencia">Transferencias</a>
@@ -144,6 +145,7 @@
           <button type="button" class="module-card" data-module-link="clientes"><span>Clientes</span><strong>Gestion de personas</strong></button>
           <button type="button" class="module-card" data-module-link="cuentas"><span>Cuentas</span><strong>Apertura y consulta</strong></button>
           <button type="button" class="module-card" data-module-link="saldo"><span>Saldos</span><strong>Disponibilidad por cuenta</strong></button>
+          <button type="button" class="module-card" data-module-link="asignaciones"><span>Asignaciones</span><strong>Vincular cuentas a clientes</strong></button>
           <button type="button" class="module-card" data-module-link="deposito"><span>Depositos</span><strong>Credito a cuenta</strong></button>
           <button type="button" class="module-card" data-module-link="retiro"><span>Retiros</span><strong>Debito controlado</strong></button>
           <button type="button" class="module-card" data-module-link="transferencia"><span>Transferencias</span><strong>Operacion individual</strong></button>
@@ -199,6 +201,14 @@
         <article class="panel full-panel"><div class="panel-header"><h2>Historial de movimientos</h2><form id="movimientosForm" class="inline-form compact"><select id="movimientosProducto" name="cuentaId" required></select><button class="secondary-button" type="submit">Ver</button></form></div><div id="movimientosList" class="data-list empty-state">Selecciona una cuenta para revisar su historial.</div></article>
       </section>
 
+
+      <section id="asignaciones" class="module-view" data-module="asignaciones" data-title="Asignaciones">
+        <div class="module-heading"><h2>Asignaciones</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
+        <div class="module-grid two-col">
+          <article class="panel"><div class="panel-header"><h2>Vincular cuenta a cliente</h2></div><form id="asignarCuentaForm" class="stack-form"><label>Numero de cuenta<input name="numeroCuenta" placeholder="ACC-001" required></label><label>Cliente ID<input name="clienteId" type="number" min="1" required></label><button class="primary-button" type="submit">Asignar cuenta</button></form></article>
+          <article class="panel"><div class="panel-header"><h2>Cuentas por cliente</h2></div><form id="clienteCuentasForm" class="inline-form"><input name="clienteId" type="number" min="1" placeholder="Cliente ID" required><button class="secondary-button" type="submit">Consultar</button></form><div id="clienteCuentasList" class="data-list empty-state">Consulta un cliente para ver sus cuentas asignadas.</div></article>
+        </div>
+      </section>
       <section id="reportes" class="module-view" data-module="reportes" data-title="Reportes">
         <div class="module-heading"><h2>Reportes</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
         <article class="panel narrow-panel"><div class="panel-header"><h2>Reporte de cartera</h2><button id="reporteCarteraButton" class="secondary-button" type="button">Generar</button></div><div id="reporteResult" class="result-box">Sin reporte generado.</div></article>

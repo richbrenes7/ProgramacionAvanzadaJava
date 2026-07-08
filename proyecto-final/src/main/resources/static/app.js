@@ -15,6 +15,7 @@ const moduleTitles = {
   clientes: "Clientes",
   cuentas: "Cuentas",
   saldo: "Saldos",
+  asignaciones: "Asignaciones",
   deposito: "Depositos",
   retiro: "Retiros",
   transferencia: "Transferencias",
@@ -30,6 +31,8 @@ const els = {
   clienteForm: document.querySelector("#clienteForm"),
   cuentaForm: document.querySelector("#cuentaForm"),
   buscarCuentaForm: document.querySelector("#buscarCuentaForm"),
+  asignarCuentaForm: document.querySelector("#asignarCuentaForm"),
+  clienteCuentasForm: document.querySelector("#clienteCuentasForm"),
   saldoForm: document.querySelector("#saldoForm"),
   depositoForm: document.querySelector("#depositoForm"),
   retiroForm: document.querySelector("#retiroForm"),
@@ -45,6 +48,7 @@ const els = {
   workspaceTitle: document.querySelector("#workspaceTitle"),
   clientesList: document.querySelector("#clientesList"),
   cuentasList: document.querySelector("#cuentasList"),
+  clienteCuentasList: document.querySelector("#clienteCuentasList"),
   dashboardProductsList: document.querySelector("#dashboardProductsList"),
   productSelector: document.querySelector("#productSelector"),
   selectedProductSummary: document.querySelector("#selectedProductSummary"),
@@ -217,7 +221,7 @@ function productCard(cuenta) {
       <span>${cuenta.tipoCuenta || "Producto bancario"}</span>
       <strong>${cuenta.numeroCuenta}</strong>
       <em>${money(cuenta.saldo)}</em>
-      <small>${cuenta.estado || "SIN ESTADO"} Â· Cliente ${cuenta.clienteId || "-"}</small>
+      <small>${cuenta.estado || "SIN ESTADO"} - Cliente ${cuenta.clienteId || "-"}</small>
     </button>
   `;
 }
@@ -330,6 +334,26 @@ function renderCuentas() {
     ]
   )).join("");
   renderDashboard();
+}
+
+function renderClienteCuentas(cuentas) {
+  if (!els.clienteCuentasList) return;
+  if (!cuentas || !cuentas.length) {
+    els.clienteCuentasList.className = "data-list empty-state";
+    els.clienteCuentasList.textContent = "Este cliente no tiene cuentas asignadas.";
+    return;
+  }
+
+  els.clienteCuentasList.className = "data-list";
+  els.clienteCuentasList.innerHTML = cuentas.map(cuenta => record(
+    `<span>${cuenta.numeroCuenta}</span><span>${money(cuenta.saldo)}</span>`,
+    [
+      { text: `ID ${cuenta.id}` },
+      { text: cuenta.tipoCuenta || "CUENTA" },
+      { text: cuenta.moneda || "GTQ" },
+      { text: cuenta.estado || "SIN ESTADO", kind: cuenta.estado === "ACTIVO" ? "success" : "" }
+    ]
+  )).join("");
 }
 
 function renderMovimientos(movimientos) {
@@ -494,6 +518,39 @@ els.buscarCuentaForm.addEventListener("submit", async event => {
   }
 });
 
+els.asignarCuentaForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!requireSession()) return;
+  const form = event.currentTarget;
+  const { numeroCuenta, clienteId } = formData(form);
+  try {
+    const cuenta = await api(`/api/cuentas/numero/${encodeURIComponent(numeroCuenta)}/cliente/${clienteId}`, { method: "POST" });
+    state.cuentas.push(cuenta);
+    state.selectedProduct = cuenta.numeroCuenta;
+    saveCuentas();
+    renderCuentas();
+    const cuentasCliente = await api(`/api/cuentas/cliente/${clienteId}`);
+    renderClienteCuentas(cuentasCliente);
+    form.reset();
+    setLastOperation(`Cuenta ${cuenta.numeroCuenta} asignada a cliente ${clienteId}`);
+    showToast("Cuenta asignada al cliente.");
+  } catch (error) {
+    showToast(error.message || "No se pudo asignar la cuenta.", "error");
+  }
+});
+
+els.clienteCuentasForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!requireSession()) return;
+  const { clienteId } = formData(event.currentTarget);
+  try {
+    const cuentas = await api(`/api/cuentas/cliente/${clienteId}`);
+    renderClienteCuentas(cuentas);
+    showToast("Cuentas del cliente cargadas.");
+  } catch (error) {
+    showToast(error.message || "No se pudieron cargar las cuentas.", "error");
+  }
+});
 els.saldoForm.addEventListener("submit", async event => {
   event.preventDefault();
   if (!requireSession()) return;

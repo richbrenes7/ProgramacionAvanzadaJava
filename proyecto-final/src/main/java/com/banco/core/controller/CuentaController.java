@@ -45,6 +45,16 @@ public class CuentaController {
         return ResponseEntity.ok(c);
     }
 
+    @GetMapping("/cliente/{clienteId}")
+    public ResponseEntity<List<Cuenta>> porCliente(@PathVariable Long clienteId) {
+        return ResponseEntity.ok(cuentaService.obtenerPorCliente(clienteId));
+    }
+
+    @PostMapping("/numero/{numero}/cliente/{clienteId}")
+    public ResponseEntity<Cuenta> asignarCliente(@PathVariable String numero, @PathVariable Long clienteId) {
+        return ResponseEntity.ok(cuentaService.asignarCuentaACliente(numero, clienteId));
+    }
+
     @GetMapping("/{numero}/saldo")
     public ResponseEntity<BigDecimal> saldo(@PathVariable String numero) {
         Cuenta c = cuentaService.obtenerPorNumero(numero);
