@@ -321,6 +321,34 @@ input:focus, select:focus { border-color: var(--gold-strong); box-shadow: 0 0 0 
 .pill.success { color: var(--success); background: #ECFDF3; }
 .pill.danger { color: var(--danger); background: #FEF3F2; }
 .result-box { display: grid; gap: 8px; margin-top: 16px; min-height: 92px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--slate); }
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.admin-tab {
+  min-height: 40px;
+  padding: 9px 13px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--slate);
+  font-weight: 900;
+  cursor: pointer;
+}
+.admin-tab.active {
+  color: var(--ink);
+  background: var(--white);
+  border-color: var(--line);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+.admin-tab-panels { display: grid; gap: 18px; }
+.admin-tab-panel { display: none; }
+.admin-tab-panel.active { display: block; }
 
 .toast {
   position: fixed;

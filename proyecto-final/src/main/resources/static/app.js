@@ -726,6 +726,18 @@ els.movimientosForm.addEventListener("submit", async event => {
 });
 
 
+
+document.querySelectorAll("[data-admin-tab]").forEach(tab => {
+  tab.addEventListener("click", () => {
+    const target = tab.dataset.adminTab;
+    document.querySelectorAll("[data-admin-tab]").forEach(item => {
+      item.classList.toggle("active", item.dataset.adminTab === target);
+    });
+    document.querySelectorAll("[data-admin-panel]").forEach(panel => {
+      panel.classList.toggle("active", panel.dataset.adminPanel === target);
+    });
+  });
+});
 if (els.adminRefreshUsers) {
   els.adminRefreshUsers.addEventListener("click", async () => {
     try {
