@@ -49,9 +49,11 @@ const els = {
   adminUsuarioForm: document.querySelector("#adminUsuarioForm"),
   adminResetForm: document.querySelector("#adminResetForm"),
   adminProductoForm: document.querySelector("#adminProductoForm"),
+  adminClienteProductosForm: document.querySelector("#adminClienteProductosForm"),
   adminRefreshUsers: document.querySelector("#adminRefreshUsers"),
   adminUsersList: document.querySelector("#adminUsersList"),
   adminProductoResult: document.querySelector("#adminProductoResult"),
+  adminClienteProductosList: document.querySelector("#adminClienteProductosList"),
   logoutButton: document.querySelector("#logoutButton"),
   contextUser: document.querySelector("#contextUser"),
   contextRole: document.querySelector("#contextRole"),
@@ -130,7 +132,7 @@ function selectedProductStorageKey() {
 }
 
 function loadUserPortfolio() {
-  if (!state.user) {
+  if (!state.user || state.role === "ADMIN") {
     state.cuentas = [];
     state.selectedProduct = "";
     return;
@@ -148,6 +150,13 @@ function selectedCuenta() {
 }
 
 function saveCuentas() {
+  if (state.role === "ADMIN") {
+    state.cuentas = [];
+    state.selectedProduct = "";
+    if (state.user) localStorage.removeItem(accountStorageKey());
+    if (state.user) localStorage.removeItem(selectedProductStorageKey());
+    return;
+  }
   const unique = new Map();
   state.cuentas.forEach(cuenta => {
     if (cuenta && cuenta.numeroCuenta) unique.set(cuenta.numeroCuenta, cuenta);
@@ -247,7 +256,7 @@ function renderDashboardProducts() {
   if (!els.dashboardProductsList) return;
   if (!state.cuentas.length) {
     els.dashboardProductsList.className = "products-list empty-state";
-    els.dashboardProductsList.textContent = "Asocia o crea una cuenta para ver tus productos.";
+    els.dashboardProductsList.textContent = state.role === "ADMIN" ? "El administrador gestiona productos desde el modulo Administrador; no posee productos bancarios." : "Asocia o crea una cuenta para ver tus productos.";
     return;
   }
   els.dashboardProductsList.className = "products-list";
@@ -342,7 +351,7 @@ function renderClientes() {
 function renderCuentas() {
   if (!state.cuentas.length) {
     els.cuentasList.className = "data-list empty-state";
-    els.cuentasList.textContent = "Los productos asociados a este usuario aparecen aqui.";
+    els.cuentasList.textContent = state.role === "ADMIN" ? "El administrador no tiene productos propios; gestiona productos desde la pestaña Administrador." : "Los productos asociados a este usuario aparecen aqui.";
     renderDashboard();
     return;
   }
@@ -403,6 +412,31 @@ function renderMovimientos(movimientos) {
 }
 
 
+
+function renderAdminClienteProductos(cuentas) {
+  if (!els.adminClienteProductosList) return;
+  if (!cuentas || !cuentas.length) {
+    els.adminClienteProductosList.className = "data-list empty-state";
+    els.adminClienteProductosList.textContent = "Este cliente no tiene productos bancarios asociados.";
+    return;
+  }
+  els.adminClienteProductosList.className = "data-list";
+  els.adminClienteProductosList.innerHTML = cuentas.map(cuenta => record(
+    `<span>${cuenta.numeroCuenta}</span><span>${money(cuenta.saldo)}</span>`,
+    [
+      { text: `ID ${cuenta.id}` },
+      { text: cuenta.tipoCuenta || "PRODUCTO" },
+      { text: cuenta.moneda || "GTQ" },
+      { text: cuenta.estado || "SIN ESTADO", kind: cuenta.estado === "ACTIVO" ? "success" : "" }
+    ]
+  )).join("");
+}
+
+async function cargarAdminClienteProductos(clienteId) {
+  const cuentas = await api(`/api/cuentas/cliente/${clienteId}`);
+  renderAdminClienteProductos(cuentas);
+  return cuentas;
+}
 function renderAdminUsers(usuarios) {
   if (!els.adminUsersList) return;
   if (!usuarios || !usuarios.length) {
@@ -798,17 +832,28 @@ if (els.adminProductoForm) {
     };
     try {
       const cuenta = await api("/api/admin/productos", { method: "POST", body: JSON.stringify(payload) });
-      state.cuentas.push(cuenta);
-      state.selectedProduct = cuenta.numeroCuenta;
-      saveCuentas();
-      renderCuentas();
+      await cargarAdminClienteProductos(cuenta.clienteId);
       if (els.adminProductoResult) {
-        els.adminProductoResult.innerHTML = `<span>Producto generado</span><strong>${cuenta.numeroCuenta}</strong><span>Cliente</span><strong>${cuenta.clienteId}</strong>`;
+        els.adminProductoResult.innerHTML = `<span>Producto generado para cliente</span><strong>${cuenta.numeroCuenta}</strong><span>Cliente</span><strong>${cuenta.clienteId}</strong>`;
       }
       setLastOperation(`Producto ${cuenta.numeroCuenta}`);
       showToast("Producto creado y asociado.");
     } catch (error) {
       showToast(error.message, "error");
+    }
+  });
+}
+
+if (els.adminClienteProductosForm) {
+  els.adminClienteProductosForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!requireSession()) return;
+    const { clienteId } = formData(event.currentTarget);
+    try {
+      await cargarAdminClienteProductos(clienteId);
+      showToast("Productos del cliente cargados.");
+    } catch (error) {
+      showToast(error.message || "No se pudieron cargar los productos del cliente.", "error");
     }
   });
 }

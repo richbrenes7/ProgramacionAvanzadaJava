@@ -105,12 +105,17 @@ password: admin
 rol: ADMIN
 ```
 
-La pantalla de login incluye **Olvide mi contrasena** para reiniciar una contrasena en entorno de pruebas. En produccion esto debe reemplazarse por un flujo con token temporal, correo/SMS o proveedor de identidad.`r`n`r`nEl modulo **Administrador** permite:
+La pantalla de login incluye **Olvide mi contrasena** para reiniciar una contrasena en entorno de pruebas. En produccion esto debe reemplazarse por un flujo con token temporal, correo/SMS o proveedor de identidad.
+
+El modulo **Administrador** permite:
 
 - Crear usuarios operativos o administradores.
 - Listar usuarios sin exponer hashes de contrasena.
 - Resetear contrasenas por ID de usuario.
 - Generar productos bancarios y asociarlos a clientes.
+- Consultar varios productos bancarios asociados a un mismo cliente.
+
+El usuario con rol `ADMIN` no posee productos bancarios en su propio portafolio; su funcion es gestionar productos de datos/cuentas para clientes.
 
 Numeracion generada por backend:
 
@@ -121,6 +126,7 @@ MONETARIA       -> MON- + 10 a 12 digitos aleatorios
 ```
 
 La generacion verifica que el numero no exista antes de guardar el producto.
+
 ## Ejecucion local sin contenedores
 
 Para correr la app con H2 en memoria, sin PostgreSQL ni Kafka local:
@@ -182,7 +188,9 @@ mvn spring-boot:run
 Autenticacion:
 
 ```text
-POST /api/auth/login`r`nPOST /api/auth/forgot-password`r`n```
+POST /api/auth/login
+POST /api/auth/forgot-password
+```
 
 
 Administracion:
@@ -195,7 +203,7 @@ POST /api/admin/productos
 ```
 Clientes:
 
-`	ext
+```text
 POST /api/clientes
 GET  /api/clientes
 GET  /api/clientes/{id}
