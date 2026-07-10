@@ -3,6 +3,7 @@ const DEFAULT_EXCHANGE = "USD 1 = GTQ 7.80";
 const state = {
   token: localStorage.getItem("rb_token") || "",
   user: localStorage.getItem("rb_user") || "",
+  role: localStorage.getItem("rb_role") || "",
   exchangeRate: localStorage.getItem("rb_exchange_rate") || DEFAULT_EXCHANGE,
   clientes: [],
   cuentas: [],
@@ -21,7 +22,8 @@ const moduleTitles = {
   transferencia: "Transferencias",
   lote: "Lotes concurrentes",
   movimientos: "Movimientos",
-  reportes: "Reportes"
+  reportes: "Reportes",
+  admin: "Administrador"
 };
 
 const els = {
@@ -41,8 +43,15 @@ const els = {
   movimientosForm: document.querySelector("#movimientosForm"),
   refreshClientes: document.querySelector("#refreshClientes"),
   reporteCarteraButton: document.querySelector("#reporteCarteraButton"),
+  adminUsuarioForm: document.querySelector("#adminUsuarioForm"),
+  adminResetForm: document.querySelector("#adminResetForm"),
+  adminProductoForm: document.querySelector("#adminProductoForm"),
+  adminRefreshUsers: document.querySelector("#adminRefreshUsers"),
+  adminUsersList: document.querySelector("#adminUsersList"),
+  adminProductoResult: document.querySelector("#adminProductoResult"),
   logoutButton: document.querySelector("#logoutButton"),
   contextUser: document.querySelector("#contextUser"),
+  contextRole: document.querySelector("#contextRole"),
   contextExchange: document.querySelector("#contextExchange"),
   contextDate: document.querySelector("#contextDate"),
   workspaceTitle: document.querySelector("#workspaceTitle"),
@@ -89,6 +98,7 @@ function systemDate() {
 
 function updateContextBar() {
   els.contextUser.textContent = state.user || "Usuario";
+  if (els.contextRole) els.contextRole.textContent = state.role || "-";
   els.contextExchange.textContent = state.exchangeRate;
   els.contextDate.textContent = systemDate();
 }
@@ -186,7 +196,11 @@ function routePublic(viewName = "inicio") {
 
 function routeBank(moduleName = "dashboard") {
   if (!requireSession()) return;
-  const target = moduleTitles[moduleName] ? moduleName : "dashboard";
+  let target = moduleTitles[moduleName] ? moduleName : "dashboard";
+  if (target === "admin" && state.role !== "ADMIN") {
+    showToast("El modulo administrador requiere rol ADMIN.", "error");
+    target = "dashboard";
+  }
   els.publicShell.hidden = true;
   els.bankShell.hidden = false;
   updateContextBar();
@@ -275,6 +289,12 @@ function renderProductSelectors() {
     <span>Saldo disponible</span><strong>${money(cuenta.saldo)}</strong>
   `;
 }
+function renderAdminAccess() {
+  document.querySelectorAll("[data-admin-only]").forEach(element => {
+    element.hidden = state.role !== "ADMIN";
+  });
+}
+
 function renderDashboard() {
   els.clientesCount.textContent = state.clientes.length;
   els.cuentasCount.textContent = state.cuentas.length;
@@ -283,6 +303,7 @@ function renderDashboard() {
   renderProductSelectors();
   renderDashboardProducts();
   updateContextBar();
+  renderAdminAccess();
 }
 
 function record(title, meta, extra = "") {
@@ -378,6 +399,34 @@ function renderMovimientos(movimientos) {
   }).join("");
 }
 
+
+function renderAdminUsers(usuarios) {
+  if (!els.adminUsersList) return;
+  if (!usuarios || !usuarios.length) {
+    els.adminUsersList.className = "data-list empty-state";
+    els.adminUsersList.textContent = "No hay usuarios registrados.";
+    return;
+  }
+  els.adminUsersList.className = "data-list";
+  els.adminUsersList.innerHTML = usuarios.map(usuario => record(
+    `<span>${usuario.username}</span><span>ID ${usuario.id}</span>`,
+    [
+      { text: usuario.role || "USER", kind: usuario.role === "ADMIN" ? "success" : "" },
+      { text: usuario.nombre || "Sin nombre" },
+      { text: usuario.estado || "SIN ESTADO" }
+    ]
+  )).join("");
+}
+
+async function refreshAdminUsers() {
+  if (!requireSession()) return;
+  if (state.role !== "ADMIN") {
+    showToast("El modulo administrador requiere rol ADMIN.", "error");
+    return;
+  }
+  const usuarios = await api("/api/admin/usuarios");
+  renderAdminUsers(usuarios);
+}
 async function refreshClientes() {
   if (!requireSession()) return;
   state.clientes = await api("/api/clientes");
@@ -434,9 +483,11 @@ els.loginForm.addEventListener("submit", async event => {
     });
     state.token = response.token;
     state.user = response.username || data.username;
+    state.role = response.role || "USER";
     loadUserPortfolio();
     localStorage.setItem("rb_token", state.token);
     localStorage.setItem("rb_user", state.user);
+    localStorage.setItem("rb_role", state.role);
     localStorage.setItem("rb_exchange_rate", state.exchangeRate);
     showToast("Sesion iniciada.");
     await refreshClientes();
@@ -449,11 +500,13 @@ els.loginForm.addEventListener("submit", async event => {
 els.logoutButton.addEventListener("click", () => {
   state.token = "";
   state.user = "";
+  state.role = "";
   state.clientes = [];
   state.cuentas = [];
   state.selectedProduct = "";
   localStorage.removeItem("rb_token");
   localStorage.removeItem("rb_user");
+    localStorage.removeItem("rb_role");
   renderClientes();
   renderCuentas();
   routePublic("inicio");
@@ -635,6 +688,81 @@ els.movimientosForm.addEventListener("submit", async event => {
   }
 });
 
+
+if (els.adminRefreshUsers) {
+  els.adminRefreshUsers.addEventListener("click", async () => {
+    try {
+      await refreshAdminUsers();
+      showToast("Usuarios actualizados.");
+    } catch (error) {
+      showToast(error.message, "error");
+    }
+  });
+}
+
+if (els.adminUsuarioForm) {
+  els.adminUsuarioForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!requireSession()) return;
+    const data = formData(event.currentTarget);
+    try {
+      await api("/api/admin/usuarios", { method: "POST", body: JSON.stringify(data) });
+      event.currentTarget.reset();
+      await refreshAdminUsers();
+      showToast("Usuario creado.");
+    } catch (error) {
+      showToast(error.message, "error");
+    }
+  });
+}
+
+if (els.adminResetForm) {
+  els.adminResetForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!requireSession()) return;
+    const data = formData(event.currentTarget);
+    try {
+      await api(`/api/admin/usuarios/${data.id}/reset-password`, {
+        method: "POST",
+        body: JSON.stringify({ newPassword: data.newPassword })
+      });
+      event.currentTarget.reset();
+      await refreshAdminUsers();
+      showToast("Contrasena actualizada.");
+    } catch (error) {
+      showToast(error.message, "error");
+    }
+  });
+}
+
+if (els.adminProductoForm) {
+  els.adminProductoForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!requireSession()) return;
+    const data = formData(event.currentTarget);
+    const payload = {
+      clienteId: Number(data.clienteId),
+      tipoCuenta: data.tipoCuenta,
+      moneda: data.moneda,
+      saldoInicial: Number(data.saldoInicial),
+      estado: data.estado
+    };
+    try {
+      const cuenta = await api("/api/admin/productos", { method: "POST", body: JSON.stringify(payload) });
+      state.cuentas.push(cuenta);
+      state.selectedProduct = cuenta.numeroCuenta;
+      saveCuentas();
+      renderCuentas();
+      if (els.adminProductoResult) {
+        els.adminProductoResult.innerHTML = `<span>Producto generado</span><strong>${cuenta.numeroCuenta}</strong><span>Cliente</span><strong>${cuenta.clienteId}</strong>`;
+      }
+      setLastOperation(`Producto ${cuenta.numeroCuenta}`);
+      showToast("Producto creado y asociado.");
+    } catch (error) {
+      showToast(error.message, "error");
+    }
+  });
+}
 els.reporteCarteraButton.addEventListener("click", async () => {
   if (!requireSession()) return;
   try {
@@ -685,8 +813,10 @@ if (state.token) {
   refreshClientes().catch(() => {
     state.token = "";
     state.user = "";
+    state.role = "";
     localStorage.removeItem("rb_token");
     localStorage.removeItem("rb_user");
+    localStorage.removeItem("rb_role");
     routePublic("login");
   });
 }

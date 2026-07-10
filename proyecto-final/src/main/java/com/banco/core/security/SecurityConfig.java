@@ -7,11 +7,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -48,19 +45,13 @@ public class SecurityConfig {
                     "/swagger-ui/**",
                     "/swagger-ui.html"
                 ).permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-/*
- * Nelson Ricardo Brenes Lemus
- * Carnet: 092-20-3971
- * Curso: Programacion Avanzada en Java
- * Tarea: Proyecto Final
- * Guatemala, 2026 - NRBL.
- */
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -68,15 +59,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public InMemoryUserDetailsManager users(@Value("${app.default.admin:user}") String adminUser, @Value("${app.default.admin-pass:admin}") String adminPass) {
-        UserDetails admin = User.withUsername(adminUser).password(passwordEncoder().encode(adminPass)).roles("ADMIN").build();
-        return new InMemoryUserDetailsManager(admin);
-    }
-
-    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
-
-    
 }

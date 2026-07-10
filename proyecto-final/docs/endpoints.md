@@ -1,19 +1,52 @@
-# Endpoints sugeridos — JavaBank Online
+# Endpoints - RBrenes Bank
 
-- POST `/api/auth/login` — Autenticación (retorna JWT)
-- POST `/api/clientes` — Crear cliente
-- GET `/api/clientes/{id}` — Consultar cliente
-- POST `/api/cuentas` — Crear cuenta
-- GET `/api/cuentas/{numero}/saldo` — Consultar saldo
-- GET `/api/cuentas/{id}/movimientos` — Consultar movimientos por cuenta
-- POST `/api/transacciones` — Registrar una transacción sencilla
-- POST `/api/transacciones/lote` — Procesar lote concurrente de transacciones
-- POST `/api/cuentas/transferir` — Transferir entre cuentas (params: origen,destino,monto)
-- GET `/api/reportes/cartera` — Reporte general de cartera
-- GET `/actuator/health` — Estado técnico
-- GET `/swagger-ui.html` — Documentación API (Swagger/OpenAPI)
+Todos los endpoints internos, excepto autenticacion, Swagger, recursos estaticos y health check, requieren JWT.
 
-Notas:
+## Autenticacion
 
-- Usar DTOs para entrada/salida y validaciones con Bean Validation (`@Valid`).
-- Proteger endpoints con JWT; solo `/api/auth/**` y `/swagger-ui/**` deben ser públicos.
+- `POST /api/auth/login`: autentica usuario y retorna JWT, username y rol.
+
+## Administracion
+
+Requiere rol `ADMIN`.
+
+- `GET /api/admin/usuarios`: lista usuarios sin exponer hashes de contrasena.
+- `POST /api/admin/usuarios`: crea usuario con rol `USER` o `ADMIN`.
+- `POST /api/admin/usuarios/{id}/reset-password`: cambia la contrasena de un usuario.
+- `POST /api/admin/productos`: genera y asocia un producto bancario a un cliente.
+
+Numeracion de productos generada por backend:
+
+- Ahorros: `AHO-` + 7 digitos aleatorios.
+- Tarjeta de credito: `TC-` + 16 digitos aleatorios.
+- Cuenta monetaria: `MON-` + 10 a 12 digitos aleatorios.
+
+## Clientes
+
+- `POST /api/clientes`: crear cliente.
+- `GET /api/clientes`: listar clientes.
+- `GET /api/clientes/{id}`: consultar cliente.
+- `PUT /api/clientes/{id}`: actualizar cliente.
+
+## Cuentas y productos
+
+- `POST /api/cuentas`: crear cuenta; si `numeroCuenta` viene vacio o `AUTO`, el backend genera numeracion aleatoria.
+- `GET /api/cuentas/numero/{numero}`: consultar cuenta por numero.
+- `GET /api/cuentas/cliente/{clienteId}`: listar cuentas asignadas a un cliente.
+- `POST /api/cuentas/numero/{numero}/cliente/{clienteId}`: asociar cuenta existente a cliente.
+- `GET /api/cuentas/{numero}/saldo`: consultar saldo.
+- `GET /api/cuentas/{id}/movimientos`: consultar movimientos por cuenta.
+- `POST /api/cuentas/transferir`: transferir entre cuentas con params `origen`, `destino`, `monto`.
+
+## Movimientos y transacciones
+
+- `POST /api/movimientos`: registrar deposito o retiro.
+- `GET /api/movimientos/cuenta/{cuentaId}`: consultar movimientos por cuenta.
+- `POST /api/transacciones`: registrar transferencia individual.
+- `POST /api/transacciones/lote`: procesar lote concurrente de transacciones.
+
+## Reportes y operacion
+
+- `GET /api/reportes/cartera`: reporte general de cartera.
+- `GET /actuator/health`: estado tecnico.
+- `GET /swagger-ui/index.html`: documentacion API Swagger/OpenAPI.

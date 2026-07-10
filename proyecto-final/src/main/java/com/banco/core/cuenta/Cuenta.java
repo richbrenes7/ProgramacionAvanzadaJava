@@ -10,6 +10,7 @@ package com.banco.core.cuenta;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class Cuenta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String numeroCuenta;
     private String tipoCuenta;
     private String moneda;
@@ -38,11 +40,11 @@ public class Cuenta {
     public void setTipoCuenta(String tipoCuenta) { this.tipoCuenta = tipoCuenta; }
     public String getMoneda() { return moneda; }
     public void setMoneda(String moneda) { this.moneda = moneda; }
-    public java.math.BigDecimal getSaldo() { return saldo; }
-    public void setSaldo(java.math.BigDecimal saldo) { this.saldo = saldo; }
+    public BigDecimal getSaldo() { return saldo; }
+    public void setSaldo(BigDecimal saldo) { this.saldo = saldo; }
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
     public Long getClienteId() { return clienteId; }
     public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
-    public java.time.LocalDateTime getFechaApertura() { return fechaApertura; }
+    public LocalDateTime getFechaApertura() { return fechaApertura; }
 }

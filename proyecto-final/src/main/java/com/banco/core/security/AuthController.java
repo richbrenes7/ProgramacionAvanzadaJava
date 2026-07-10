@@ -22,16 +22,19 @@ public class AuthController {
 
     private final AuthenticationManager authManager;
     private final JwtUtil jwtUtil;
+    private final UsuarioService usuarioService;
 
-    public AuthController(AuthenticationManager authManager, JwtUtil jwtUtil) {
+    public AuthController(AuthenticationManager authManager, JwtUtil jwtUtil, UsuarioService usuarioService) {
         this.authManager = authManager;
         this.jwtUtil = jwtUtil;
+        this.usuarioService = usuarioService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
         String token = jwtUtil.generateToken(req.getUsername());
-        return ResponseEntity.ok(new LoginResponse(token, req.getUsername()));
+        Usuario usuario = usuarioService.buscarPorUsername(req.getUsername());
+        return ResponseEntity.ok(new LoginResponse(token, usuario.getUsername(), usuario.getRole()));
     }
 }

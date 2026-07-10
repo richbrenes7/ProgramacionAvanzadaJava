@@ -28,13 +28,14 @@ La prueba omitida corresponde a Testcontainers cuando Docker no esta disponible 
 
 ## Modulos funcionales
 
-- Seguridad: login con JWT en `/api/auth/login`.
+- Seguridad: login con JWT en `/api/auth/login`, usuarios persistidos en tabla `usuarios` y roles `ADMIN`/`USER`.
 - Clientes: crear, listar, consultar y actualizar clientes.
-- Cuentas: crear cuentas, consultar por numero, consultar saldo y asignar cuentas a clientes.
+- Productos bancarios: crear cuentas/productos, consultar por numero, consultar saldo y asignar productos a clientes con numeracion aleatoria generada por backend.
 - Movimientos: registrar depositos/retiros y consultar historial por cuenta.
 - Transacciones: transferencia individual entre cuentas.
 - Lotes concurrentes: procesamiento de varias transferencias con `CompletableFuture` y executor.
 - Kafka: producer/consumer de transacciones, con prueba de integracion usando Embedded Kafka.
+- Administracion: gestion de usuarios, reset de contrasena y generacion/asociacion de productos a clientes.
 - Reportes: reporte de cartera con total de cuentas, saldo total y moneda base.
 - Frontend: panel web modular para cada operacion bancaria, incluyendo asignacion de cuentas a clientes.
 - Observabilidad basica: actuator health.
@@ -57,6 +58,7 @@ El flujo visual queda separado en tres niveles:
 Despues de iniciar sesion, los modulos se abren como frentes independientes dentro de la banca interna:
 
 - Principal.
+- Administrador, visible para rol `ADMIN`.
 - Clientes.
 - Cuentas.
 - Saldos.
@@ -83,6 +85,42 @@ src/main/resources/static/app.js
 src/main/resources/static/styles.css
 ```
 
+
+## Perfil administrador y usuarios
+
+Para un entorno de pruebas, la recomendacion aplicada es usar una tabla `usuarios` dentro de la misma base de datos de la aplicacion. Esto permite probar login, roles, gestion de usuarios y reset de contrasena sin depender de un proveedor externo de identidad.
+
+Modelo aplicado:
+
+- `usuarios.username`: identificador de acceso unico.
+- `usuarios.password_hash`: contrasena almacenada con BCrypt.
+- `usuarios.role`: rol `ADMIN` o `USER`.
+- `usuarios.estado`: estado operativo del usuario.
+
+Al iniciar la aplicacion se crea automaticamente el usuario demo configurado por `app.default.admin` y `app.default.admin-pass`. Por defecto:
+
+```text
+usuario: user
+password: admin
+rol: ADMIN
+```
+
+El modulo **Administrador** permite:
+
+- Crear usuarios operativos o administradores.
+- Listar usuarios sin exponer hashes de contrasena.
+- Resetear contrasenas por ID de usuario.
+- Generar productos bancarios y asociarlos a clientes.
+
+Numeracion generada por backend:
+
+```text
+AHORROS         -> AHO- + 7 digitos aleatorios
+TARJETA_CREDITO -> TC-  + 16 digitos aleatorios
+MONETARIA       -> MON- + 10 a 12 digitos aleatorios
+```
+
+La generacion verifica que el numero no exista antes de guardar el producto.
 ## Ejecucion local sin contenedores
 
 Para correr la app con H2 en memoria, sin PostgreSQL ni Kafka local:
@@ -147,9 +185,18 @@ Autenticacion:
 POST /api/auth/login
 ```
 
-Clientes:
+
+Administracion:
 
 ```text
+GET  /api/admin/usuarios
+POST /api/admin/usuarios
+POST /api/admin/usuarios/{id}/reset-password
+POST /api/admin/productos
+```
+Clientes:
+
+`	ext
 POST /api/clientes
 GET  /api/clientes
 GET  /api/clientes/{id}

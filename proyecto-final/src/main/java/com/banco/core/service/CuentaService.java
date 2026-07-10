@@ -9,6 +9,8 @@ package com.banco.core.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -34,7 +36,24 @@ public class CuentaService {
     }
 
     public Cuenta crearCuenta(Cuenta c) {
+        if (c.getNumeroCuenta() == null || c.getNumeroCuenta().isBlank() || "AUTO".equalsIgnoreCase(c.getNumeroCuenta())) {
+            c.setNumeroCuenta(generarNumeroProducto(c.getTipoCuenta()));
+        }
+        if (c.getEstado() == null || c.getEstado().isBlank()) c.setEstado("ACTIVO");
+        if (c.getMoneda() == null || c.getMoneda().isBlank()) c.setMoneda("GTQ");
+        if (c.getSaldo() == null) c.setSaldo(BigDecimal.ZERO);
         return cuentaRepository.save(c);
+    }
+
+    public Cuenta crearProductoParaCliente(Long clienteId, String tipoCuenta, String moneda, BigDecimal saldoInicial, String estado) {
+        Cuenta cuenta = new Cuenta();
+        cuenta.setClienteId(clienteId);
+        cuenta.setTipoCuenta(tipoCuenta);
+        cuenta.setNumeroCuenta(generarNumeroProducto(tipoCuenta));
+        cuenta.setMoneda(moneda == null || moneda.isBlank() ? "GTQ" : moneda);
+        cuenta.setSaldo(saldoInicial == null ? BigDecimal.ZERO : saldoInicial);
+        cuenta.setEstado(estado == null || estado.isBlank() ? "ACTIVO" : estado);
+        return cuentaRepository.save(cuenta);
     }
 
     public Cuenta obtenerPorNumero(String numero) {
@@ -81,5 +100,36 @@ public class CuentaService {
             m2.setReferencia(m1.getReferencia());
             movimientoRepository.save(m2);
         });
+    }
+
+    private String generarNumeroProducto(String tipoCuenta) {
+        String tipo = tipoCuenta == null ? "AHORROS" : tipoCuenta.toUpperCase(Locale.ROOT);
+        String prefijo;
+        int longitud;
+
+        if (tipo.contains("CREDITO") || tipo.contains("TARJETA")) {
+            prefijo = "TC";
+            longitud = 16;
+        } else if (tipo.contains("MONETARIA")) {
+            prefijo = "MON";
+            longitud = ThreadLocalRandom.current().nextInt(10, 13);
+        } else {
+            prefijo = "AHO";
+            longitud = 7;
+        }
+
+        String numero;
+        do {
+            numero = prefijo + "-" + randomDigits(longitud);
+        } while (cuentaRepository.existsByNumeroCuenta(numero));
+        return numero;
+    }
+
+    private String randomDigits(int length) {
+        StringBuilder value = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            value.append(ThreadLocalRandom.current().nextInt(0, 10));
+        }
+        return value.toString();
     }
 }
