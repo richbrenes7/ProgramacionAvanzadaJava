@@ -226,8 +226,7 @@ button { cursor: pointer; }
   padding: 10px 14px;
   font-weight: 800;
   text-decoration: none;
-  overflow-wrap: anywhere;
-  text-align: right;
+  white-space: nowrap;
 }
 .secondary-button, .ghost-button { color: var(--ink); background: var(--white); border: 1px solid var(--line); }
 .primary-button { color: var(--white); background: var(--ink); border: 1px solid var(--ink); }
@@ -532,4 +531,116 @@ input:focus, select:focus { border-color: var(--gold-strong); box-shadow: 0 0 0 
 .record .product-insight {
   max-width: 420px;
   color: var(--blue);
+}
+
+
+.report-stack {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.report-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.report-metrics article {
+  display: grid;
+  gap: 6px;
+  min-height: 88px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.report-metrics span,
+.report-block h3,
+.api-catalog span {
+  margin: 0;
+  color: var(--steel);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.report-metrics strong {
+  font-size: 20px;
+  line-height: 1.15;
+}
+
+.report-block {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.report-list {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto;
+  gap: 8px 12px;
+  align-items: center;
+}
+
+.report-list span,
+.report-table span,
+.report-table small,
+.api-catalog p {
+  color: var(--slate);
+  font-size: 13px;
+}
+
+.report-list strong,
+.report-table strong {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.report-table,
+.api-catalog {
+  display: grid;
+  gap: 8px;
+}
+
+.report-table div,
+.api-catalog article {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.api-catalog strong {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.api-catalog p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+@media (max-width: 1120px) {
+  .report-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .report-metrics,
+  .report-list {
+    grid-template-columns: 1fr;
+  }
+
+  .report-list strong,
+  .report-table strong {
+    text-align: left;
+  }
 }

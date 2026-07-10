@@ -36,7 +36,7 @@ La prueba omitida corresponde a Testcontainers cuando Docker no esta disponible 
 - Lotes concurrentes: procesamiento de varias transferencias con `CompletableFuture` y executor.
 - Kafka: producer/consumer de transacciones, con prueba de integracion usando Embedded Kafka.
 - Administracion: gestion de usuarios, reset de contrasena y generacion/asociacion de productos a clientes.
-- Reportes: reporte de cartera con total de cuentas, saldo total y moneda base.
+- Reportes: cartera financiera, registros operativos, movimientos recientes y catalogo de APIs/metodos.
 - Frontend: panel web modular para cada operacion bancaria, incluyendo asignacion de cuentas a clientes.
 - Observabilidad basica: actuator health.
 - Documentacion: Swagger/OpenAPI y carpeta `docs/`.
@@ -126,6 +126,15 @@ MONETARIA       -> MON- + 10 a 12 digitos aleatorios
 ```
 
 La generacion verifica que el numero no exista antes de guardar el producto.
+
+## Reportes funcionales y observabilidad
+
+El proyecto separa dos necesidades:
+
+- Reporteria funcional: endpoints `/api/reportes/cartera` y `/api/reportes/operativo`, visibles desde el modulo **Reportes** del frontend. Sirven para entender registros, cartera, movimientos, montos y catalogo de APIs/metodos.
+- Observabilidad tecnica: `/actuator/health` y logs de Spring Boot. Sirven para verificar disponibilidad y diagnostico tecnico del servicio.
+
+El archivo `TODO.md` mantiene el cierre pendiente del sistema y marca las mejoras ya implementadas.
 
 ## Ejecucion local sin contenedores
 
@@ -235,6 +244,7 @@ Reportes:
 
 ```text
 GET /api/reportes/cartera
+GET /api/reportes/operativo
 GET /actuator/health
 ```
 

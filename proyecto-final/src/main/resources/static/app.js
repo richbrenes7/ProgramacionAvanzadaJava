@@ -47,6 +47,7 @@ const els = {
   movimientosForm: document.querySelector("#movimientosForm"),
   refreshClientes: document.querySelector("#refreshClientes"),
   reporteCarteraButton: document.querySelector("#reporteCarteraButton"),
+  reporteOperativoButton: document.querySelector("#reporteOperativoButton"),
   adminUsuarioForm: document.querySelector("#adminUsuarioForm"),
   adminResetForm: document.querySelector("#adminResetForm"),
   adminProductoForm: document.querySelector("#adminProductoForm"),
@@ -77,6 +78,7 @@ const els = {
   loteResult: document.querySelector("#loteResult"),
   movimientosList: document.querySelector("#movimientosList"),
   reporteResult: document.querySelector("#reporteResult"),
+  reporteOperativoResult: document.querySelector("#reporteOperativoResult"),
   clientesCount: document.querySelector("#clientesCount"),
   cuentasCount: document.querySelector("#cuentasCount"),
   balanceTotal: document.querySelector("#balanceTotal"),
@@ -921,6 +923,53 @@ if (els.adminProductoForm) {
   });
 }
 
+
+function reportMapList(title, data, formatter = value => value) {
+  const entries = Object.entries(data || {});
+  if (!entries.length) return "";
+  return `
+    <section class="report-block">
+      <h3>${title}</h3>
+      <div class="report-list">
+        ${entries.map(([key, value]) => `<span>${key}</span><strong>${formatter(value)}</strong>`).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderReporteOperativo(reporte) {
+  if (!els.reporteOperativoResult) return;
+  const resumen = reporte.resumen || {};
+  const movimientos = reporte.ultimosMovimientos || [];
+  const apis = reporte.apis || [];
+  els.reporteOperativoResult.className = "report-stack";
+  els.reporteOperativoResult.innerHTML = `
+    <section class="report-metrics">
+      <article><span>Clientes</span><strong>${resumen.clientes || 0}</strong></article>
+      <article><span>Productos</span><strong>${resumen.productos || 0}</strong></article>
+      <article><span>Movimientos</span><strong>${resumen.movimientos || 0}</strong></article>
+      <article><span>Saldo total</span><strong>${money(resumen.saldoTotal)}</strong></article>
+    </section>
+    ${reportMapList("Productos por tipo", reporte.cartera?.cuentasPorTipo)}
+    ${reportMapList("Productos por estado", reporte.cartera?.cuentasPorEstado)}
+    ${reportMapList("Saldo por tipo", reporte.cartera?.saldoPorTipo, money)}
+    ${reportMapList("Movimientos por tipo", reporte.movimientosPorTipo)}
+    ${reportMapList("Monto por tipo de movimiento", reporte.montoPorTipoMovimiento, money)}
+    <section class="report-block">
+      <h3>Ultimos movimientos</h3>
+      <div class="report-table">
+        ${movimientos.length ? movimientos.map(mov => `<div><span>${mov.tipo || "MOVIMIENTO"}</span><span>Cuenta ${mov.cuentaId || "-"}</span><strong>${money(mov.monto)}</strong><small>${mov.fecha || "Sin fecha"}</small></div>`).join("") : `<p>No hay movimientos registrados.</p>`}
+      </div>
+    </section>
+    <section class="report-block">
+      <h3>Catalogo de APIs</h3>
+      <div class="api-catalog">
+        ${apis.map(api => `<article><span>${api.modulo}</span><strong>${api.metodo} ${api.ruta}</strong><p>${api.descripcion}</p></article>`).join("")}
+      </div>
+    </section>
+  `;
+}
+
 if (els.adminClienteProductosForm) {
   els.adminClienteProductosForm.addEventListener("submit", async event => {
     event.preventDefault();
@@ -940,14 +989,30 @@ els.reporteCarteraButton.addEventListener("click", async () => {
     const reporte = await api("/api/reportes/cartera");
     els.reporteResult.innerHTML = `
       <span>Total de cuentas</span><strong>${reporte.totalCuentas}</strong>
+      <span>Clientes con productos</span><strong>${reporte.clientesConProductos}</strong>
       <span>Saldo total</span><strong>${money(reporte.saldoTotal)}</strong>
       <span>Moneda base</span><strong>${reporte.monedaBase}</strong>
+      ${reportMapList("Cuentas por tipo", reporte.cuentasPorTipo)}
+      ${reportMapList("Saldo por tipo", reporte.saldoPorTipo, money)}
     `;
     showToast("Reporte generado.");
   } catch (error) {
     showToast(error.message, "error");
   }
 });
+
+if (els.reporteOperativoButton) {
+  els.reporteOperativoButton.addEventListener("click", async () => {
+    if (!requireSession()) return;
+    try {
+      const reporte = await api("/api/reportes/operativo");
+      renderReporteOperativo(reporte);
+      showToast("Reporte operativo generado.");
+    } catch (error) {
+      showToast(error.message, "error");
+    }
+  });
+}
 
 if (els.productSelector) {
   els.productSelector.addEventListener("change", event => {

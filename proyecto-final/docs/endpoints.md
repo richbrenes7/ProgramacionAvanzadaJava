@@ -4,7 +4,8 @@ Todos los endpoints internos, excepto autenticacion, Swagger, recursos estaticos
 
 ## Autenticacion
 
-- `POST /api/auth/login`: autentica usuario y retorna JWT, username y rol.`r`n- `POST /api/auth/forgot-password`: reset demo de contrasena desde el login para entorno de pruebas.
+- `POST /api/auth/login`: autentica usuario y retorna JWT, username y rol.
+- `POST /api/auth/forgot-password`: reset demo de contrasena desde el login para entorno de pruebas.
 
 ## Administracion
 
@@ -47,6 +48,7 @@ Numeracion de productos generada por backend:
 
 ## Reportes y operacion
 
-- `GET /api/reportes/cartera`: reporte general de cartera.
-- `GET /actuator/health`: estado tecnico.
+- `GET /api/reportes/cartera`: reporte funcional de cartera con total de cuentas, saldo total, cuentas por tipo/estado, saldo por tipo y clientes con productos.
+- `GET /api/reportes/operativo`: reporte funcional de registros, movimientos recientes, montos por tipo de movimiento y catalogo de APIs/metodos.
+- `GET /actuator/health`: estado tecnico de disponibilidad del servicio; pertenece a observabilidad, no a reporteria funcional.
 - `GET /swagger-ui/index.html`: documentacion API Swagger/OpenAPI.
