@@ -66,6 +66,12 @@ public class UsuarioService implements UserDetailsService {
         return usuarioRepository.save(usuario);
     }
 
+    public Usuario resetPasswordByUsername(String username, String newPassword) {
+        Usuario usuario = buscarPorUsername(username);
+        usuario.setPasswordHash(passwordEncoder.encode(newPassword));
+        return usuarioRepository.save(usuario);
+    }
+
     public Usuario asegurarAdminDemo(String username, String password) {
         return usuarioRepository.findByUsername(username)
                 .orElseGet(() -> crear(username, password, "ADMIN", "Administrador demo"));

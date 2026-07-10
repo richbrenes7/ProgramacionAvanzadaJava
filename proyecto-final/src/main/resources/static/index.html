@@ -75,6 +75,15 @@
             <label>Usuario<input id="username" name="username" value="user" autocomplete="username" required></label>
             <label>Contrasena<input id="password" name="password" type="password" value="admin" autocomplete="current-password" required></label>
             <button class="primary-button" type="submit">Ingresar</button>
+            <button id="forgotPasswordToggle" class="link-button" type="button">Olvide mi contrasena</button>
+          </form>
+          <form id="forgotPasswordForm" class="stack-form recovery-form" hidden>
+            <label>Usuario<input name="username" autocomplete="username" required></label>
+            <label>Nueva contrasena<input name="newPassword" type="password" minlength="4" autocomplete="new-password" required></label>
+            <div class="form-actions">
+              <button class="secondary-button" type="button" id="forgotPasswordCancel">Cancelar</button>
+              <button class="gold-button" type="submit">Actualizar contrasena</button>
+            </div>
           </form>
         </article>
       </section>

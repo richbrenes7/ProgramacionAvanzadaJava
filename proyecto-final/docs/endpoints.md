@@ -4,7 +4,7 @@ Todos los endpoints internos, excepto autenticacion, Swagger, recursos estaticos
 
 ## Autenticacion
 
-- `POST /api/auth/login`: autentica usuario y retorna JWT, username y rol.
+- `POST /api/auth/login`: autentica usuario y retorna JWT, username y rol.`r`n- `POST /api/auth/forgot-password`: reset demo de contrasena desde el login para entorno de pruebas.
 
 ## Administracion
 

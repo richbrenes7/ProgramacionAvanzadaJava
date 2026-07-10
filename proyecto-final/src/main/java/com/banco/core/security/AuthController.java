@@ -37,4 +37,10 @@ public class AuthController {
         Usuario usuario = usuarioService.buscarPorUsername(req.getUsername());
         return ResponseEntity.ok(new LoginResponse(token, usuario.getUsername(), usuario.getRole()));
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest req) {
+        usuarioService.resetPasswordByUsername(req.getUsername(), req.getNewPassword());
+        return ResponseEntity.ok().build();
+    }
 }

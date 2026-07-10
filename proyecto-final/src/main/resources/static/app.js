@@ -30,6 +30,9 @@ const els = {
   publicShell: document.querySelector("[data-public-shell]"),
   bankShell: document.querySelector("[data-bank-shell]"),
   loginForm: document.querySelector("#loginForm"),
+  forgotPasswordForm: document.querySelector("#forgotPasswordForm"),
+  forgotPasswordToggle: document.querySelector("#forgotPasswordToggle"),
+  forgotPasswordCancel: document.querySelector("#forgotPasswordCancel"),
   clienteForm: document.querySelector("#clienteForm"),
   cuentaForm: document.querySelector("#cuentaForm"),
   buscarCuentaForm: document.querySelector("#buscarCuentaForm"),
@@ -473,6 +476,40 @@ async function registrarMovimiento(form, tipoMovimiento) {
   form.reset();
 }
 
+
+if (els.forgotPasswordToggle) {
+  els.forgotPasswordToggle.addEventListener("click", () => {
+    els.forgotPasswordForm.hidden = false;
+    els.forgotPasswordToggle.hidden = true;
+  });
+}
+
+if (els.forgotPasswordCancel) {
+  els.forgotPasswordCancel.addEventListener("click", () => {
+    els.forgotPasswordForm.reset();
+    els.forgotPasswordForm.hidden = true;
+    els.forgotPasswordToggle.hidden = false;
+  });
+}
+
+if (els.forgotPasswordForm) {
+  els.forgotPasswordForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const data = formData(event.currentTarget);
+    try {
+      await api("/api/auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify(data)
+      });
+      event.currentTarget.reset();
+      els.forgotPasswordForm.hidden = true;
+      els.forgotPasswordToggle.hidden = false;
+      showToast("Contrasena actualizada. Inicia sesion con la nueva contrasena.");
+    } catch (error) {
+      showToast("No se pudo actualizar la contrasena.", "error");
+    }
+  });
+}
 els.loginForm.addEventListener("submit", async event => {
   event.preventDefault();
   const data = formData(event.currentTarget);

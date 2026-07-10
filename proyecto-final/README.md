@@ -28,7 +28,7 @@ La prueba omitida corresponde a Testcontainers cuando Docker no esta disponible 
 
 ## Modulos funcionales
 
-- Seguridad: login con JWT en `/api/auth/login`, usuarios persistidos en tabla `usuarios` y roles `ADMIN`/`USER`.
+- Seguridad: login con JWT en `/api/auth/login`, usuarios persistidos en tabla `usuarios`, roles `ADMIN`/`USER` y recuperacion demo de contrasena desde login.
 - Clientes: crear, listar, consultar y actualizar clientes.
 - Productos bancarios: crear cuentas/productos, consultar por numero, consultar saldo y asignar productos a clientes con numeracion aleatoria generada por backend.
 - Movimientos: registrar depositos/retiros y consultar historial por cuenta.
@@ -105,7 +105,7 @@ password: admin
 rol: ADMIN
 ```
 
-El modulo **Administrador** permite:
+La pantalla de login incluye **Olvide mi contrasena** para reiniciar una contrasena en entorno de pruebas. En produccion esto debe reemplazarse por un flujo con token temporal, correo/SMS o proveedor de identidad.`r`n`r`nEl modulo **Administrador** permite:
 
 - Crear usuarios operativos o administradores.
 - Listar usuarios sin exponer hashes de contrasena.
@@ -182,8 +182,7 @@ mvn spring-boot:run
 Autenticacion:
 
 ```text
-POST /api/auth/login
-```
+POST /api/auth/login`r`nPOST /api/auth/forgot-password`r`n```
 
 
 Administracion:

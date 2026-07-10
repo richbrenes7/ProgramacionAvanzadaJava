@@ -236,6 +236,23 @@ button { cursor: pointer; }
 .secondary-button:hover, .ghost-button:hover { border-color: var(--steel); }
 
 .stack-form { display: grid; gap: 12px; margin-top: 16px; }
+.link-button {
+  min-height: auto;
+  padding: 4px 0;
+  color: var(--steel);
+  background: transparent;
+  border: 0;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+}
+.link-button:hover { color: var(--ink); }
+.form-actions { display: flex; gap: 10px; align-items: center; }
+.recovery-form {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
 .inline-form { display: flex; gap: 10px; align-items: end; }
 label { display: grid; gap: 6px; color: var(--slate); font-size: 13px; font-weight: 800; }
 input, select {
