@@ -7,6 +7,7 @@ const state = {
   exchangeRate: localStorage.getItem("rb_exchange_rate") || DEFAULT_EXCHANGE,
   clientes: [],
   cuentas: [],
+  movimientosPorCuenta: {},
   selectedProduct: "",
   lastOperation: localStorage.getItem("rb_last_operation") || "Sin actividad"
 };
@@ -134,6 +135,7 @@ function selectedProductStorageKey() {
 function loadUserPortfolio() {
   if (!state.user || state.role === "ADMIN") {
     state.cuentas = [];
+    state.movimientosPorCuenta = {};
     state.selectedProduct = "";
     return;
   }
@@ -240,6 +242,55 @@ function routeFromHash() {
   routePublic(route || "inicio");
 }
 
+
+function movementSign(tipoMovimiento) {
+  const tipo = String(tipoMovimiento || "").toUpperCase();
+  return ["RETIRO", "TRANSFERENCIA_ENVIADA"].includes(tipo) ? -1 : 1;
+}
+
+function chartPoints(values) {
+  const width = 164;
+  const height = 52;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const spread = max - min || 1;
+  return values.map((value, index) => {
+    const x = values.length === 1 ? width : (index / (values.length - 1)) * width;
+    const y = height - ((value - min) / spread) * height;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+}
+
+function productInsight(cuenta) {
+  const movimientos = state.movimientosPorCuenta[cuenta.id] || [];
+  const saldoActual = Number(cuenta.saldo || 0);
+  const creditos = movimientos
+    .filter(mov => movementSign(mov.tipoMovimiento) > 0)
+    .reduce((sum, mov) => sum + Number(mov.monto || 0), 0);
+  const debitos = movimientos
+    .filter(mov => movementSign(mov.tipoMovimiento) < 0)
+    .reduce((sum, mov) => sum + Number(mov.monto || 0), 0);
+  const maxBar = Math.max(creditos, debitos, 1);
+  const serie = movimientos.length
+    ? movimientos.map(mov => Number(mov.saldoNuevo ?? saldoActual)).slice(-8)
+    : [saldoActual, saldoActual];
+  const puntos = chartPoints(serie);
+  const balanceLabel = movimientos.length ? `${movimientos.length} movimientos` : "Sin movimientos";
+
+  return `
+    <div class="product-insight" aria-label="Grafica de balance y movimientos">
+      <svg class="balance-chart" viewBox="0 0 164 56" role="img" aria-label="Tendencia de saldo">
+        <polyline points="${puntos}" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+      </svg>
+      <div class="movement-bars" aria-label="Creditos y debitos">
+        <span style="--bar:${Math.round((creditos / maxBar) * 100)}%"><i></i><strong>Creditos ${money(creditos)}</strong></span>
+        <span class="debit" style="--bar:${Math.round((debitos / maxBar) * 100)}%"><i></i><strong>Debitos ${money(debitos)}</strong></span>
+      </div>
+      <small>${balanceLabel} - Saldo ${money(saldoActual)}</small>
+    </div>
+  `;
+}
+
 function productCard(cuenta) {
   const selected = cuenta.numeroCuenta === state.selectedProduct;
   return `
@@ -248,6 +299,7 @@ function productCard(cuenta) {
       <strong>${cuenta.numeroCuenta}</strong>
       <em>${money(cuenta.saldo)}</em>
       <small>${cuenta.estado || "SIN ESTADO"} - Cliente ${cuenta.clienteId || "-"}</small>
+      ${productInsight(cuenta)}
     </button>
   `;
 }
@@ -268,6 +320,7 @@ function renderDashboardProducts() {
       renderDashboard();
     });
   });
+  refreshProductInsights();
 }
 function renderProductSelectors() {
   const options = state.cuentas.map(cuenta => {
@@ -364,7 +417,8 @@ function renderCuentas() {
       { text: cuenta.tipoCuenta || "CUENTA" },
       { text: cuenta.estado || "SIN ESTADO", kind: cuenta.estado === "ACTIVO" ? "success" : "" },
       { text: `Cliente ${cuenta.clienteId || "-"}` }
-    ]
+    ],
+    productInsight(cuenta)
   )).join("");
   renderDashboard();
 }
@@ -472,6 +526,7 @@ async function refreshClientes() {
 
 async function buscarCuenta(numeroCuenta) {
   const cuenta = await api(`/api/cuentas/numero/${encodeURIComponent(numeroCuenta)}`);
+  if (cuenta.id) delete state.movimientosPorCuenta[cuenta.id];
   state.cuentas.push(cuenta);
   state.selectedProduct = cuenta.numeroCuenta;
   saveCuentas();
@@ -494,6 +549,26 @@ async function refreshKnownAccounts() {
   renderCuentas();
 }
 
+
+async function refreshProductInsights() {
+  if (!state.token || state.role === "ADMIN" || !state.cuentas.length) return;
+  const pendientes = state.cuentas
+    .filter(cuenta => cuenta.id && !state.movimientosPorCuenta[cuenta.id])
+    .map(async cuenta => {
+      try {
+        state.movimientosPorCuenta[cuenta.id] = await api(`/api/movimientos/cuenta/${cuenta.id}`);
+      } catch (error) {
+        state.movimientosPorCuenta[cuenta.id] = [];
+      }
+    });
+  if (!pendientes.length) return;
+  await Promise.all(pendientes);
+  renderDashboardProducts();
+  if (els.cuentasList && els.cuentasList.classList.contains("data-list")) {
+    renderCuentas();
+  }
+}
+
 async function registrarMovimiento(form, tipoMovimiento) {
   if (!requireSession()) return;
   const data = formData(form);
@@ -504,6 +579,7 @@ async function registrarMovimiento(form, tipoMovimiento) {
   };
 
   const movimiento = await api("/api/movimientos", { method: "POST", body: JSON.stringify(payload) });
+  delete state.movimientosPorCuenta[payload.cuentaId];
   await refreshKnownAccounts();
   setLastOperation(`${movimiento.tipoMovimiento} ${money(movimiento.monto)}`);
   showToast(`${tipoMovimiento.toLowerCase()} registrado.`);
@@ -574,6 +650,7 @@ els.logoutButton.addEventListener("click", () => {
   state.role = "";
   state.clientes = [];
   state.cuentas = [];
+  state.movimientosPorCuenta = {};
   state.selectedProduct = "";
   localStorage.removeItem("rb_token");
   localStorage.removeItem("rb_user");
