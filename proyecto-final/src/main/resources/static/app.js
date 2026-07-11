@@ -689,13 +689,14 @@ if (els.forgotPasswordCancel) {
 if (els.forgotPasswordForm) {
   els.forgotPasswordForm.addEventListener("submit", async event => {
     event.preventDefault();
-    const data = formData(event.currentTarget);
+    const form = event.currentTarget;
+    const data = formData(form);
     try {
       await api("/api/auth/forgot-password", {
         method: "POST",
         body: JSON.stringify(data)
       });
-      event.currentTarget.reset();
+      form.reset();
       els.forgotPasswordForm.hidden = true;
       els.forgotPasswordToggle.hidden = false;
       showToast("Contrasena actualizada. Inicia sesion con la nueva contrasena.");
@@ -952,7 +953,8 @@ if (els.adminUsuarioForm) {
   els.adminUsuarioForm.addEventListener("submit", async event => {
     event.preventDefault();
     if (!requireSession()) return;
-    const data = formData(event.currentTarget);
+    const form = event.currentTarget;
+    const data = formData(form);
     try {
       data.username = (data.username || "").trim();
       data.password = data.password || "";
@@ -966,7 +968,7 @@ if (els.adminUsuarioForm) {
         delete data.clienteId;
       }
       await api("/api/admin/usuarios", { method: "POST", body: JSON.stringify(data) });
-      event.currentTarget.reset();
+      form.reset();
       await refreshAdminUsers();
       showToast("Usuario creado.");
     } catch (error) {
@@ -979,13 +981,14 @@ if (els.adminResetForm) {
   els.adminResetForm.addEventListener("submit", async event => {
     event.preventDefault();
     if (!requireSession()) return;
-    const data = formData(event.currentTarget);
+    const form = event.currentTarget;
+    const data = formData(form);
     try {
       await api(`/api/admin/usuarios/${data.id}/reset-password`, {
         method: "POST",
         body: JSON.stringify({ newPassword: data.newPassword })
       });
-      event.currentTarget.reset();
+      form.reset();
       await refreshAdminUsers();
       showToast("Contrasena actualizada.");
     } catch (error) {
