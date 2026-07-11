@@ -89,6 +89,39 @@ const els = {
   toast: document.querySelector("#toast")
 };
 
+function jwtPayload(token) {
+  try {
+    const payload = token.split(".")[1];
+    const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(atob(normalized.padEnd(normalized.length + (4 - normalized.length % 4) % 4, "=")));
+  } catch (error) {
+    return null;
+  }
+}
+
+function isTokenExpired(token) {
+  const payload = jwtPayload(token);
+  return !payload || (payload.exp && Date.now() >= payload.exp * 1000);
+}
+
+function clearSession(redirect = false) {
+  state.token = "";
+  state.user = "";
+  state.role = "";
+  state.clienteId = "";
+  state.clientes = [];
+  state.cuentas = [];
+  state.movimientosPorCuenta = {};
+  state.selectedProduct = "";
+  localStorage.removeItem("rb_token");
+  localStorage.removeItem("rb_user");
+  localStorage.removeItem("rb_role");
+  localStorage.removeItem("rb_cliente_id");
+  renderClientes();
+  renderCuentas();
+  renderDashboard();
+  if (redirect) routePublic("login");
+}
 function formData(form) {
   return Object.fromEntries(new FormData(form).entries());
 }
@@ -177,12 +210,22 @@ function saveCuentas() {
 
 async function api(path, options = {}) {
   const headers = { ...(options.headers || {}) };
-  if (state.token) headers.Authorization = `Bearer ${state.token}`;
+  if (state.token) {
+    if (isTokenExpired(state.token)) {
+      clearSession(true);
+      throw new Error("Sesion expirada. Inicia sesion nuevamente.");
+    }
+    headers.Authorization = `Bearer ${state.token}`;
+  }
   if (options.body && !headers["Content-Type"]) headers["Content-Type"] = "application/json";
 
   const response = await fetch(path, { ...options, headers });
   if (!response.ok) {
     const text = await response.text();
+    if (response.status === 401 || (response.status === 403 && !path.startsWith("/api/admin/"))) {
+      clearSession(true);
+      throw new Error("Sesion no valida o expirada. Inicia sesion nuevamente.");
+    }
     throw new Error(text || `Solicitud fallida (${response.status})`);
   }
 
@@ -1116,23 +1159,12 @@ document.querySelectorAll("[data-module-link]").forEach(link => {
 window.addEventListener("hashchange", routeFromHash);
 window.setInterval(updateContextBar, 60000);
 
+if (state.token && isTokenExpired(state.token)) {
+  clearSession(false);
+}
+
 loadUserPortfolio();
 renderClientes();
 renderCuentas();
 renderDashboard();
 routeFromHash();
-
-if (state.token) {
-  refreshUserPortfolio().catch(() => {});
-  refreshClientes().catch(() => {
-    state.token = "";
-    state.user = "";
-    state.role = "";
-    localStorage.removeItem("rb_token");
-    localStorage.removeItem("rb_user");
-  localStorage.removeItem("rb_cliente_id");
-    localStorage.removeItem("rb_role");
-    localStorage.removeItem("rb_cliente_id");
-    routePublic("login");
-  });
-}
