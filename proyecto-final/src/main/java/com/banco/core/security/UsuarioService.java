@@ -48,6 +48,10 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public Usuario crear(String username, String password, String role, String nombre) {
+        return crear(username, password, role, nombre, null);
+    }
+
+    public Usuario crear(String username, String password, String role, String nombre, Long clienteId) {
         if (usuarioRepository.existsByUsername(username)) {
             throw new IllegalArgumentException("El usuario ya existe");
         }
@@ -56,7 +60,14 @@ public class UsuarioService implements UserDetailsService {
         usuario.setPasswordHash(passwordEncoder.encode(password));
         usuario.setRole(normalizeRole(role));
         usuario.setNombre(nombre);
+        usuario.setClienteId(clienteId);
         usuario.setEstado("ACTIVO");
+        return usuarioRepository.save(usuario);
+    }
+
+    public Usuario asignarCliente(Long id, Long clienteId) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        usuario.setClienteId(clienteId);
         return usuarioRepository.save(usuario);
     }
 

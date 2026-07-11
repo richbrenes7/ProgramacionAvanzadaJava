@@ -4,6 +4,7 @@ const state = {
   token: localStorage.getItem("rb_token") || "",
   user: localStorage.getItem("rb_user") || "",
   role: localStorage.getItem("rb_role") || "",
+  clienteId: localStorage.getItem("rb_cliente_id") || "",
   exchangeRate: localStorage.getItem("rb_exchange_rate") || DEFAULT_EXCHANGE,
   clientes: [],
   cuentas: [],
@@ -48,6 +49,7 @@ const els = {
   refreshClientes: document.querySelector("#refreshClientes"),
   reporteCarteraButton: document.querySelector("#reporteCarteraButton"),
   reporteOperativoButton: document.querySelector("#reporteOperativoButton"),
+  reporteTecnicoButton: document.querySelector("#reporteTecnicoButton"),
   adminUsuarioForm: document.querySelector("#adminUsuarioForm"),
   adminResetForm: document.querySelector("#adminResetForm"),
   adminProductoForm: document.querySelector("#adminProductoForm"),
@@ -79,6 +81,7 @@ const els = {
   movimientosList: document.querySelector("#movimientosList"),
   reporteResult: document.querySelector("#reporteResult"),
   reporteOperativoResult: document.querySelector("#reporteOperativoResult"),
+  reporteTecnicoResult: document.querySelector("#reporteTecnicoResult"),
   clientesCount: document.querySelector("#clientesCount"),
   cuentasCount: document.querySelector("#cuentasCount"),
   balanceTotal: document.querySelector("#balanceTotal"),
@@ -156,6 +159,7 @@ function selectedCuenta() {
 function saveCuentas() {
   if (state.role === "ADMIN") {
     state.cuentas = [];
+    state.movimientosPorCuenta = {};
     state.selectedProduct = "";
     if (state.user) localStorage.removeItem(accountStorageKey());
     if (state.user) localStorage.removeItem(selectedProductStorageKey());
@@ -506,6 +510,7 @@ function renderAdminUsers(usuarios) {
     [
       { text: usuario.role || "USER", kind: usuario.role === "ADMIN" ? "success" : "" },
       { text: usuario.nombre || "Sin nombre" },
+      { text: usuario.clienteId ? `Cliente ${usuario.clienteId}` : "Sin cliente" },
       { text: usuario.estado || "SIN ESTADO" }
     ]
   )).join("");
@@ -520,6 +525,28 @@ async function refreshAdminUsers() {
   const usuarios = await api("/api/admin/usuarios");
   renderAdminUsers(usuarios);
 }
+
+async function refreshUserPortfolio() {
+  if (!state.token || state.role === "ADMIN") {
+    state.cuentas = [];
+    state.movimientosPorCuenta = {};
+    state.selectedProduct = "";
+    renderCuentas();
+    return [];
+  }
+  const cuentas = await api("/api/cuentas/mis-productos");
+  state.cuentas = cuentas || [];
+  if (state.selectedProduct && !state.cuentas.some(cuenta => cuenta.numeroCuenta === state.selectedProduct)) {
+    state.selectedProduct = "";
+  }
+  if (!state.selectedProduct && state.cuentas[0]) {
+    state.selectedProduct = state.cuentas[0].numeroCuenta;
+  }
+  saveCuentas();
+  renderCuentas();
+  return state.cuentas;
+}
+
 async function refreshClientes() {
   if (!requireSession()) return;
   state.clientes = await api("/api/clientes");
@@ -633,12 +660,16 @@ els.loginForm.addEventListener("submit", async event => {
     state.token = response.token;
     state.user = response.username || data.username;
     state.role = response.role || "USER";
+    state.clienteId = response.clienteId || "";
     loadUserPortfolio();
     localStorage.setItem("rb_token", state.token);
     localStorage.setItem("rb_user", state.user);
     localStorage.setItem("rb_role", state.role);
+    if (state.clienteId) localStorage.setItem("rb_cliente_id", state.clienteId);
+    else localStorage.removeItem("rb_cliente_id");
     localStorage.setItem("rb_exchange_rate", state.exchangeRate);
     showToast("Sesion iniciada.");
+    await refreshUserPortfolio();
     await refreshClientes();
     routeBank("dashboard");
   } catch (error) {
@@ -653,9 +684,11 @@ els.logoutButton.addEventListener("click", () => {
   state.clientes = [];
   state.cuentas = [];
   state.movimientosPorCuenta = {};
+  state.clienteId = "";
   state.selectedProduct = "";
   localStorage.removeItem("rb_token");
   localStorage.removeItem("rb_user");
+  localStorage.removeItem("rb_cliente_id");
     localStorage.removeItem("rb_role");
   renderClientes();
   renderCuentas();
@@ -698,10 +731,8 @@ els.cuentaForm.addEventListener("submit", async event => {
   data.saldo = Number(data.saldo);
   try {
     const cuenta = await api("/api/cuentas", { method: "POST", body: JSON.stringify(data) });
-    state.cuentas.push(cuenta);
     state.selectedProduct = cuenta.numeroCuenta;
-    saveCuentas();
-    renderCuentas();
+    await refreshUserPortfolio();
     setLastOperation(`Cuenta ${cuenta.numeroCuenta}`);
     showToast("Cuenta creada.");
   } catch (error) {
@@ -868,6 +899,7 @@ if (els.adminUsuarioForm) {
     if (!requireSession()) return;
     const data = formData(event.currentTarget);
     try {
+      if (data.clienteId) data.clienteId = Number(data.clienteId);
       await api("/api/admin/usuarios", { method: "POST", body: JSON.stringify(data) });
       event.currentTarget.reset();
       await refreshAdminUsers();
@@ -970,6 +1002,36 @@ function renderReporteOperativo(reporte) {
   `;
 }
 
+
+function renderReporteTecnico(reporte) {
+  if (!els.reporteTecnicoResult) return;
+  const health = reporte.health || {};
+  const endpoints = reporte.endpointsTecnicos || [];
+  const logs = reporte.logs || [];
+  els.reporteTecnicoResult.className = "report-stack";
+  els.reporteTecnicoResult.innerHTML = `
+    <section class="report-block">
+      <h3>Health check</h3>
+      <div class="report-list">
+        <span>Endpoint</span><strong>${health.endpoint || "/actuator/health"}</strong>
+        <span>Uso</span><strong>${health.uso || "Validacion tecnica"}</strong>
+      </div>
+    </section>
+    <section class="report-block">
+      <h3>Logs del sistema</h3>
+      <div class="api-catalog">
+        ${logs.map(item => `<article><p>${item}</p></article>`).join("")}
+      </div>
+    </section>
+    <section class="report-block">
+      <h3>Endpoints tecnicos</h3>
+      <div class="api-catalog">
+        ${endpoints.map(api => `<article><span>${api.modulo}</span><strong>${api.metodo} ${api.ruta}</strong><p>${api.descripcion}</p></article>`).join("")}
+      </div>
+    </section>
+  `;
+}
+
 if (els.adminClienteProductosForm) {
   els.adminClienteProductosForm.addEventListener("submit", async event => {
     event.preventDefault();
@@ -1014,6 +1076,20 @@ if (els.reporteOperativoButton) {
   });
 }
 
+
+if (els.reporteTecnicoButton) {
+  els.reporteTecnicoButton.addEventListener("click", async () => {
+    if (!requireSession()) return;
+    try {
+      const reporte = await api("/api/reportes/tecnico");
+      renderReporteTecnico(reporte);
+      showToast("Reporte tecnico generado.");
+    } catch (error) {
+      showToast(error.message, "error");
+    }
+  });
+}
+
 if (els.productSelector) {
   els.productSelector.addEventListener("change", event => {
     state.selectedProduct = event.currentTarget.value;
@@ -1046,13 +1122,16 @@ renderDashboard();
 routeFromHash();
 
 if (state.token) {
+  refreshUserPortfolio().catch(() => {});
   refreshClientes().catch(() => {
     state.token = "";
     state.user = "";
     state.role = "";
     localStorage.removeItem("rb_token");
     localStorage.removeItem("rb_user");
+  localStorage.removeItem("rb_cliente_id");
     localStorage.removeItem("rb_role");
+    localStorage.removeItem("rb_cliente_id");
     routePublic("login");
   });
 }

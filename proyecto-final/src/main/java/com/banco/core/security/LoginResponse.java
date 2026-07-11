@@ -11,6 +11,7 @@ public class LoginResponse {
     private String token;
     private String username;
     private String role;
+    private Long clienteId;
 
     public LoginResponse() {}
 
@@ -24,9 +25,14 @@ public class LoginResponse {
     }
 
     public LoginResponse(String token, String username, String role) {
+        this(token, username, role, null);
+    }
+
+    public LoginResponse(String token, String username, String role, Long clienteId) {
         this.token = token;
         this.username = username;
         this.role = role;
+        this.clienteId = clienteId;
     }
 
     public String getToken() { return token; }
@@ -35,4 +41,6 @@ public class LoginResponse {
     public void setUsername(String username) { this.username = username; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    public Long getClienteId() { return clienteId; }
+    public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
 }

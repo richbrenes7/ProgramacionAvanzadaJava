@@ -8,13 +8,13 @@ Este listado concentra lo pendiente para dejar el proyecto final como sistema ac
 - [x] Ampliar `/api/reportes/cartera` con distribucion de productos, estados y saldos por tipo.
 - [x] Agregar `/api/reportes/operativo` para registros, movimientos recientes y catalogo de APIs/metodos.
 - [x] Mostrar reportes operativos en el frontend con metricas, listas y catalogo de endpoints.
-- [ ] Persistir formalmente la relacion usuario-cliente-producto para que el usuario solo vea sus productos desde backend.
-- [ ] Agregar pruebas de integracion para admin, reportes y permisos por rol.
+- [x] Persistir formalmente la relacion usuario-cliente-producto para que el usuario solo vea sus productos desde backend.
+- [x] Agregar pruebas de integracion para admin, reportes y permisos por rol.
 
 ## Prioridad media
 
-- [ ] Crear endpoint tecnico/documental que explique health, logs y estado de APIs sin mezclarlo con reportes financieros.
-- [ ] Documentar los reportes en README y docs/endpoints.md.
+- [x] Crear endpoint tecnico/documental que explique health, logs y estado de APIs sin mezclarlo con reportes financieros.
+- [x] Documentar los reportes en README y docs/endpoints.md.
 - [ ] Agregar exportacion simple de reportes a JSON o CSV desde frontend.
 - [ ] Mejorar mensajes de error para escenarios sin datos o sin permisos.
 

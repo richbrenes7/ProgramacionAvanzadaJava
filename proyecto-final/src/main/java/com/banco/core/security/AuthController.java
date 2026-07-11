@@ -35,7 +35,7 @@ public class AuthController {
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
         String token = jwtUtil.generateToken(req.getUsername());
         Usuario usuario = usuarioService.buscarPorUsername(req.getUsername());
-        return ResponseEntity.ok(new LoginResponse(token, usuario.getUsername(), usuario.getRole()));
+        return ResponseEntity.ok(new LoginResponse(token, usuario.getUsername(), usuario.getRole(), usuario.getClienteId()));
     }
 
     @PostMapping("/forgot-password")

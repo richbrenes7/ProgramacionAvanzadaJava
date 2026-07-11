@@ -644,3 +644,6 @@ input:focus, select:focus { border-color: var(--gold-strong); box-shadow: 0 0 0 
     text-align: left;
   }
 }
+
+.report-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1120px) { .report-grid { grid-template-columns: 1fr; } }

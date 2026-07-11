@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.banco.core.cuenta.Cuenta;
 import com.banco.core.movimiento.Movimiento;
+import com.banco.core.security.Usuario;
+import com.banco.core.security.UsuarioService;
 import com.banco.core.service.CuentaService;
 
 @RestController
@@ -28,14 +31,29 @@ import com.banco.core.service.CuentaService;
 public class CuentaController {
 
     private final CuentaService cuentaService;
+    private final UsuarioService usuarioService;
 
-    public CuentaController(CuentaService cuentaService) {
+    public CuentaController(CuentaService cuentaService, UsuarioService usuarioService) {
         this.cuentaService = cuentaService;
+        this.usuarioService = usuarioService;
     }
 
     @PostMapping
-    public ResponseEntity<Cuenta> crear(@RequestBody Cuenta c) {
+    public ResponseEntity<Cuenta> crear(@RequestBody Cuenta c, Authentication authentication) {
+        Usuario usuario = usuarioActual(authentication);
+        if (usuario != null && !"ADMIN".equalsIgnoreCase(usuario.getRole()) && usuario.getClienteId() != null) {
+            c.setClienteId(usuario.getClienteId());
+        }
         return ResponseEntity.ok(cuentaService.crearCuenta(c));
+    }
+
+    @GetMapping("/mis-productos")
+    public ResponseEntity<List<Cuenta>> misProductos(Authentication authentication) {
+        Usuario usuario = usuarioActual(authentication);
+        if (usuario == null || "ADMIN".equalsIgnoreCase(usuario.getRole()) || usuario.getClienteId() == null) {
+            return ResponseEntity.ok(List.of());
+        }
+        return ResponseEntity.ok(cuentaService.obtenerPorCliente(usuario.getClienteId()));
     }
 
     @GetMapping("/numero/{numero}")
@@ -65,6 +83,11 @@ public class CuentaController {
     @GetMapping("/{id}/movimientos")
     public ResponseEntity<List<Movimiento>> movimientos(@PathVariable Long id) {
         return ResponseEntity.ok(cuentaService.movimientos(id));
+    }
+
+    private Usuario usuarioActual(Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) return null;
+        return usuarioService.buscarPorUsername(authentication.getName());
     }
 
     @PostMapping("/transferir")

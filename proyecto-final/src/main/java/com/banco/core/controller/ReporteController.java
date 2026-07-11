@@ -76,6 +76,29 @@ public class ReporteController {
         return ResponseEntity.ok(reporte);
     }
 
+
+    @GetMapping("/tecnico")
+    public ResponseEntity<Map<String, Object>> tecnico() {
+        Map<String, Object> reporte = new LinkedHashMap<>();
+        reporte.put("generadoEn", LocalDateTime.now());
+        reporte.put("alcance", "Observabilidad tecnica y diagnostico operativo del servicio");
+        reporte.put("health", Map.of(
+                "endpoint", "/actuator/health",
+                "proposito", "Verificar disponibilidad de la aplicacion y sus componentes de salud",
+                "uso", "Monitoreo, pruebas locales y validacion de despliegue"));
+        reporte.put("logs", List.of(
+                "Spring Boot registra arranque, errores HTTP, seguridad y consultas relevantes en consola o proveedor de nube.",
+                "En ejecucion local con run-local-h2.bat los logs quedan en la consola/proceso iniciado.",
+                "En Docker o nube, los logs se consultan desde docker logs, GitHub Actions, AWS CloudWatch o Azure Monitor segun el despliegue."));
+        reporte.put("endpointsTecnicos", List.of(
+                api("Observabilidad", "GET", "/actuator/health", "Estado tecnico de salud del servicio."),
+                api("Documentacion", "GET", "/swagger-ui/index.html", "Interfaz Swagger/OpenAPI para explorar endpoints."),
+                api("Documentacion", "GET", "/v3/api-docs", "Especificacion OpenAPI en formato JSON."),
+                api("Reportes", "GET", "/api/reportes/tecnico", "Resumen documental de observabilidad tecnica.")));
+        reporte.put("nota", "Este reporte no sustituye logs reales; documenta donde consultar salud, Swagger y trazas tecnicas.");
+        return ResponseEntity.ok(reporte);
+    }
+
     private Map<String, Object> carteraResumen(List<Cuenta> cuentas) {
         Map<String, Object> resumen = new LinkedHashMap<>();
         resumen.put("totalCuentas", cuentas.size());
@@ -176,7 +199,8 @@ public class ReporteController {
                 api("Administracion", "POST", "/api/admin/usuarios", "Crea usuarios operativos/admin."),
                 api("Administracion", "POST", "/api/admin/productos", "Genera y asocia productos a clientes."),
                 api("Reportes", "GET", "/api/reportes/cartera", "Resumen financiero de cartera."),
-                api("Reportes", "GET", "/api/reportes/operativo", "Reporte de registros, movimientos y catalogo de APIs.")
+                api("Reportes", "GET", "/api/reportes/operativo", "Reporte de registros, movimientos y catalogo de APIs."),
+                api("Reportes", "GET", "/api/reportes/tecnico", "Reporte documental de observabilidad tecnica.")
         );
     }
 

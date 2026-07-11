@@ -33,6 +33,7 @@ public class Usuario {
     private String role = "USER";
 
     private String nombre;
+    private Long clienteId;
     private String estado = "ACTIVO";
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
@@ -46,6 +47,8 @@ public class Usuario {
     public void setRole(String role) { this.role = role; }
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
+    public Long getClienteId() { return clienteId; }
+    public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }

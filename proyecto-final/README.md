@@ -20,7 +20,7 @@ mvn -B verify
 Resultado validado:
 
 ```text
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 1
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 1
 BUILD SUCCESS
 ```
 
@@ -28,7 +28,7 @@ La prueba omitida corresponde a Testcontainers cuando Docker no esta disponible 
 
 ## Modulos funcionales
 
-- Seguridad: login con JWT en `/api/auth/login`, usuarios persistidos en tabla `usuarios`, roles `ADMIN`/`USER` y recuperacion demo de contrasena desde login.
+- Seguridad: login con JWT en `/api/auth/login`, usuarios persistidos en tabla `usuarios`, roles `ADMIN`/`USER`, relacion usuario-cliente y recuperacion demo de contrasena desde login.
 - Clientes: crear, listar, consultar y actualizar clientes.
 - Productos bancarios: crear cuentas/productos, consultar por numero, consultar saldo y asignar productos a clientes con numeracion aleatoria generada por backend.
 - Movimientos: registrar depositos/retiros y consultar historial por cuenta.
@@ -96,6 +96,7 @@ Modelo aplicado:
 - `usuarios.password_hash`: contrasena almacenada con BCrypt.
 - `usuarios.role`: rol `ADMIN` o `USER`.
 - `usuarios.estado`: estado operativo del usuario.
+- `usuarios.cliente_id`: cliente asociado para usuarios finales; el admin puede quedar sin productos propios.
 
 Al iniciar la aplicacion se crea automaticamente el usuario demo configurado por `app.default.admin` y `app.default.admin-pass`. Por defecto:
 
@@ -132,7 +133,7 @@ La generacion verifica que el numero no exista antes de guardar el producto.
 El proyecto separa dos necesidades:
 
 - Reporteria funcional: endpoints `/api/reportes/cartera` y `/api/reportes/operativo`, visibles desde el modulo **Reportes** del frontend. Sirven para entender registros, cartera, movimientos, montos y catalogo de APIs/metodos.
-- Observabilidad tecnica: `/actuator/health` y logs de Spring Boot. Sirven para verificar disponibilidad y diagnostico tecnico del servicio.
+- Observabilidad tecnica: `/api/reportes/tecnico`, `/actuator/health` y logs de Spring Boot. Sirven para verificar disponibilidad y diagnostico tecnico del servicio.
 
 El archivo `TODO.md` mantiene el cierre pendiente del sistema y marca las mejoras ya implementadas.
 
@@ -207,6 +208,7 @@ Administracion:
 ```text
 GET  /api/admin/usuarios
 POST /api/admin/usuarios
+POST /api/admin/usuarios/{id}/cliente/{clienteId}
 POST /api/admin/usuarios/{id}/reset-password
 POST /api/admin/productos
 ```
@@ -224,6 +226,7 @@ Cuentas:
 ```text
 POST /api/cuentas
 GET  /api/cuentas/numero/{numero}
+GET  /api/cuentas/mis-productos
 GET  /api/cuentas/cliente/{clienteId}
 POST /api/cuentas/numero/{numero}/cliente/{clienteId}
 GET  /api/cuentas/{numero}/saldo
@@ -245,6 +248,7 @@ Reportes:
 ```text
 GET /api/reportes/cartera
 GET /api/reportes/operativo
+GET /api/reportes/tecnico
 GET /actuator/health
 ```
 

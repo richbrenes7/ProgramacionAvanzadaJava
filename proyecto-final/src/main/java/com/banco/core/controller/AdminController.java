@@ -42,7 +42,13 @@ public class AdminController {
 
     @PostMapping("/usuarios")
     public ResponseEntity<UsuarioResponse> crearUsuario(@RequestBody CrearUsuarioRequest request) {
-        Usuario usuario = usuarioService.crear(request.username(), request.password(), request.role(), request.nombre());
+        Usuario usuario = usuarioService.crear(request.username(), request.password(), request.role(), request.nombre(), request.clienteId());
+        return ResponseEntity.ok(UsuarioResponse.from(usuario));
+    }
+
+    @PostMapping("/usuarios/{id}/cliente/{clienteId}")
+    public ResponseEntity<UsuarioResponse> asignarCliente(@PathVariable Long id, @PathVariable Long clienteId) {
+        Usuario usuario = usuarioService.asignarCliente(id, clienteId);
         return ResponseEntity.ok(UsuarioResponse.from(usuario));
     }
 
@@ -63,17 +69,18 @@ public class AdminController {
         return ResponseEntity.ok(cuenta);
     }
 
-    public record CrearUsuarioRequest(String username, String password, String role, String nombre) {}
+    public record CrearUsuarioRequest(String username, String password, String role, String nombre, Long clienteId) {}
     public record ResetPasswordRequest(String newPassword) {}
     public record CrearProductoRequest(Long clienteId, String tipoCuenta, String moneda, BigDecimal saldoInicial, String estado) {}
 
-    public record UsuarioResponse(Long id, String username, String role, String nombre, String estado) {
+    public record UsuarioResponse(Long id, String username, String role, String nombre, Long clienteId, String estado) {
         static UsuarioResponse from(Usuario usuario) {
             return new UsuarioResponse(
                     usuario.getId(),
                     usuario.getUsername(),
                     usuario.getRole(),
                     usuario.getNombre(),
+                    usuario.getClienteId(),
                     usuario.getEstado());
         }
     }
