@@ -208,6 +208,18 @@ function saveCuentas() {
   if (state.user && state.selectedProduct) localStorage.setItem(selectedProductStorageKey(), state.selectedProduct);
 }
 
+function apiErrorMessage(text, status) {
+  if (text) {
+    try {
+      const payload = JSON.parse(text);
+      if (payload && payload.error) return payload.error;
+      if (payload && payload.message) return payload.message;
+    } catch (error) {
+      return text;
+    }
+  }
+  return `Solicitud fallida (${status})`;
+}
 async function api(path, options = {}) {
   const headers = { ...(options.headers || {}) };
   if (state.token) {
@@ -226,7 +238,7 @@ async function api(path, options = {}) {
       clearSession(true);
       throw new Error("Sesion no valida o expirada. Inicia sesion nuevamente.");
     }
-    throw new Error(text || `Solicitud fallida (${response.status})`);
+    throw new Error(apiErrorMessage(text, response.status));
   }
 
   const contentType = response.headers.get("content-type") || "";
@@ -942,8 +954,17 @@ if (els.adminUsuarioForm) {
     if (!requireSession()) return;
     const data = formData(event.currentTarget);
     try {
-      if (data.clienteId) data.clienteId = Number(data.clienteId);
-      else delete data.clienteId;
+      data.username = (data.username || "").trim();
+      data.password = data.password || "";
+      data.nombre = (data.nombre || "").trim();
+      if (!data.username) throw new Error("El usuario es obligatorio.");
+      if (!data.password) throw new Error("La contrasena temporal es obligatoria.");
+      if (data.clienteId) {
+        data.clienteId = Number(data.clienteId);
+        if (!Number.isFinite(data.clienteId) || data.clienteId < 1) throw new Error("Cliente ID debe ser un numero valido.");
+      } else {
+        delete data.clienteId;
+      }
       await api("/api/admin/usuarios", { method: "POST", body: JSON.stringify(data) });
       event.currentTarget.reset();
       await refreshAdminUsers();
