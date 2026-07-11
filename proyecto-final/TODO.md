@@ -16,7 +16,7 @@ Este listado concentra lo pendiente para dejar el proyecto final como sistema ac
 - [x] Crear endpoint tecnico/documental que explique health, logs y estado de APIs sin mezclarlo con reportes financieros.
 - [x] Documentar los reportes en README y docs/endpoints.md.
 - [ ] Agregar exportacion simple de reportes a JSON o CSV desde frontend.
-- [ ] Mejorar mensajes de error para escenarios sin datos o sin permisos.
+- [x] Mejorar mensajes de error para escenarios sin datos o sin permisos.
 
 ## Prioridad baja
 

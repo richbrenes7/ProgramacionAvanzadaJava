@@ -86,6 +86,28 @@ class AdminSecurityReportIntegrationIT {
         assertThat(reporte.getBody()).containsKeys("resumen", "cartera", "apis");
     }
 
+
+    @Test
+    void crearUsuarioDuplicadoDevuelveBadRequest() {
+        String adminToken = login("admin", "password");
+        String username = "duplicado" + System.nanoTime();
+        Map<String, Object> body = Map.of(
+                "username", username,
+                "password", "cliente123",
+                "role", "USER",
+                "nombre", "Usuario Duplicado");
+
+        post("/api/admin/usuarios", adminToken, body);
+        ResponseEntity<Map<String, Object>> duplicado = rest.exchange(
+                url("/api/admin/usuarios"),
+                HttpMethod.POST,
+                json(body, adminToken),
+                new ParameterizedTypeReference<>() {});
+
+        assertThat(duplicado.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(duplicado.getBody()).containsEntry("error", "El usuario ya existe");
+    }
+
     private String login(String username, String password) {
         ResponseEntity<Map<String, Object>> response = rest.exchange(
                 url("/api/auth/login"),

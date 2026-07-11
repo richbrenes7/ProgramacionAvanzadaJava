@@ -52,6 +52,13 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public Usuario crear(String username, String password, String role, String nombre, Long clienteId) {
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("El usuario es obligatorio");
+        }
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("La contrasena es obligatoria");
+        }
+        username = username.trim();
         if (usuarioRepository.existsByUsername(username)) {
             throw new IllegalArgumentException("El usuario ya existe");
         }

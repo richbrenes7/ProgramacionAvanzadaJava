@@ -410,7 +410,7 @@ function renderClientes() {
 function renderCuentas() {
   if (!state.cuentas.length) {
     els.cuentasList.className = "data-list empty-state";
-    els.cuentasList.textContent = state.role === "ADMIN" ? "El administrador no tiene productos propios; gestiona productos desde la pestaña Administrador." : "Los productos asociados a este usuario aparecen aqui.";
+    els.cuentasList.textContent = state.role === "ADMIN" ? "El administrador no tiene productos propios; gestiona productos desde la pestaï¿½a Administrador." : "Los productos asociados a este usuario aparecen aqui.";
     renderDashboard();
     return;
   }
@@ -900,6 +900,7 @@ if (els.adminUsuarioForm) {
     const data = formData(event.currentTarget);
     try {
       if (data.clienteId) data.clienteId = Number(data.clienteId);
+      else delete data.clienteId;
       await api("/api/admin/usuarios", { method: "POST", body: JSON.stringify(data) });
       event.currentTarget.reset();
       await refreshAdminUsers();
