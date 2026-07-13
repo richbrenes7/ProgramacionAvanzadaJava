@@ -3,6 +3,7 @@ package com.banco.core.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,6 +47,13 @@ public class SecurityConfig {
                     "/swagger-ui.html"
                 ).permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/clientes/**").hasRole("ADMIN")
+                .requestMatchers("/api/reportes/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/cuentas").hasRole("ADMIN")
+                .requestMatchers("/api/cuentas/cliente/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/cuentas/numero/*/destinatario").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/cuentas/numero/*").hasRole("ADMIN")
+                .requestMatchers("/api/cuentas/numero/*/cliente/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

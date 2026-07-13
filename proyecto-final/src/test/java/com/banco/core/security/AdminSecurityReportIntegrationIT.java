@@ -77,6 +77,36 @@ class AdminSecurityReportIntegrationIT {
                 String.class);
         assertThat(adminDenied.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
+        ResponseEntity<String> clientesDenied = rest.exchange(
+                url("/api/clientes"),
+                HttpMethod.GET,
+                new HttpEntity<>(headers(userToken)),
+                String.class);
+        assertThat(clientesDenied.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+
+        ResponseEntity<String> reportesDenied = rest.exchange(
+                url("/api/reportes/operativo"),
+                HttpMethod.GET,
+                new HttpEntity<>(headers(userToken)),
+                String.class);
+        assertThat(reportesDenied.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+
+        String numeroCuenta = String.valueOf(producto.get("numeroCuenta"));
+        ResponseEntity<String> cuentaCompletaDenied = rest.exchange(
+                url("/api/cuentas/numero/" + numeroCuenta),
+                HttpMethod.GET,
+                new HttpEntity<>(headers(userToken)),
+                String.class);
+        assertThat(cuentaCompletaDenied.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+
+        ResponseEntity<Map<String, Object>> destinatario = rest.exchange(
+                url("/api/cuentas/numero/" + numeroCuenta + "/destinatario"),
+                HttpMethod.GET,
+                new HttpEntity<>(headers(userToken)),
+                new ParameterizedTypeReference<>() {});
+        assertThat(destinatario.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(destinatario.getBody()).containsEntry("nombreCliente", "Cliente Seguridad");
+        assertThat(destinatario.getBody()).containsEntry("numeroCuenta", numeroCuenta);
         ResponseEntity<Map<String, Object>> reporte = rest.exchange(
                 url("/api/reportes/operativo"),
                 HttpMethod.GET,

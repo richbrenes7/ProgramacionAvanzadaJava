@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.banco.core.cliente.Cliente;
+import com.banco.core.cliente.ClienteRepository;
 import com.banco.core.cuenta.Cuenta;
 import com.banco.core.movimiento.Movimiento;
 import com.banco.core.security.Usuario;
@@ -32,10 +34,12 @@ public class CuentaController {
 
     private final CuentaService cuentaService;
     private final UsuarioService usuarioService;
+    private final ClienteRepository clienteRepository;
 
-    public CuentaController(CuentaService cuentaService, UsuarioService usuarioService) {
+    public CuentaController(CuentaService cuentaService, UsuarioService usuarioService, ClienteRepository clienteRepository) {
         this.cuentaService = cuentaService;
         this.usuarioService = usuarioService;
+        this.clienteRepository = clienteRepository;
     }
 
     @PostMapping
@@ -61,6 +65,20 @@ public class CuentaController {
         Cuenta c = cuentaService.obtenerPorNumero(numero);
         if (c == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(c);
+    }
+
+    @GetMapping("/numero/{numero}/destinatario")
+    public ResponseEntity<DestinatarioCuentaResponse> destinatario(@PathVariable String numero) {
+        Cuenta cuenta = cuentaService.obtenerPorNumero(numero);
+        if (cuenta == null) return ResponseEntity.notFound().build();
+        String nombre = cuenta.getClienteId() == null ? "Cliente no asignado" : clienteRepository.findById(cuenta.getClienteId())
+                .map(Cliente::getNombre)
+                .orElse("Cliente no asignado");
+        return ResponseEntity.ok(new DestinatarioCuentaResponse(
+                cuenta.getNumeroCuenta(),
+                nombre,
+                cuenta.getTipoCuenta(),
+                cuenta.getEstado()));
     }
 
     @GetMapping("/cliente/{clienteId}")
@@ -95,4 +113,6 @@ public class CuentaController {
         cuentaService.transferir(origen, destino, monto);
         return ResponseEntity.ok().build();
     }
+
+    public record DestinatarioCuentaResponse(String numeroCuenta, String nombreCliente, String tipoCuenta, String estado) {}
 }

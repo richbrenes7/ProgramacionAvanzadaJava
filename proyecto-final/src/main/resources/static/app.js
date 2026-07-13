@@ -25,7 +25,8 @@ const moduleTitles = {
   lote: "Lotes concurrentes",
   movimientos: "Movimientos",
   reportes: "Reportes",
-  admin: "Administrador"
+  admin: "Administrador",
+  sistema: "Sistema"
 };
 
 const els = {
@@ -74,6 +75,7 @@ const els = {
   depositoProducto: document.querySelector("#depositoProducto"),
   retiroProducto: document.querySelector("#retiroProducto"),
   transferProducto: document.querySelector("#transferProducto"),
+  transferDestinoInfo: document.querySelector("#transferDestinoInfo"),
   loteProducto: document.querySelector("#loteProducto"),
   movimientosProducto: document.querySelector("#movimientosProducto"),
   saldoResult: document.querySelector("#saldoResult"),
@@ -247,6 +249,20 @@ async function api(path, options = {}) {
   return text ? JSON.parse(text) : null;
 }
 
+function isAdmin() {
+  return state.role === "ADMIN";
+}
+
+function requireAdmin() {
+  if (!requireSession()) return false;
+  if (!isAdmin()) {
+    showToast("Modulo disponible solo para administradores.", "error");
+    routeBank("dashboard");
+    return false;
+  }
+  return true;
+}
+
 function requireSession() {
   if (!state.token) {
     showToast("Primero inicia sesion en Banca en linea.", "error");
@@ -272,8 +288,14 @@ function routePublic(viewName = "inicio") {
 function routeBank(moduleName = "dashboard") {
   if (!requireSession()) return;
   let target = moduleTitles[moduleName] ? moduleName : "dashboard";
-  if (target === "admin" && state.role !== "ADMIN") {
-    showToast("El modulo administrador requiere rol ADMIN.", "error");
+  const blockedModules = ["deposito"];
+  if (blockedModules.includes(target)) {
+    showToast("Los depositos se registran como transferencias recibidas u operaciones administrativas.", "error");
+    target = "dashboard";
+  }
+  const adminModules = ["admin", "clientes", "asignaciones", "reportes", "sistema"];
+  if (adminModules.includes(target) && !isAdmin()) {
+    showToast("Modulo disponible solo para administradores.", "error");
     target = "dashboard";
   }
   els.publicShell.hidden = true;
@@ -359,7 +381,7 @@ function productCard(cuenta) {
       <span>${cuenta.tipoCuenta || "Producto bancario"}</span>
       <strong>${cuenta.numeroCuenta}</strong>
       <em>${money(cuenta.saldo)}</em>
-      <small>${cuenta.estado || "SIN ESTADO"} - Cliente ${cuenta.clienteId || "-"}</small>
+      <small>${cuenta.estado || "SIN ESTADO"}</small>
       ${productInsight(cuenta)}
     </button>
   `;
@@ -465,7 +487,7 @@ function renderClientes() {
 function renderCuentas() {
   if (!state.cuentas.length) {
     els.cuentasList.className = "data-list empty-state";
-    els.cuentasList.textContent = state.role === "ADMIN" ? "El administrador no tiene productos propios; gestiona productos desde la pesta�a Administrador." : "Los productos asociados a este usuario aparecen aqui.";
+    els.cuentasList.textContent = state.role === "ADMIN" ? "El administrador no tiene productos propios; gestiona productos desde la pestana Administrador." : "Los productos asociados a este usuario aparecen aqui.";
     renderDashboard();
     return;
   }
@@ -559,8 +581,9 @@ function renderAdminUsers(usuarios) {
     els.adminUsersList.textContent = "No hay usuarios registrados.";
     return;
   }
+  const recientes = [...usuarios].sort((a, b) => Number(b.id || 0) - Number(a.id || 0)).slice(0, 8);
   els.adminUsersList.className = "data-list";
-  els.adminUsersList.innerHTML = usuarios.map(usuario => record(
+  els.adminUsersList.innerHTML = recientes.map(usuario => record(
     `<span>${usuario.username}</span><span>ID ${usuario.id}</span>`,
     [
       { text: usuario.role || "USER", kind: usuario.role === "ADMIN" ? "success" : "" },
@@ -603,7 +626,7 @@ async function refreshUserPortfolio() {
 }
 
 async function refreshClientes() {
-  if (!requireSession()) return;
+  if (!requireAdmin()) return;
   state.clientes = await api("/api/clientes");
   renderClientes();
 }
@@ -655,6 +678,7 @@ async function refreshProductInsights() {
 
 async function registrarMovimiento(form, tipoMovimiento) {
   if (!requireSession()) return;
+  if (tipoMovimiento === "DEPOSITO" && !isAdmin()) throw new Error("Los depositos se generan desde transferencias recibidas u operaciones administrativas.");
   const data = formData(form);
   const payload = {
     cuentaId: Number(data.cuentaId),
@@ -664,7 +688,7 @@ async function registrarMovimiento(form, tipoMovimiento) {
 
   const movimiento = await api("/api/movimientos", { method: "POST", body: JSON.stringify(payload) });
   delete state.movimientosPorCuenta[payload.cuentaId];
-  await refreshKnownAccounts();
+  await refreshUserPortfolio();
   setLastOperation(`${movimiento.tipoMovimiento} ${money(movimiento.monto)}`);
   showToast(`${tipoMovimiento.toLowerCase()} registrado.`);
   form.reset();
@@ -726,7 +750,10 @@ els.loginForm.addEventListener("submit", async event => {
     localStorage.setItem("rb_exchange_rate", state.exchangeRate);
     showToast("Sesion iniciada.");
     await refreshUserPortfolio();
-    await refreshClientes();
+    if (isAdmin()) {
+      await refreshClientes();
+      await refreshAdminUsers();
+    }
     routeBank("dashboard");
   } catch (error) {
     showToast("No se pudo iniciar sesion. Revisa usuario y contrasena.", "error");
@@ -856,14 +883,16 @@ els.saldoForm.addEventListener("submit", async event => {
   }
 });
 
-els.depositoForm.addEventListener("submit", async event => {
-  event.preventDefault();
-  try {
-    await registrarMovimiento(event.currentTarget, "DEPOSITO");
-  } catch (error) {
-    showToast(error.message, "error");
-  }
-});
+if (els.depositoForm) {
+  els.depositoForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    try {
+      await registrarMovimiento(event.currentTarget, "DEPOSITO");
+    } catch (error) {
+      showToast(error.message, "error");
+    }
+  });
+}
 
 els.retiroForm.addEventListener("submit", async event => {
   event.preventDefault();
@@ -874,6 +903,26 @@ els.retiroForm.addEventListener("submit", async event => {
   }
 });
 
+async function resolverDestinatarioTransferencia(numero) {
+  if (!els.transferDestinoInfo) return null;
+  const destino = (numero || "").trim();
+  if (!destino) {
+    els.transferDestinoInfo.textContent = "Ingresa una cuenta destino para confirmar el beneficiario.";
+    return null;
+  }
+  try {
+    const info = await api(`/api/cuentas/numero/${encodeURIComponent(destino)}/destinatario`);
+    els.transferDestinoInfo.innerHTML = `<span>Beneficiario</span><strong>${info.nombreCliente}</strong><span>Cuenta</span><strong>${info.numeroCuenta}</strong>`;
+    return info;
+  } catch (error) {
+    els.transferDestinoInfo.textContent = "No se encontro la cuenta destino.";
+    throw new Error("No se encontro la cuenta destino.");
+  }
+}
+els.transferForm.querySelector("[name=destino]")?.addEventListener("blur", event => {
+  resolverDestinatarioTransferencia(event.currentTarget.value).catch(() => {});
+});
+
 els.transferForm.addEventListener("submit", async event => {
   event.preventDefault();
   if (!requireSession()) return;
@@ -881,8 +930,9 @@ els.transferForm.addEventListener("submit", async event => {
   const data = formData(form);
   const payload = { ...data, monto: Number(data.monto) };
   try {
+    await resolverDestinatarioTransferencia(data.destino);
     await api("/api/transacciones", { method: "POST", body: JSON.stringify(payload) });
-    await Promise.all([buscarCuenta(data.origen), buscarCuenta(data.destino)]);
+    await refreshUserPortfolio();
     setLastOperation(`Transferencia ${money(data.monto)}`);
     showToast("Transferencia realizada.");
   } catch (error) {
@@ -903,7 +953,7 @@ els.loteForm.addEventListener("submit", async event => {
 
   try {
     const procesadas = await api("/api/transacciones/lote", { method: "POST", body: JSON.stringify(lote) });
-    await Promise.all([buscarCuenta(data.origen), buscarCuenta(data.destino)]);
+    await refreshUserPortfolio();
     els.loteResult.innerHTML = `<span>Transacciones procesadas</span><strong>${procesadas}</strong>`;
     setLastOperation(`Lote ${procesadas} trx`);
     showToast("Lote procesado.");

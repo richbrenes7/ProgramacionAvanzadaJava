@@ -47,7 +47,7 @@
         <div class="feature-grid">
           <article><span>01</span><h3>Clientes</h3><p>Registro, consulta y actualizacion de datos de clientes.</p></article>
           <article><span>02</span><h3>Cuentas</h3><p>Apertura, busqueda, saldos y movimientos por cuenta.</p></article>
-          <article><span>03</span><h3>Transacciones</h3><p>Depositos, retiros, transferencias individuales y lotes concurrentes.</p></article>
+          <article><span>03</span><h3>Transacciones</h3><p>Retiros, pagos, transferencias individuales y lotes concurrentes.</p></article>
           <article><span>04</span><h3>Reportes</h3><p>Reporte de cartera y estado operativo de la plataforma.</p></article>
         </div>
       </section>
@@ -98,17 +98,17 @@
 
       <nav class="nav-list" aria-label="Modulos bancarios">
         <a href="#banca" class="nav-item active" data-module-link="dashboard">Principal</a>
-        <a href="#clientes" class="nav-item" data-module-link="clientes">Clientes</a>
+        <a href="#clientes" class="nav-item" data-module-link="clientes" data-admin-only hidden>Clientes</a>
         <a href="#cuentas" class="nav-item" data-module-link="cuentas">Cuentas</a>
         <a href="#saldo" class="nav-item" data-module-link="saldo">Saldos</a>
-        <a href="#asignaciones" class="nav-item" data-module-link="asignaciones">Asignaciones</a>
-        <a href="#deposito" class="nav-item" data-module-link="deposito">Depositos</a>
+        <a href="#asignaciones" class="nav-item" data-module-link="asignaciones" data-admin-only hidden>Asignaciones</a>
         <a href="#retiro" class="nav-item" data-module-link="retiro">Retiros</a>
         <a href="#transferencia" class="nav-item" data-module-link="transferencia">Transferencias</a>
         <a href="#lote" class="nav-item" data-module-link="lote">Lotes</a>
         <a href="#movimientos" class="nav-item" data-module-link="movimientos">Movimientos</a>
-        <a href="#reportes" class="nav-item" data-module-link="reportes">Reportes</a>
+        <a href="#reportes" class="nav-item" data-module-link="reportes" data-admin-only hidden>Reportes</a>
         <a href="#admin" class="nav-item" data-module-link="admin" data-admin-only hidden>Administrador</a>
+        <a href="#sistema" class="nav-item" data-module-link="sistema" data-admin-only hidden>Sistema</a>
       </nav>
     </aside>
 
@@ -129,7 +129,7 @@
 
       <section id="dashboard" class="module-view active" data-module="dashboard" data-title="Panel principal">
         <div class="metrics-grid">
-          <article class="metric"><span>Clientes cargados</span><strong id="clientesCount">0</strong></article>
+          <article class="metric" data-admin-only hidden><span>Clientes cargados</span><strong id="clientesCount">0</strong></article>
           <article class="metric"><span>Mis productos</span><strong id="cuentasCount">0</strong></article>
           <article class="metric"><span>Saldo total usuario</span><strong id="balanceTotal">GTQ 0.00</strong></article>
           <article class="metric"><span>Ultima operacion</span><strong id="lastOperation">Sin actividad</strong></article>
@@ -153,17 +153,17 @@
           <h2>Selecciona el frente de trabajo</h2>
         </div>
         <div class="module-grid quick-grid">
-          <button type="button" class="module-card" data-module-link="clientes"><span>Clientes</span><strong>Gestion de personas</strong></button>
+          <button type="button" class="module-card" data-module-link="clientes" data-admin-only hidden><span>Clientes</span><strong>Gestion de personas</strong></button>
           <button type="button" class="module-card" data-module-link="cuentas"><span>Cuentas</span><strong>Apertura y consulta</strong></button>
           <button type="button" class="module-card" data-module-link="saldo"><span>Saldos</span><strong>Disponibilidad por cuenta</strong></button>
-          <button type="button" class="module-card" data-module-link="asignaciones"><span>Asignaciones</span><strong>Vincular cuentas a clientes</strong></button>
-          <button type="button" class="module-card" data-module-link="deposito"><span>Depositos</span><strong>Credito a cuenta</strong></button>
+          <button type="button" class="module-card" data-module-link="asignaciones" data-admin-only hidden><span>Asignaciones</span><strong>Vincular cuentas a clientes</strong></button>
           <button type="button" class="module-card" data-module-link="retiro"><span>Retiros</span><strong>Debito controlado</strong></button>
           <button type="button" class="module-card" data-module-link="transferencia"><span>Transferencias</span><strong>Operacion individual</strong></button>
           <button type="button" class="module-card" data-module-link="lote"><span>Lotes</span><strong>Procesamiento concurrente</strong></button>
           <button type="button" class="module-card" data-module-link="movimientos"><span>Movimientos</span><strong>Historial operativo</strong></button>
-          <button type="button" class="module-card" data-module-link="reportes"><span>Reportes</span><strong>Cartera bancaria</strong></button>
+          <button type="button" class="module-card" data-module-link="reportes" data-admin-only hidden><span>Reportes</span><strong>Cartera bancaria</strong></button>
           <button type="button" class="module-card" data-module-link="admin" data-admin-only hidden><span>Administrador</span><strong>Usuarios y productos</strong></button>
+          <button type="button" class="module-card" data-module-link="sistema" data-admin-only hidden><span>Sistema</span><strong>Registros, APIs y salud</strong></button>
         </div>
       </section>
 
@@ -178,19 +178,14 @@
       <section id="cuentas" class="module-view" data-module="cuentas" data-title="Cuentas">
         <div class="module-heading"><h2>Cuentas</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
         <div class="module-grid two-col">
-          <article class="panel"><div class="panel-header"><h2>Abrir cuenta</h2></div><form id="cuentaForm" class="stack-form"><label>Numero de cuenta<input name="numeroCuenta" placeholder="AUTO para generar" value="AUTO"></label><label>Cliente ID<input name="clienteId" type="number" min="1" value="1" required></label><label>Tipo<select name="tipoCuenta"><option>AHORROS</option><option>MONETARIA</option><option>CREDITO</option></select></label><label>Moneda<input name="moneda" value="GTQ" required></label><label>Saldo inicial<input name="saldo" type="number" min="0" step="0.01" value="1000" required></label><label>Estado<input name="estado" value="ACTIVO"></label><button class="primary-button" type="submit">Crear cuenta</button></form></article>
-          <article class="panel"><div class="panel-header"><h2>Mis productos bancarios</h2></div><form id="buscarCuentaForm" class="inline-form"><input name="numeroCuenta" placeholder="Numero de cuenta para asociar" required><button class="secondary-button" type="submit">Asociar</button></form><div id="cuentasList" class="data-list empty-state">Los productos asociados a este usuario aparecen aqui.</div></article>
+          <article class="panel" data-admin-only hidden><div class="panel-header"><h2>Abrir cuenta</h2></div><form id="cuentaForm" class="stack-form"><label>Numero de cuenta<input name="numeroCuenta" placeholder="AUTO para generar" value="AUTO"></label><label>Cliente ID<input name="clienteId" type="number" min="1" value="1" required></label><label>Tipo<select name="tipoCuenta"><option>AHORROS</option><option>MONETARIA</option><option>CREDITO</option></select></label><label>Moneda<input name="moneda" value="GTQ" required></label><label>Saldo inicial<input name="saldo" type="number" min="0" step="0.01" value="1000" required></label><label>Estado<input name="estado" value="ACTIVO"></label><button class="primary-button" type="submit">Crear cuenta</button></form></article>
+          <article class="panel"><div class="panel-header"><h2>Mis productos bancarios</h2></div><form id="buscarCuentaForm" class="inline-form" data-admin-only hidden><input name="numeroCuenta" placeholder="Numero de cuenta para asociar" required><button class="secondary-button" type="submit">Asociar</button></form><div id="cuentasList" class="data-list empty-state">Los productos asociados a este usuario aparecen aqui.</div></article>
         </div>
       </section>
 
       <section id="saldo" class="module-view" data-module="saldo" data-title="Saldos">
         <div class="module-heading"><h2>Saldos</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
         <article class="panel narrow-panel"><div class="panel-header"><h2>Consultar saldo</h2></div><form id="saldoForm" class="stack-form"><label>Producto bancario<select id="saldoProducto" name="numeroCuenta" required></select></label><button class="primary-button" type="submit">Consultar saldo</button></form><div id="saldoResult" class="result-box">Sin consulta activa.</div></article>
-      </section>
-
-      <section id="deposito" class="module-view" data-module="deposito" data-title="Depositos">
-        <div class="module-heading"><h2>Depositos</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
-        <article class="panel transaction-panel"><div class="panel-header"><h2>Deposito</h2><span class="status-pill success">Credito</span></div><form id="depositoForm" class="stack-form"><label>Producto bancario<select id="depositoProducto" name="cuentaId" required></select></label><label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label><button class="primary-button" type="submit">Registrar deposito</button></form></article>
       </section>
 
       <section id="retiro" class="module-view" data-module="retiro" data-title="Retiros">
@@ -200,7 +195,7 @@
 
       <section id="transferencia" class="module-view" data-module="transferencia" data-title="Transferencias">
         <div class="module-heading"><h2>Transferencias</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
-        <article class="panel transaction-panel"><div class="panel-header"><h2>Transferencia individual</h2><span class="status-pill">REST</span></div><form id="transferForm" class="stack-form"><label>Producto origen<select id="transferProducto" name="origen" required></select></label><label>Cuenta destino<input name="destino" placeholder="ACC-002" required></label><label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label><button class="gold-button" type="submit">Transferir</button></form></article>
+        <article class="panel transaction-panel"><div class="panel-header"><h2>Transferencia individual</h2><span class="status-pill">REST</span></div><form id="transferForm" class="stack-form"><label>Producto origen<select id="transferProducto" name="origen" required></select></label><label>Cuenta destino<input name="destino" placeholder="AHO-1234567" autocomplete="off" required></label><div id="transferDestinoInfo" class="result-box recipient-preview">Ingresa una cuenta destino para confirmar el beneficiario.</div><label>Monto<input name="monto" type="number" min="0.01" step="0.01" required></label><button class="gold-button" type="submit">Transferir</button></form></article>
       </section>
 
       <section id="lote" class="module-view" data-module="lote" data-title="Lotes concurrentes">
@@ -229,14 +224,18 @@
           <button class="admin-tab" type="button" data-admin-tab="productos">Generar producto</button>
         </div>
         <div class="admin-tab-panels">
-          <article class="panel admin-tab-panel active" data-admin-panel="usuarios"><div class="panel-header"><h2>Crear usuario</h2><span class="status-pill">ADMIN</span></div><form id="adminUsuarioForm" class="stack-form"><label>Usuario<input name="username" placeholder="operador1" required></label><label>Nombre<input name="nombre" placeholder="Operador de agencia"></label><label>Rol<select name="role"><option>USER</option><option>ADMIN</option></select></label><label>Cliente ID<input name="clienteId" type="number" min="1" placeholder="Opcional para usuarios cliente"></label><label>Contrasena temporal<input name="password" type="password" minlength="4" required></label><button class="primary-button" type="submit">Crear usuario</button></form></article>
-          <article class="panel admin-tab-panel" data-admin-panel="reset"><div class="panel-header"><h2>Reset de contrasena</h2><button id="adminRefreshUsers" class="secondary-button" type="button">Actualizar usuarios</button></div><form id="adminResetForm" class="stack-form"><label>Usuario ID<input name="id" type="number" min="1" required></label><label>Nueva contrasena<input name="newPassword" type="password" minlength="4" required></label><button class="gold-button" type="submit">Resetear</button></form><div id="adminUsersList" class="data-list empty-state">Carga usuarios para gestionarlos.</div></article>
+          <article class="panel admin-tab-panel active" data-admin-panel="usuarios"><div class="panel-header"><h2>Crear usuario</h2><button id="adminRefreshUsers" class="secondary-button" type="button">Actualizar usuarios</button></div><form id="adminUsuarioForm" class="stack-form"><label>Usuario<input name="username" placeholder="operador1" required></label><label>Nombre<input name="nombre" placeholder="Operador de agencia"></label><label>Rol<select name="role"><option>USER</option><option>ADMIN</option></select></label><label>Cliente ID<input name="clienteId" type="number" min="1" placeholder="Opcional para usuarios cliente"></label><label>Contrasena temporal<input name="password" type="password" minlength="4" required></label><button class="primary-button" type="submit">Crear usuario</button></form><div id="adminUsersList" class="data-list empty-state">Carga usuarios para ver los ultimos registros.</div></article>
+          <article class="panel admin-tab-panel" data-admin-panel="reset"><div class="panel-header"><h2>Reset de contrasena</h2><span class="status-pill">Credenciales</span></div><form id="adminResetForm" class="stack-form"><label>Usuario ID<input name="id" type="number" min="1" required></label><label>Nueva contrasena<input name="newPassword" type="password" minlength="4" required></label><button class="gold-button" type="submit">Resetear</button></form></article>
           <article class="panel admin-tab-panel full-panel" data-admin-panel="productos"><div class="panel-header"><h2>Productos por cliente</h2><span class="status-pill success">Gestor</span></div><form id="adminProductoForm" class="stack-form wide-form"><label>Cliente ID<input name="clienteId" type="number" min="1" required></label><label>Tipo de producto<select name="tipoCuenta"><option>AHORROS</option><option>MONETARIA</option><option>TARJETA_CREDITO</option></select></label><label>Moneda<input name="moneda" value="GTQ" required></label><label>Saldo inicial<input name="saldoInicial" type="number" min="0" step="0.01" value="0" required></label><label>Estado<input name="estado" value="ACTIVO" required></label><button class="primary-button" type="submit">Crear y asociar producto</button></form><div id="adminProductoResult" class="result-box">El administrador gestiona productos de clientes; no se agregan productos a su portafolio personal.</div><form id="adminClienteProductosForm" class="inline-form admin-query-form"><input name="clienteId" type="number" min="1" placeholder="Cliente ID" required><button class="secondary-button" type="submit">Ver productos del cliente</button></form><div id="adminClienteProductosList" class="data-list empty-state">Un cliente puede tener varios productos bancarios asociados.</div></article>
         </div>
       </section>
       <section id="reportes" class="module-view" data-module="reportes" data-title="Reportes">
         <div class="module-heading"><h2>Reportes</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
-        <div class="module-grid report-grid"><article class="panel"><div class="panel-header"><h2>Reporte de cartera</h2><button id="reporteCarteraButton" class="secondary-button" type="button">Generar</button></div><div id="reporteResult" class="result-box">Sin reporte generado.</div></article><article class="panel"><div class="panel-header"><h2>Registros y APIs</h2><button id="reporteOperativoButton" class="secondary-button" type="button">Generar</button></div><div id="reporteOperativoResult" class="report-stack empty-state">Genera un reporte para revisar registros, movimientos y metodos REST.</div></article><article class="panel"><div class="panel-header"><h2>Salud y logs</h2><button id="reporteTecnicoButton" class="secondary-button" type="button">Generar</button></div><div id="reporteTecnicoResult" class="report-stack empty-state">Genera un reporte tecnico para ubicar health, Swagger y logs.</div></article></div>
+        <div class="module-grid report-grid"><article class="panel"><div class="panel-header"><h2>Reporte de cartera</h2><button id="reporteCarteraButton" class="secondary-button" type="button">Generar</button></div><div id="reporteResult" class="result-box">Sin reporte generado.</div></article></div>
+      </section>
+      <section id="sistema" class="module-view" data-module="sistema" data-title="Sistema">
+        <div class="module-heading"><h2>Sistema</h2><button class="secondary-button" type="button" data-module-link="dashboard">Panel principal</button></div>
+        <div class="module-grid report-grid"><article class="panel"><div class="panel-header"><h2>Registros y APIs</h2><button id="reporteOperativoButton" class="secondary-button" type="button">Generar</button></div><div id="reporteOperativoResult" class="report-stack empty-state">Genera un reporte para revisar registros, movimientos y metodos REST.</div></article><article class="panel"><div class="panel-header"><h2>Salud y logs</h2><button id="reporteTecnicoButton" class="secondary-button" type="button">Generar</button></div><div id="reporteTecnicoResult" class="report-stack empty-state">Genera un reporte tecnico para ubicar health, Swagger y logs.</div></article></div>
       </section>
     </main>
   </div>
