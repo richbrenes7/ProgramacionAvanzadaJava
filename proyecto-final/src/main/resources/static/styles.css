@@ -41,11 +41,13 @@ button { cursor: pointer; }
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 16px clamp(18px, 4vw, 56px);
+  min-height: 72px;
+  padding: 10px clamp(18px, 4vw, 56px);
   background: rgba(255, 255, 255, 0.96);
   border-bottom: 1px solid var(--line);
 }
 
+.public-brand { height: 52px; display: flex; align-items: center; overflow: hidden; }
 .public-brand img { width: min(190px, 48vw); height: auto; display: block; }
 .public-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .public-nav a {
@@ -66,7 +68,7 @@ button { cursor: pointer; }
 .public-view.active { display: grid; }
 
 .hero-section {
-  min-height: calc(100vh - 76px);
+  min-height: calc(100vh - 72px);
   grid-template-columns: minmax(280px, 1.05fr) minmax(260px, 0.75fr);
   gap: clamp(24px, 5vw, 64px);
   align-items: center;
@@ -121,7 +123,7 @@ button { cursor: pointer; }
 .feature-grid p { margin: 0; color: var(--slate); line-height: 1.55; }
 
 .login-page {
-  min-height: calc(100vh - 76px);
+  min-height: calc(100vh - 72px);
   place-items: center;
   padding: 28px;
 }

@@ -224,7 +224,8 @@ function apiErrorMessage(text, status) {
 }
 async function api(path, options = {}) {
   const headers = { ...(options.headers || {}) };
-  if (state.token) {
+  const publicAuthPath = path.startsWith("/api/auth/");
+  if (state.token && !publicAuthPath) {
     if (isTokenExpired(state.token)) {
       clearSession(true);
       throw new Error("Sesion expirada. Inicia sesion nuevamente.");
@@ -302,6 +303,9 @@ function routeBank(moduleName = "dashboard") {
   els.bankShell.hidden = false;
   updateContextBar();
   showModule(target);
+  if (target === "clientes" && isAdmin() && !state.clientes.length) {
+    refreshClientes().catch(error => showToast(error.message, "error"));
+  }
 }
 
 function showModule(moduleName) {
