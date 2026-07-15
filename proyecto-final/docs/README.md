@@ -50,3 +50,6 @@ src/main/resources/static/assets/RBrenes_Bank_sin_fondo.png
 ## Arquitectura
 
 Ver [architecture.md](architecture.md) para la descripcion general.
+## APIs y metodos REST
+
+Ver [endpoints.md](endpoints.md) para la tabla completa de metodos, rutas, permisos, descripcion y justificacion de uso.
