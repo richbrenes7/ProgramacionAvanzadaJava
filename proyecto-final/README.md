@@ -31,13 +31,13 @@ La prueba omitida corresponde a Testcontainers cuando Docker no esta disponible 
 - Seguridad: login con JWT en `/api/auth/login`, usuarios persistidos en tabla `usuarios`, roles `ADMIN`/`USER`, relacion usuario-cliente y recuperacion demo de contrasena desde login.
 - Clientes: crear, listar, consultar y actualizar clientes.
 - Productos bancarios: crear cuentas/productos, consultar por numero, consultar saldo y asignar productos a clientes con numeracion aleatoria generada por backend.
-- Movimientos: registrar depositos/retiros y consultar historial por cuenta.
-- Transacciones: transferencia individual entre cuentas.
+- Movimientos: registrar retiros y consultar historial por cuenta; los depositos/notas de credito se originan por transferencias recibidas u operaciones administrativas.
+- Transacciones: transferencia individual entre cuentas, validando que la cuenta origen pertenezca al usuario autenticado.
 - Lotes concurrentes: procesamiento de varias transferencias con `CompletableFuture` y executor.
 - Kafka: producer/consumer de transacciones, con prueba de integracion usando Embedded Kafka.
 - Administracion: gestion de usuarios, reset de contrasena y generacion/asociacion de productos a clientes.
-- Reportes: cartera financiera, registros operativos, movimientos recientes y catalogo de APIs/metodos.
-- Frontend: panel web modular para cada operacion bancaria, incluyendo asignacion de cuentas a clientes.
+- Reportes: cartera financiera para administradores y panel Sistema independiente para registros operativos, salud, logs y catalogo de APIs/metodos.
+- Frontend: panel web modular separado por perfil; clientes operan solo sus productos y administradores gestionan clientes, usuarios, productos y sistema.
 - Observabilidad basica: actuator health.
 - Documentacion: Swagger/OpenAPI y carpeta `docs/`.
 
@@ -58,16 +58,16 @@ El flujo visual queda separado en tres niveles:
 Despues de iniciar sesion, los modulos se abren como frentes independientes dentro de la banca interna:
 
 - Principal.
-- Administrador, visible para rol `ADMIN`.
-- Clientes.
-- Cuentas.
+- Cuentas propias.
 - Saldos.
-- Depositos.
 - Retiros.
-- Transferencias individuales.
+- Transferencias individuales con resolucion del beneficiario por numero de cuenta.
 - Transferencias por lote.
-- Historial de movimientos.
-- Reporte de cartera.
+- Historial de movimientos propios.
+- Administrador, visible solo para rol `ADMIN`.
+- Clientes y asignaciones, visibles solo para rol `ADMIN`.
+- Reporte de cartera, visible solo para rol `ADMIN`.
+- Sistema, visible solo para rol `ADMIN`, con registros/APIs, health y logs.
 
 La barra superior de la banca interna conserva en todos los modulos:
 
@@ -75,7 +75,7 @@ La barra superior de la banca interna conserva en todos los modulos:
 - Tipo de cambio visible.
 - Fecha del sistema.
 
-El portafolio visible en la banca en linea se maneja como **mis productos bancarios** del usuario autenticado. Las cuentas creadas o asociadas se guardan por usuario en el navegador y cada operacion selecciona primero el producto bancario origen. Para administrar la relacion formal del backend, el modulo **Asignaciones** permite vincular una cuenta existente a un `clienteId` y consultar las cuentas asignadas a ese cliente. El backend academico mantiene cuentas por `clienteId`; para seguridad multiusuario estricta en produccion se debe persistir la relacion usuario-cliente-cuenta y filtrar los endpoints desde el JWT.
+El portafolio visible en la banca en linea se maneja como **mis productos bancarios** del usuario autenticado. El backend filtra los productos desde el `clienteId` asociado al usuario JWT. Los usuarios cliente no visualizan el ID del cliente, la tabla general de clientes ni las asignaciones; esas vistas son exclusivas del administrador. En transferencias, el usuario ingresa el numero de cuenta destino y el sistema resuelve automaticamente el nombre del beneficiario antes de enviar la operacion.
 
 Archivos principales:
 
@@ -106,7 +106,7 @@ password: admin
 rol: ADMIN
 ```
 
-La pantalla de login incluye **Olvide mi contrasena** para reiniciar una contrasena en entorno de pruebas. En produccion esto debe reemplazarse por un flujo con token temporal, correo/SMS o proveedor de identidad.
+La pantalla de login incluye **Olvide mi contrasena** para reiniciar una contrasena en entorno de pruebas. El flujo usa `POST /api/auth/forgot-password` y devuelve mensajes controlados si el usuario no existe. En produccion esto debe reemplazarse por un flujo con token temporal, correo/SMS o proveedor de identidad.
 
 El modulo **Administrador** permite:
 
@@ -225,10 +225,11 @@ Cuentas:
 
 ```text
 POST /api/cuentas
-GET  /api/cuentas/numero/{numero}
-GET  /api/cuentas/mis-productos
-GET  /api/cuentas/cliente/{clienteId}
-POST /api/cuentas/numero/{numero}/cliente/{clienteId}
+GET  /api/cuentas/numero/{numero}                       # ADMIN
+GET  /api/cuentas/numero/{numero}/destinatario          # USER/ADMIN para confirmar beneficiario
+GET  /api/cuentas/mis-productos                         # productos del usuario autenticado
+GET  /api/cuentas/cliente/{clienteId}                    # ADMIN
+POST /api/cuentas/numero/{numero}/cliente/{clienteId}    # ADMIN
 GET  /api/cuentas/{numero}/saldo
 GET  /api/cuentas/{id}/movimientos
 POST /api/cuentas/transferir?origen=ACC-001&destino=ACC-002&monto=100
