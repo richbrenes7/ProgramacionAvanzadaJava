@@ -1,0 +1,37 @@
+# Netlify configuration for the static RBrenes Bank frontend.
+# The frontend is the Spring static bundle under src/main/resources/static.
+# /api requests are proxied to the Render backend so app.js can keep relative paths.
+[build]
+  base = "proyecto-final/src/main/resources/static"
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://rbrenes-bank-api.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/actuator/*"
+  to = "https://rbrenes-bank-api.onrender.com/actuator/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/swagger-ui/*"
+  to = "https://rbrenes-bank-api.onrender.com/swagger-ui/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/v3/api-docs/*"
+  to = "https://rbrenes-bank-api.onrender.com/v3/api-docs/:splat"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"

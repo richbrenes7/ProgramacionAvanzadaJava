@@ -124,7 +124,7 @@ Funciones principales:
 - Frontend por modulos y roles: clientes operan sus productos; administradores gestionan clientes, usuarios, productos, reportes y sistema.
 - Persistencia con Spring Data JPA.
 - Ejecucion local con H2.
-- Ejecucion con PostgreSQL y Kafka mediante Docker Compose.
+- Ejecucion con PostgreSQL y Kafka mediante Docker Compose.`r`n- Configuracion de presentacion con Netlify + Render + Supabase.
 - Actuator health.
 - Swagger/OpenAPI.
 - Diagramas UML, PNG y maquetacion Draw.io en `docs/`.
@@ -157,7 +157,7 @@ password: admin
 Workflows disponibles:
 
 - [`.github/workflows/ci-tarea4.yml`](.github/workflows/ci-tarea4.yml): build, tests, analisis JaCoCo, empaquetado y publicacion de imagen Docker para Tarea 4.
-- [`.github/workflows/proyecto-final-ci-cd.yml`](.github/workflows/proyecto-final-ci-cd.yml): build/test del proyecto final, reportes, imagen Docker y deploy opcional a AWS o Azure.
+- [`.github/workflows/proyecto-final-ci-cd.yml`](.github/workflows/proyecto-final-ci-cd.yml): build/test del proyecto final, reportes, imagen Docker y deploy opcional a AWS o Azure.`r`n- [`.github/workflows/proyecto-final-netlify-render.yml`](.github/workflows/proyecto-final-netlify-render.yml): presentacion cloud con frontend en Netlify, backend en Render y base Supabase PostgreSQL.
 
 ## Requisitos
 

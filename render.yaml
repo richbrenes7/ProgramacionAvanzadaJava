@@ -1,0 +1,31 @@
+# Render Blueprint for RBrenes Bank backend.
+# Connect this repo in Render and create the service from this file.
+# Database is expected to be Supabase Postgres; keep credentials as Render secrets.
+services:
+  - type: web
+    name: rbrenes-bank-api
+    runtime: docker
+    rootDir: proyecto-final
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: SPRING_DATASOURCE_URL
+        sync: false # Example: jdbc:postgresql://<supabase-host>:5432/postgres?sslmode=require
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false # Supabase database user, commonly postgres or project-specific user
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false # Supabase database password
+      - key: APP_JWT_SECRET
+        generateValue: true
+      - key: APP_JWT_EXPIRATION_MS
+        value: "3600000"
+      - key: APP_KAFKA_LISTENER_AUTO_STARTUP
+        value: "false"
+      - key: SPRING_KAFKA_BOOTSTRAP_SERVERS
+        value: "localhost:9092"
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: "update"
+      - key: SPRING_JPA_SHOW_SQL
+        value: "false"

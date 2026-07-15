@@ -1,19 +1,23 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/banco_db
-    username: banco
-    password: banco123
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/banco_db}
+    username: ${SPRING_DATASOURCE_USERNAME:banco}
+    password: ${SPRING_DATASOURCE_PASSWORD:banco123}
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: ${SPRING_JPA_SHOW_SQL:true}
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    listener:
+      auto-startup: ${APP_KAFKA_LISTENER_AUTO_STARTUP:true}
 
 app:
   jwt:
-    secret: change_this_secret_to_a_strong_value_with_min_32_chars
-    expiration-ms: 3600000
+    secret: ${APP_JWT_SECRET:change_this_secret_to_a_strong_value_with_min_32_chars}
+    expiration-ms: ${APP_JWT_EXPIRATION_MS:3600000}
   security:
-    permit-all: false
+    permit-all: ${APP_SECURITY_PERMIT_ALL:false}
