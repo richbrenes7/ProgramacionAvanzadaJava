@@ -21,10 +21,16 @@ services:
         generateValue: true
       - key: APP_JWT_EXPIRATION_MS
         value: "3600000"
+      - key: APP_DEFAULT_ADMIN
+        value: "user"
+      - key: APP_DEFAULT_ADMIN_PASS
+        sync: false
       - key: APP_KAFKA_LISTENER_AUTO_STARTUP
         value: "false"
       - key: SPRING_KAFKA_BOOTSTRAP_SERVERS
         value: "localhost:9092"
+      - key: SPRING_JPA_DATABASE_PLATFORM
+        value: "org.hibernate.dialect.PostgreSQLDialect"
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: "update"
       - key: SPRING_JPA_SHOW_SQL
