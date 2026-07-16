@@ -95,6 +95,56 @@ RENDER_DEPLOY_HOOK_URL
 
 El deploy de Render usa las variables configuradas en Render, no en GitHub.
 
+
+## Checklist de despliegue
+
+1. Crear proyecto en Supabase.
+2. Copiar credenciales de conexion PostgreSQL.
+3. En Render, crear Blueprint desde `render.yaml` o crear Web Service manual apuntando a `proyecto-final/Dockerfile`.
+4. En Render, configurar variables secretas:
+
+```text
+SPRING_DATASOURCE_URL=jdbc:postgresql://<host>:5432/postgres?sslmode=require
+SPRING_DATASOURCE_USERNAME=<usuario>
+SPRING_DATASOURCE_PASSWORD=<password>
+APP_JWT_SECRET=<cadena-segura-minimo-32-caracteres>
+APP_KAFKA_LISTENER_AUTO_STARTUP=false
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
+SPRING_JPA_SHOW_SQL=false
+```
+
+5. Confirmar que Render responde:
+
+```text
+https://rbrenes-bank-api.onrender.com/actuator/health
+```
+
+6. En Netlify, crear sitio desde el repositorio o usar GitHub Actions.
+7. Confirmar que `netlify.toml` apunta al dominio real de Render. Si el servicio no se llama `rbrenes-bank-api`, reemplazar `https://rbrenes-bank-api.onrender.com` por la URL asignada.
+8. En GitHub, si se usara el workflow de despliegue, configurar estos secrets:
+
+```text
+NETLIFY_AUTH_TOKEN
+NETLIFY_SITE_ID
+RENDER_DEPLOY_HOOK_URL
+```
+
+9. Entrar al frontend Netlify y probar login:
+
+```text
+usuario: user
+password: admin
+```
+
+10. Crear clientes/productos desde el modulo Administrador para poblar la base Supabase.
+
+## Referencias oficiales usadas
+
+- Render Blueprint: `render.yaml` debe vivir en la raiz del repositorio y define servicios; `runtime: docker` es el runtime recomendado para construir desde Dockerfile.
+- Render health checks: `healthCheckPath` permite validar `/actuator/health`.
+- Netlify rewrites/proxies: redirects con status `200` permiten que `/api/*` sea proxy hacia otro origen sin cambiar `app.js`.
+- Supabase Postgres: usar URL PostgreSQL/JDBC con SSL para backends; para Render conviene conexion directa o Session pooler cuando haya limitaciones de red.
+
 ## URLs esperadas
 
 ```text

@@ -4,7 +4,6 @@
 [build]
   base = "proyecto-final/src/main/resources/static"
   publish = "."
-  command = ""
 
 [[redirects]]
   from = "/api/*"

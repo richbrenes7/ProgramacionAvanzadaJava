@@ -201,7 +201,7 @@ El proyecto incluye configuracion para presentar el sistema con frontend y backe
 - `netlify.toml`: publica el frontend estatico en Netlify y proxya `/api/*` hacia Render.
 - `render.yaml`: define el backend Spring Boot como servicio Docker en Render.
 - `.github/workflows/proyecto-final-netlify-render.yml`: verifica Maven, despliega frontend a Netlify y dispara deploy del backend en Render.
-- `docs/deploy-netlify-render-supabase.md`: guia de variables, secrets y validacion.
+- `docs/deploy-netlify-render-supabase.md`: guia de variables, secrets, checklist de despliegue y validacion.
 
 La base recomendada para Render es Supabase PostgreSQL. SQLite no se recomienda para este despliegue porque el servicio web no debe depender de un archivo local para persistencia de clientes, usuarios y transacciones.
 ## Endpoints principales
