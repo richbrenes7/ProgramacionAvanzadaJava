@@ -72,10 +72,10 @@ El archivo `netlify.toml` publica el frontend estatico y proxya las rutas `/api/
 
 ```text
 publish = proyecto-final/src/main/resources/static
-/api/*  -> https://rbrenes-bank-api.onrender.com/api/:splat
+/api/*  -> https://rbrenesbank.onrender.com/api/:splat
 ```
 
-Si el servicio de Render cambia de nombre o dominio, actualizar las reglas `to` en `netlify.toml`.
+Si el servicio de Render cambia de nombre o dominio, actualizar las reglas `to` en `netlify.toml` y el archivo `src/main/resources/static/_redirects`.
 
 ## GitHub Actions
 
@@ -116,11 +116,11 @@ SPRING_JPA_SHOW_SQL=false
 5. Confirmar que Render responde:
 
 ```text
-https://rbrenes-bank-api.onrender.com/actuator/health
+https://rbrenesbank.onrender.com/actuator/health
 ```
 
 6. En Netlify, crear sitio desde el repositorio o usar GitHub Actions.
-7. Confirmar que `netlify.toml` apunta al dominio real de Render. Si el servicio no se llama `rbrenes-bank-api`, reemplazar `https://rbrenes-bank-api.onrender.com` por la URL asignada.
+7. Confirmar que `netlify.toml` apunta al dominio real de Render. Si el servicio no se llama `rbrenes-bank-api`, reemplazar `https://rbrenesbank.onrender.com` por la URL asignada.
 8. En GitHub, si se usara el workflow de despliegue, configurar estos secrets:
 
 ```text
@@ -149,9 +149,9 @@ password: admin
 
 ```text
 Frontend Netlify: https://<sitio-netlify>.netlify.app
-Backend Render:   https://rbrenes-bank-api.onrender.com
-Health Render:    https://rbrenes-bank-api.onrender.com/actuator/health
-Swagger Render:   https://rbrenes-bank-api.onrender.com/swagger-ui/index.html
+Backend Render:   https://rbrenesbank.onrender.com
+Health Render:    https://rbrenesbank.onrender.com/actuator/health
+Swagger Render:   https://rbrenesbank.onrender.com/swagger-ui/index.html
 ```
 
 ## Credenciales demo
@@ -167,11 +167,11 @@ rol: ADMIN
 ## Validacion rapida
 
 ```bash
-curl https://rbrenes-bank-api.onrender.com/actuator/health
+curl https://rbrenesbank.onrender.com/actuator/health
 ```
 
 ```bash
-curl -X POST https://rbrenes-bank-api.onrender.com/api/auth/login \
+curl -X POST https://rbrenesbank.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"user","password":"admin"}'
 ```

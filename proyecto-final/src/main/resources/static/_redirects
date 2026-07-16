@@ -1,0 +1,5 @@
+/api/* https://rbrenesbank.onrender.com/api/:splat 200!
+/actuator/* https://rbrenesbank.onrender.com/actuator/:splat 200!
+/swagger-ui/* https://rbrenesbank.onrender.com/swagger-ui/:splat 200!
+/v3/api-docs/* https://rbrenesbank.onrender.com/v3/api-docs/:splat 200!
+/* /index.html 200

@@ -7,25 +7,25 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://rbrenes-bank-api.onrender.com/api/:splat"
+  to = "https://rbrenesbank.onrender.com/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/actuator/*"
-  to = "https://rbrenes-bank-api.onrender.com/actuator/:splat"
+  to = "https://rbrenesbank.onrender.com/actuator/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/swagger-ui/*"
-  to = "https://rbrenes-bank-api.onrender.com/swagger-ui/:splat"
+  to = "https://rbrenesbank.onrender.com/swagger-ui/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/v3/api-docs/*"
-  to = "https://rbrenes-bank-api.onrender.com/v3/api-docs/:splat"
+  to = "https://rbrenesbank.onrender.com/v3/api-docs/:splat"
   status = 200
   force = true
 
