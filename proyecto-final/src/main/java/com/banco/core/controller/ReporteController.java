@@ -26,13 +26,16 @@ public class ReporteController {
     private final CuentaRepository cuentaRepository;
     private final ClienteRepository clienteRepository;
     private final MovimientoRepository movimientoRepository;
+    private final ApiUsageLogService apiUsageLogService;
 
     public ReporteController(CuentaRepository cuentaRepository,
                              ClienteRepository clienteRepository,
-                             MovimientoRepository movimientoRepository) {
+                             MovimientoRepository movimientoRepository,
+                             ApiUsageLogService apiUsageLogService) {
         this.cuentaRepository = cuentaRepository;
         this.clienteRepository = clienteRepository;
         this.movimientoRepository = movimientoRepository;
+        this.apiUsageLogService = apiUsageLogService;
     }
 
     @GetMapping("/cartera")
@@ -95,7 +98,9 @@ public class ReporteController {
                 api("Documentacion", "GET", "/swagger-ui/index.html", "Interfaz Swagger/OpenAPI para explorar endpoints."),
                 api("Documentacion", "GET", "/v3/api-docs", "Especificacion OpenAPI en formato JSON."),
                 api("Reportes", "GET", "/api/reportes/tecnico", "Resumen documental de observabilidad tecnica.")));
-        reporte.put("nota", "Este reporte no sustituye logs reales; documenta donde consultar salud, Swagger y trazas tecnicas.");
+        reporte.put("consumoApisReciente", apiUsageLogService.recientes(25));
+        reporte.put("consumoApisPorRuta", apiUsageLogService.resumenPorRuta());
+        reporte.put("nota", "Swagger documenta el catalogo; consumoApisReciente muestra llamadas capturadas en memoria desde el ultimo arranque.");
         return ResponseEntity.ok(reporte);
     }
 

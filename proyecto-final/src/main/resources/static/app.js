@@ -1139,6 +1139,7 @@ function renderReporteTecnico(reporte) {
   const health = reporte.health || {};
   const endpoints = reporte.endpointsTecnicos || [];
   const logs = reporte.logs || [];
+  const consumo = reporte.consumoApisReciente || [];
   els.reporteTecnicoResult.className = "report-stack";
   els.reporteTecnicoResult.innerHTML = `
     <section class="report-block">
@@ -1146,6 +1147,13 @@ function renderReporteTecnico(reporte) {
       <div class="report-list">
         <span>Endpoint</span><strong>${health.endpoint || "/actuator/health"}</strong>
         <span>Uso</span><strong>${health.uso || "Validacion tecnica"}</strong>
+      </div>
+    </section>
+    ${reportMapList("Consumo por endpoint", reporte.consumoApisPorRuta)}
+    <section class="report-block">
+      <h3>Consumo reciente de APIs</h3>
+      <div class="report-table">
+        ${consumo.length ? consumo.map(item => `<div><span>${item.metodo} ${item.ruta}</span><span>HTTP ${item.estado}</span><strong>${item.duracionMs} ms</strong><small>${item.usuario || "anonimo"} - ${item.fecha || "sin fecha"}</small></div>`).join("") : `<p>No hay consumo registrado desde el ultimo arranque.</p>`}
       </div>
     </section>
     <section class="report-block">
