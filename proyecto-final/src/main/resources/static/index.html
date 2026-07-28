@@ -99,13 +99,13 @@
       <nav class="nav-list" aria-label="Modulos bancarios">
         <a href="#banca" class="nav-item active" data-module-link="dashboard">Principal</a>
         <a href="#clientes" class="nav-item" data-module-link="clientes" data-admin-only hidden>Clientes</a>
-        <a href="#cuentas" class="nav-item" data-module-link="cuentas">Cuentas</a>
-        <a href="#saldo" class="nav-item" data-module-link="saldo">Saldos</a>
+        <a href="#cuentas" class="nav-item" data-module-link="cuentas" data-client-only>Cuentas</a>
+        <a href="#saldo" class="nav-item" data-module-link="saldo" data-client-only>Saldos</a>
         <a href="#asignaciones" class="nav-item" data-module-link="asignaciones" data-admin-only hidden>Asignaciones</a>
-        <a href="#retiro" class="nav-item" data-module-link="retiro">Retiros</a>
-        <a href="#transferencia" class="nav-item" data-module-link="transferencia">Transferencias</a>
-        <a href="#lote" class="nav-item" data-module-link="lote">Lotes</a>
-        <a href="#movimientos" class="nav-item" data-module-link="movimientos">Movimientos</a>
+        <a href="#retiro" class="nav-item" data-module-link="retiro" data-client-only>Retiros</a>
+        <a href="#transferencia" class="nav-item" data-module-link="transferencia" data-client-only>Transferencias</a>
+        <a href="#lote" class="nav-item" data-module-link="lote" data-client-only>Lotes</a>
+        <a href="#movimientos" class="nav-item" data-module-link="movimientos" data-client-only>Movimientos</a>
         <a href="#reportes" class="nav-item" data-module-link="reportes" data-admin-only hidden>Reportes</a>
         <a href="#admin" class="nav-item" data-module-link="admin" data-admin-only hidden>Administrador</a>
         <a href="#sistema" class="nav-item" data-module-link="sistema" data-admin-only hidden>Sistema</a>
@@ -130,12 +130,12 @@
       <section id="dashboard" class="module-view active" data-module="dashboard" data-title="Panel principal">
         <div class="metrics-grid">
           <article class="metric" data-admin-only hidden><span>Clientes cargados</span><strong id="clientesCount">0</strong></article>
-          <article class="metric"><span>Mis productos</span><strong id="cuentasCount">0</strong></article>
-          <article class="metric"><span>Saldo total usuario</span><strong id="balanceTotal">GTQ 0.00</strong></article>
+          <article class="metric" data-client-only><span>Mis productos</span><strong id="cuentasCount">0</strong></article>
+          <article class="metric" data-client-only><span>Saldo total usuario</span><strong id="balanceTotal">GTQ 0.00</strong></article>
           <article class="metric"><span>Ultima operacion</span><strong id="lastOperation">Sin actividad</strong></article>
         </div>
 
-        <article class="panel product-panel">
+        <article class="panel product-panel" data-client-only>
           <div class="panel-header"><h2>Producto seleccionado</h2><span class="status-pill">Usuario</span></div>
           <div class="product-selector-row">
             <label>Producto bancario<select id="productSelector"></select></label>
@@ -143,7 +143,7 @@
           </div>
         </article>
 
-        <article class="panel dashboard-products-panel">
+        <article class="panel dashboard-products-panel" data-client-only>
           <div class="panel-header"><h2>Mis productos bancarios</h2><span class="status-pill success">Portafolio</span></div>
           <div id="dashboardProductsList" class="products-list empty-state">Asocia o crea una cuenta para ver tus productos.</div>
         </article>
@@ -154,13 +154,13 @@
         </div>
         <div class="module-grid quick-grid">
           <button type="button" class="module-card" data-module-link="clientes" data-admin-only hidden><span>Clientes</span><strong>Gestion de personas</strong></button>
-          <button type="button" class="module-card" data-module-link="cuentas"><span>Cuentas</span><strong>Apertura y consulta</strong></button>
-          <button type="button" class="module-card" data-module-link="saldo"><span>Saldos</span><strong>Disponibilidad por cuenta</strong></button>
+          <button type="button" class="module-card" data-module-link="cuentas" data-client-only><span>Cuentas</span><strong>Apertura y consulta</strong></button>
+          <button type="button" class="module-card" data-module-link="saldo" data-client-only><span>Saldos</span><strong>Disponibilidad por cuenta</strong></button>
           <button type="button" class="module-card" data-module-link="asignaciones" data-admin-only hidden><span>Asignaciones</span><strong>Vincular cuentas a clientes</strong></button>
-          <button type="button" class="module-card" data-module-link="retiro"><span>Retiros</span><strong>Debito controlado</strong></button>
-          <button type="button" class="module-card" data-module-link="transferencia"><span>Transferencias</span><strong>Operacion individual</strong></button>
-          <button type="button" class="module-card" data-module-link="lote"><span>Lotes</span><strong>Procesamiento concurrente</strong></button>
-          <button type="button" class="module-card" data-module-link="movimientos"><span>Movimientos</span><strong>Historial operativo</strong></button>
+          <button type="button" class="module-card" data-module-link="retiro" data-client-only><span>Retiros</span><strong>Debito controlado</strong></button>
+          <button type="button" class="module-card" data-module-link="transferencia" data-client-only><span>Transferencias</span><strong>Operacion individual</strong></button>
+          <button type="button" class="module-card" data-module-link="lote" data-client-only><span>Lotes</span><strong>Procesamiento concurrente</strong></button>
+          <button type="button" class="module-card" data-module-link="movimientos" data-client-only><span>Movimientos</span><strong>Historial operativo</strong></button>
           <button type="button" class="module-card" data-module-link="reportes" data-admin-only hidden><span>Reportes</span><strong>Cartera bancaria</strong></button>
           <button type="button" class="module-card" data-module-link="admin" data-admin-only hidden><span>Administrador</span><strong>Usuarios y productos</strong></button>
           <button type="button" class="module-card" data-module-link="sistema" data-admin-only hidden><span>Sistema</span><strong>Registros, APIs y salud</strong></button>

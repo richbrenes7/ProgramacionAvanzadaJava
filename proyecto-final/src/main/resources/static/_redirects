@@ -1,3 +1,6 @@
+/actuator/health https://rbrenesbank.onrender.com/actuator/health 200!
+/swagger-ui/index.html https://rbrenesbank.onrender.com/swagger-ui/index.html 200!
+/v3/api-docs https://rbrenesbank.onrender.com/v3/api-docs 200!
 /api/* https://rbrenesbank.onrender.com/api/:splat 200!
 /actuator/* https://rbrenesbank.onrender.com/actuator/:splat 200!
 /swagger-ui/* https://rbrenesbank.onrender.com/swagger-ui/:splat 200!

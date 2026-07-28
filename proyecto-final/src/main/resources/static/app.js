@@ -295,8 +295,13 @@ function routeBank(moduleName = "dashboard") {
     target = "dashboard";
   }
   const adminModules = ["admin", "clientes", "asignaciones", "reportes", "sistema"];
+  const clientModules = ["cuentas", "saldo", "retiro", "transferencia", "lote", "movimientos"];
   if (adminModules.includes(target) && !isAdmin()) {
     showToast("Modulo disponible solo para administradores.", "error");
+    target = "dashboard";
+  }
+  if (clientModules.includes(target) && isAdmin()) {
+    showToast("El administrador gestiona clientes, usuarios, productos y reportes; no opera productos bancarios propios.", "error");
     target = "dashboard";
   }
   els.publicShell.hidden = true;
@@ -441,9 +446,13 @@ function renderProductSelectors() {
     <span>Saldo disponible</span><strong>${money(cuenta.saldo)}</strong>
   `;
 }
-function renderAdminAccess() {
+function renderRoleAccess() {
+  const admin = isAdmin();
   document.querySelectorAll("[data-admin-only]").forEach(element => {
-    element.hidden = state.role !== "ADMIN";
+    element.hidden = !admin;
+  });
+  document.querySelectorAll("[data-client-only]").forEach(element => {
+    element.hidden = admin;
   });
 }
 
@@ -455,7 +464,7 @@ function renderDashboard() {
   renderProductSelectors();
   renderDashboardProducts();
   updateContextBar();
-  renderAdminAccess();
+  renderRoleAccess();
 }
 
 function record(title, meta, extra = "") {

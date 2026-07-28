@@ -92,6 +92,19 @@ public class UsuarioService implements UserDetailsService {
 
     public Usuario asegurarAdminDemo(String username, String password) {
         return usuarioRepository.findByUsername(username)
+                .map(usuario -> {
+                    usuario.setRole("ADMIN");
+                    usuario.setEstado("ACTIVO");
+                    usuario.setClienteId(null);
+                    if (usuario.getNombre() == null || usuario.getNombre().isBlank()) {
+                        usuario.setNombre("Administrador demo");
+                    }
+                    if (password != null && !password.isBlank()
+                            && !passwordEncoder.matches(password, usuario.getPasswordHash())) {
+                        usuario.setPasswordHash(passwordEncoder.encode(password));
+                    }
+                    return usuarioRepository.save(usuario);
+                })
                 .orElseGet(() -> crear(username, password, "ADMIN", "Administrador demo"));
     }
 
